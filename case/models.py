@@ -28,6 +28,7 @@ class Case(BaseModel):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     question = models.TextField()
     category = models.SmallIntegerField(choices=CaseCategory, default=CaseCategory.OTHER.value)
+
     proofs = models.ManyToManyField(Proof)
     activities = GenericRelation(Activity)
     tags = models.ManyToManyField(Tag)
