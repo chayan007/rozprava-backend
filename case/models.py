@@ -1,5 +1,6 @@
 from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 from activity.models import Activity, Tag
 
@@ -14,16 +15,16 @@ class Case(BaseModel):
 
     class CaseCategory(models.IntegerChoices):
 
-        OTHER = 0
-        POLITICS = 1
-        SPORTS = 2
-        EDUCATION = 3
-        ADULT = 4
-        SPIRITUAL = 5
-        ENTERTAINMENT = 6
-        BUSINESS = 7
-        TECHNOLOGY = 8
-        NATURE = 9
+        OTHER = 0, _('Other')
+        POLITICS = 1, _('Politics')
+        SPORTS = 2, _('Sports')
+        EDUCATION = 3, _('Education')
+        ADULT = 4, _('Adult')
+        SPIRITUAL = 5, _('Spiritual')
+        ENTERTAINMENT = 6, _('Entertainment')
+        BUSINESS = 7, _('Business')
+        TECHNOLOGY = 8, _('Technology')
+        NATURE = 9, _('Nature')
 
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     question = models.CharField(max_length=450)
