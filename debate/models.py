@@ -28,7 +28,7 @@ class Debate(BaseModel):
     tags = models.ManyToManyField(Tag)
 
     def __str__(self):
-        return '{} -> {}'.format(
+        return '{} : {}'.format(
             self.profile.user.get_full_name(),
             self.case.__str__()
         )

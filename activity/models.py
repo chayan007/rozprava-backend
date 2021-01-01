@@ -14,12 +14,14 @@ class Activity(BaseModel):
 
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     activity_type = models.SmallIntegerField(choices=ActivityChoices)
-    date = models.DateTimeField(auto_now_add=True)
 
     # Below the mandatory fields for generic relation
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey()
+
+    class Meta:
+        unique_together = ('content_object', 'profile', 'activity_type',)
 
     def __str__(self):
         return '{} -> {}'.format(

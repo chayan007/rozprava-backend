@@ -26,8 +26,10 @@ class Case(BaseModel):
         NATURE = 9
 
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    question = models.TextField()
+    question = models.CharField(max_length=450)
+    description = models.TextField()
     category = models.SmallIntegerField(choices=CaseCategory, default=CaseCategory.OTHER.value)
+    slug = models.CharField(max_length=200)
 
     proofs = models.ManyToManyField(Proof)
     activities = GenericRelation(Activity)
