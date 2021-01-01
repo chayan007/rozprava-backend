@@ -45,3 +45,14 @@ class Profile(BaseModel):
 
     def __str__(self):
         return self.user.get_full_name()
+
+
+class Group(BaseModel):
+    """Group of profiles."""
+
+    name = models.CharField(max_length=300)
+    description = models.TextField(null=True, blank=True)
+    profiles = models.ManyToManyField(Profile)
+
+    def __str__(self):
+        return '{}: {} members'.format(self.name, self.profiles.count())
