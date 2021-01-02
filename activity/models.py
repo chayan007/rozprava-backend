@@ -33,6 +33,8 @@ class Activity(BaseModel):
 class Tag(BaseModel):
 
     name = models.CharField(unique=True, max_length=100)
+    views = models.BigIntegerField(default=0)
+    is_trending = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
