@@ -22,8 +22,8 @@ class ProofHandler:
             self.case.save()
 
     @staticmethod
-    def delete(proof_id):
-        proof = Proof.objects.get(proof_id)
+    def delete(proof_uuid):
+        proof = Proof.objects.get(uuid=proof_uuid)
         proof.delete()
 
     def list(self):
