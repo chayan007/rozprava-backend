@@ -41,7 +41,7 @@ class Profile(BaseModel):
     celebrity_rank = models.SmallIntegerField(choices=CelebrityRank, default=CelebrityRank.NOBODY.value)
     profession = models.CharField(max_length=200, null=True)
     gender = models.CharField(max_length=10, choices=GenderChoices.choices)
-    relationship_status = models.SmallIntegerField(choices=RelationshipStatusChoices, default=RelationshipStatusChoices.NOBODY.value)
+    relationship_status = models.SmallIntegerField(choices=RelationshipStatusChoices, default=RelationshipStatusChoices.SINGLE.value)
 
     def __str__(self):
         return self.user.get_full_name()
