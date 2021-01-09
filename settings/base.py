@@ -20,7 +20,7 @@ SYSTEM_APPS = [
     'chat',
     'debate',
     'notification',
-    'profile',
+    'profiles',
     'proof',
     'tracker',
     'verification'

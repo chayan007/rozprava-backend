@@ -38,10 +38,10 @@ class Profile(BaseModel):
     address = models.CharField(max_length=500, null=True, blank=True)
     country = models.CharField(max_length=30, null=True, blank=True)
     is_verified = models.BooleanField(default=False)
-    celebrity_rank = models.SmallIntegerField(choices=CelebrityRank, default=CelebrityRank.NOBODY.value)
+    celebrity_rank = models.SmallIntegerField(choices=CelebrityRank.choices, default=CelebrityRank.NOBODY.value)
     profession = models.CharField(max_length=200, null=True)
     gender = models.CharField(max_length=10, choices=GenderChoices.choices)
-    relationship_status = models.SmallIntegerField(choices=RelationshipStatusChoices, default=RelationshipStatusChoices.SINGLE.value)
+    relationship_status = models.SmallIntegerField(choices=RelationshipStatusChoices.choices, default=RelationshipStatusChoices.SINGLE.value)
 
     def __str__(self):
         return self.user.get_full_name()

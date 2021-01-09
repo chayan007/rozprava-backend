@@ -29,7 +29,7 @@ class Case(BaseModel):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     question = models.CharField(max_length=450)
     description = models.TextField(null=True, blank=True)
-    category = models.SmallIntegerField(choices=CaseCategory, default=CaseCategory.OTHER.value)
+    category = models.SmallIntegerField(choices=CaseCategory.choices, default=CaseCategory.OTHER.value)
     slug = models.CharField(max_length=200)
 
     proofs = models.ManyToManyField(Proof)

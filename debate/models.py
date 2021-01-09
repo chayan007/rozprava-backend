@@ -23,7 +23,7 @@ class Debate(BaseModel):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     case = models.ForeignKey(Case, on_delete=models.CASCADE)
     comment = models.TextField()
-    inclination = models.SmallIntegerField(choices=InclinationChoices)
+    inclination = models.SmallIntegerField(choices=InclinationChoices.choices, default=InclinationChoices.FOR.value)
 
     proofs = models.ManyToManyField(Proof)
     activities = GenericRelation(Activity)

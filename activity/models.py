@@ -13,7 +13,7 @@ class Activity(BaseModel):
         LIKE = 1
 
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    activity_type = models.SmallIntegerField(choices=ActivityChoices)
+    activity_type = models.SmallIntegerField(choices=ActivityChoices.choices)
 
     # Below the mandatory fields for generic relation
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
@@ -21,7 +21,7 @@ class Activity(BaseModel):
     content_object = GenericForeignKey()
 
     class Meta:
-        unique_together = ('content_object', 'profile', 'activity_type',)
+        unique_together = ('content_type', 'profile', 'activity_type',)
 
     def __str__(self):
         return '{} -> {}'.format(
