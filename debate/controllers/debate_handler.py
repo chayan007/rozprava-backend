@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404
 
 from case.models import Case
 from debate.models import Debate
+from base.utils.string import get_string_matching_coefficient
 
 
 class DebateHandler:
@@ -25,7 +26,8 @@ class DebateHandler:
     @staticmethod
     def update(debate_uuid, **kwargs):
         debate = Debate.objects.get(uuid=debate_uuid)
-        debate.comment = kwargs.get('comment', debate.comment)
+        if kwargs.get('comment') and (get_string_matching_coefficient(debate.comment, kwargs.get('comment'))) > 0.8:
+            debate.comment = kwargs.get('comment')
         debate.inclination = kwargs.get('inclination', debate.inclination)
         debate.save()
         return debate
