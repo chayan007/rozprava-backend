@@ -1,5 +1,6 @@
 from django.shortcuts import get_object_or_404
 from django.utils.text import slugify
+from difflib import SequenceMatcher
 
 from case.models import Case
 
@@ -25,9 +26,14 @@ class CaseHandler:
     @staticmethod
     def update(slug, **kwargs):
         case = Case.objects.get(slug=slug)
-        case.question = kwargs.get('question', case.question)
+        if kwargs.get('question'):
+            new_question = kwargs.get('question')
+            old_question = case.question
+            if SequenceMatcher(None, old_question, new_question).ratio() > 0.8:
+                case.question = new_question
+
         case.description = kwargs.get('description', case.description)
-        case.category = int(kwargs.get('category')) or case.category
+        case.category = int(kwargs.get('category', case.category))
         case.save()
         return case
 
