@@ -1,5 +1,6 @@
 from django.shortcuts import get_object_or_404
 from django.utils.text import slugify
+from base.utils.string import get_string_matching_coefficient
 
 from case.models import Case
 
@@ -25,9 +26,11 @@ class CaseHandler:
     @staticmethod
     def update(slug, **kwargs):
         case = Case.objects.get(slug=slug)
-        case.question = kwargs.get('question', case.question)
+        if kwargs.get('question') and (get_string_matching_coefficient(case.question, kwargs.get('question')) > 0.8):
+            case.question = kwargs.get('question')
+
         case.description = kwargs.get('description', case.description)
-        case.category = int(kwargs.get('category')) or case.category
+        case.category = int(kwargs.get('category', case.category))
         case.save()
         return case
 

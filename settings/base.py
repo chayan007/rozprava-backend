@@ -13,17 +13,17 @@ ALLOWED_HOSTS = []
 
 # Application definition
 SYSTEM_APPS = [
-    'base',
-    'activity',
-    'ads',
-    'case',
-    'chat',
-    'debate',
-    'notification',
-    'profiles',
-    'proof',
-    'tracker',
-    'verification'
+    'base.apps.BaseConfig',
+    'activity.apps.ActivityConfig',
+    'ads.apps.AdsConfig',
+    'case.apps.CaseConfig',
+    'chat.apps.ChatConfig',
+    'debate.apps.DebateConfig',
+    'notification.apps.NotificationConfig',
+    'profiles.apps.ProfilesConfig',
+    'proof.apps.ProofConfig',
+    'tracker.apps.TrackerConfig',
+    'verification.apps.VerificationConfig',
 ]
 
 THIRD_PARTY_APPS = []
