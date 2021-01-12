@@ -56,3 +56,17 @@ class Group(BaseModel):
 
     def __str__(self):
         return '{}: {} members'.format(self.name, self.profiles.count())
+
+
+class FollowerMap:
+    """Model to store followers."""
+
+    follower = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    following = models.ForeignKey(Profile, on_delete=models.CASCADE)
+
+    class Meta:
+
+        unique_together = ('follower', 'following',)
+
+    def __str__(self):
+        return f'{self.follower} follows {self.following}'
