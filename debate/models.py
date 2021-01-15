@@ -1,4 +1,5 @@
 from django.contrib.contenttypes.fields import GenericRelation
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -25,7 +26,10 @@ class Debate(BaseModel):
     comment = models.TextField()
     inclination = models.SmallIntegerField(choices=InclinationChoices.choices, default=InclinationChoices.FOR.value)
     pointer = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
-    impact = models.SmallIntegerField(default=0)
+    impact = models.SmallIntegerField(default=0, validators=[
+        MaxValueValidator(5),
+        MinValueValidator(0)
+    ])
 
     proofs = models.ManyToManyField(Proof)
     activities = GenericRelation(Activity)

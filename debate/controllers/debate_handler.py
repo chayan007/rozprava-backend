@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404
 
 from case.models import Case
+from debate.exceptions import RebuttalFailedException
 from debate.models import Debate
 from base.utils.string import get_string_matching_coefficient
 
@@ -19,9 +20,22 @@ class DebateHandler:
             'profile': user.profile,
             'case': self.case,
             'comment': kwargs['comment'],
-            'inclination': kwargs.get('inclination'),
+            'inclination': kwargs.get('inclination')
         })
         return debate
+
+    def create_rebuttal(self, user, **kwargs):
+        original_debate = self.get(kwargs['debate_uuid'])
+        if original_debate and not original_debate.pointer:
+            debate = Debate.objects.create(**{
+                'profile': user.profile,
+                'case': self.case,
+                'comment': kwargs['comment'],
+                'inclination': kwargs.get('inclination'),
+                'pointer': original_debate
+            })
+            return debate
+        raise RebuttalFailedException('Failed to upload rebuttal to the specific debate.')
 
     @staticmethod
     def update(debate_uuid, **kwargs):
