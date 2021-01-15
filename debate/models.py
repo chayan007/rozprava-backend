@@ -24,6 +24,8 @@ class Debate(BaseModel):
     case = models.ForeignKey(Case, on_delete=models.CASCADE)
     comment = models.TextField()
     inclination = models.SmallIntegerField(choices=InclinationChoices.choices, default=InclinationChoices.FOR.value)
+    pointer = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
+    impact = models.SmallIntegerField(default=0)
 
     proofs = models.ManyToManyField(Proof)
     activities = GenericRelation(Activity)
