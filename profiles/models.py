@@ -53,6 +53,7 @@ class Group(BaseModel):
     name = models.CharField(max_length=300)
     description = models.TextField(null=True, blank=True)
     profiles = models.ManyToManyField(Profile)
+    is_paid = models.BooleanField(default=False)
 
     def __str__(self):
         return '{}: {} members'.format(self.name, self.profiles.count())

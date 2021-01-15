@@ -31,6 +31,8 @@ class Case(BaseModel):
     description = models.TextField(null=True, blank=True)
     category = models.SmallIntegerField(choices=CaseCategory.choices, default=CaseCategory.OTHER.value)
     slug = models.CharField(max_length=200)
+    for_key = models.CharField(max_length=100, default='For')
+    against_key = models.CharField(max_length=100, default='Against')
 
     proofs = models.ManyToManyField(Proof)
     activities = GenericRelation(Activity)
