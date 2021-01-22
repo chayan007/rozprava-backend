@@ -8,6 +8,8 @@ SECRET_KEY = '*k5s)mhyfq@^mh3#!nops^3o^ib4+hf%q7c4=)#83y(bvvn^b^'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+SITE_ID = 1
+
 ALLOWED_HOSTS = []
 
 
@@ -26,7 +28,23 @@ SYSTEM_APPS = [
     'verification.apps.VerificationConfig',
 ]
 
-THIRD_PARTY_APPS = []
+SOCIAL_AUTHENTICATION_PROVIDERS = [
+    'rest_framework',
+    'rest_framework.authtoken',
+    'rest_auth'
+    
+    'allauth',
+    'allauth.account',
+    'rest_auth.registration',
+
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.twitter',
+]
+
+THIRD_PARTY_APPS = [
+    'rest_framework',
+] + SOCIAL_AUTHENTICATION_PROVIDERS
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -64,6 +82,11 @@ TEMPLATES = [
             ],
         },
     },
+]
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
 WSGI_APPLICATION = 'rozprava.wsgi.application'
