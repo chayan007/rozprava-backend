@@ -10,7 +10,7 @@ DEBUG = True
 
 SITE_ID = 1
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -29,10 +29,6 @@ SYSTEM_APPS = [
 ]
 
 SOCIAL_AUTHENTICATION_PROVIDERS = [
-    'rest_framework',
-    'rest_framework.authtoken',
-    'rest_auth'
-    
     'allauth',
     'allauth.account',
     'rest_auth.registration',
@@ -44,6 +40,9 @@ SOCIAL_AUTHENTICATION_PROVIDERS = [
 
 THIRD_PARTY_APPS = [
     'rest_framework',
+    'rest_framework.authtoken',
+    'rest_auth',
+    'django.contrib.sites',
 ] + SOCIAL_AUTHENTICATION_PROVIDERS
 
 INSTALLED_APPS = [
