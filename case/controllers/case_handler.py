@@ -1,8 +1,11 @@
 from django.shortcuts import get_object_or_404
 from django.utils.text import slugify
+
 from base.utils.string import get_string_matching_coefficient
 
 from case.models import Case
+
+from tracker.controllers.location_handler import LocationHandler
 
 
 class CaseHandler:
@@ -12,7 +15,7 @@ class CaseHandler:
         return get_object_or_404(Case, slug=slug)
 
     @staticmethod
-    def create(user, **kwargs):
+    def create(user, ip_address, **kwargs):
         question = kwargs.get('question')
         case = Case.objects.create(**{
             'profile': user.profile,
@@ -20,6 +23,7 @@ class CaseHandler:
             'description': kwargs.get('description'),
             'category': int(kwargs.get('category')),
             'slug': slugify('{}-{}'.format(user.username, question)),
+            'location': LocationHandler().get_location(ip_address)
         })
         return case
 

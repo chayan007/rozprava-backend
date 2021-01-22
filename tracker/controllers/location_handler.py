@@ -24,4 +24,4 @@ class LocationHandler:
                 create_queryset['profile'] = self.profile
             return Location.objects.create(**create_queryset)
         except BaseException:
-            return None
+            return

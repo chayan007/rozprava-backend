@@ -1,9 +1,13 @@
 from django.shortcuts import get_object_or_404
 
+from base.utils.string import get_string_matching_coefficient
+
 from case.models import Case
+
 from debate.exceptions import RebuttalFailedException
 from debate.models import Debate
-from base.utils.string import get_string_matching_coefficient
+
+from tracker.controllers.location_handler import LocationHandler
 
 
 class DebateHandler:
@@ -15,12 +19,13 @@ class DebateHandler:
     def get(debate_uuid):
         return get_object_or_404(Debate, uuid=debate_uuid)
 
-    def create(self, user, **kwargs):
+    def create(self, user, ip_address, **kwargs):
         debate = Debate.objects.create(**{
             'profile': user.profile,
             'case': self.case,
             'comment': kwargs['comment'],
-            'inclination': kwargs.get('inclination')
+            'inclination': kwargs.get('inclination'),
+            'location': LocationHandler().get_location(ip_address)
         })
         return debate
 
