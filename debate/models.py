@@ -13,6 +13,8 @@ from profiles.models import Profile
 
 from proof.models import Proof
 
+from tracker.models import Location
+
 
 class Debate(BaseModel):
 
@@ -34,6 +36,7 @@ class Debate(BaseModel):
     proofs = models.ManyToManyField(Proof)
     activities = GenericRelation(Activity)
     tags = models.ManyToManyField(Tag)
+    location = models.ForeignKey(Location, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return '{} : {}'.format(
