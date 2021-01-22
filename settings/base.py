@@ -88,6 +88,8 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
+REST_USE_JWT = True
+
 WSGI_APPLICATION = 'rozprava.wsgi.application'
 
 
