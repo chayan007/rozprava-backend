@@ -1,8 +1,6 @@
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 
-from profiles.models import Profile
-
 
 class Authenticator:
 
@@ -20,7 +18,6 @@ class Authenticator:
         user_obj.first_name = first_name
         user_obj.last_name = last_name
         user_obj.save()
-        Profile.objects.create(user=user_obj)
         user = authenticate(username=username, password=password)
         if not user:
             return None, {'error': 'Username/Password is incorrect.'}
