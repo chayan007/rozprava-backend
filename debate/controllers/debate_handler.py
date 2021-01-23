@@ -18,17 +18,19 @@ class DebateHandler:
     @staticmethod
     def get_based_on_case(case_uuid: str):
         case = Case.objects.get(uuid=case_uuid)
-        debates = Debate.objects.filter(
-            case=case,
-            pointer__isnull=True
+        debates = list(
+            Debate.objects.filter(
+                case=case,
+                pointer__isnull=True
+            )
         )
-        rebuttal_debates = Debate.objects.get(
+        rebuttal_debates = Debate.objects.filter(
             pointer__in=debates
-        ).order_by('pointer')
+        ).order_by('pointer', 'created_at')
+        rebuttal_debate_pointer_uuids = [debate.uuid for debate in rebuttal_debates]
         sorted_debate_list = []
-        for debate in debates:
-            sorted_debate_list.append(debate)
-
+        for rebuttal in rebuttal_debates:
+            pass
 
     @staticmethod
     def get(debate_uuid: str):
