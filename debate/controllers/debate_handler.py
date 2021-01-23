@@ -16,7 +16,7 @@ class DebateHandler:
         self.case = Case.objects.get(uuid=case_uuid)
 
     @staticmethod
-    def get(debate_uuid):
+    def get(debate_uuid: str):
         return get_object_or_404(Debate, uuid=debate_uuid)
 
     def create(self, user, ip_address, **kwargs):
