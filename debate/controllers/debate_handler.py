@@ -16,6 +16,21 @@ class DebateHandler:
         self.case = Case.objects.get(uuid=case_uuid)
 
     @staticmethod
+    def get_based_on_case(case_uuid: str):
+        case = Case.objects.get(uuid=case_uuid)
+        debates = Debate.objects.filter(
+            case=case,
+            pointer__isnull=True
+        )
+        rebuttal_debates = Debate.objects.get(
+            pointer__in=debates
+        ).order_by('pointer')
+        sorted_debate_list = []
+        for debate in debates:
+            sorted_debate_list.append(debate)
+
+
+    @staticmethod
     def get(debate_uuid: str):
         return get_object_or_404(Debate, uuid=debate_uuid)
 
