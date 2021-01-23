@@ -2,6 +2,9 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from base.models import BaseModel
+
+from notification.models import Notification
+
 from profiles.models import Profile
 
 
@@ -19,6 +22,7 @@ class OTPVerification(BaseModel):
     otp = models.CharField(max_length=6)
     verifier_tag = models.IntegerField(choices=VerifierTag.choices)
     is_verified = models.BooleanField(default=False)
+    notification_type = models.SmallIntegerField(choices=Notification.NotificationType, default=Notification.NotificationType.EMAIL.value)
     additional_data = models.JSONField(null=True, blank=True)
 
     def __str__(self):
