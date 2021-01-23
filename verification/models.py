@@ -22,7 +22,7 @@ class OTPVerification(BaseModel):
     otp = models.CharField(max_length=6)
     verifier_tag = models.IntegerField(choices=VerifierTag.choices)
     is_verified = models.BooleanField(default=False)
-    notification_type = models.SmallIntegerField(choices=Notification.NotificationType, default=Notification.NotificationType.EMAIL.value)
+    notification_type = models.SmallIntegerField(choices=Notification.NotificationType.choices, default=Notification.NotificationType.EMAIL.value)
     additional_data = models.JSONField(null=True, blank=True)
 
     def __str__(self):
