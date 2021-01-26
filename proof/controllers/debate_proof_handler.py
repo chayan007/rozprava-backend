@@ -1,11 +1,13 @@
-from case.models import Case
+from debate.models import Debate
+
+from proof.controllers.core_proof_handler import CoreProofHandler
 from proof.models import Proof
 
 
-class ProofHandler:
+class DebateProofHandler(CoreProofHandler):
 
-    def __init__(self, case_slug: str):
-        self.case = Case.objects.get(slug=case_slug)
+    def __init__(self, debate_uuid: str):
+        self.debate = Debate.objects.get(uuid=debate_uuid)
 
     def add(self, user, **kwargs):
         proofs = []
@@ -18,13 +20,8 @@ class ProofHandler:
                 })
                 proofs.append(proof)
         if proofs:
-            self.case.proofs.add(*proofs)
-            self.case.save()
-
-    @staticmethod
-    def delete(proof_uuid):
-        proof = Proof.objects.get(uuid=proof_uuid)
-        proof.delete()
+            self.debate.proofs.add(*proofs)
+            self.debate.save()
 
     def list(self):
-        return self.case.proofs.all()
+        return self.debate.proofs.all()
