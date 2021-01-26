@@ -39,7 +39,7 @@ class CaseMetrics:
                 profile=user.profile
             )
 
-    def report_or_un_report(self, user: User) -> None:
+    def report_or_unreport(self, user: User) -> None:
         try:
             Activity.objects.get(
                 content_object=self.case,
