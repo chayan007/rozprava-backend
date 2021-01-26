@@ -1,3 +1,5 @@
+from base.exceptions import AlreadyExistsError
+
 from profiles.models import Profile, IdentityDocument
 
 
@@ -15,4 +17,12 @@ class ProfileVerification:
             is_audited=False
         )
         if existing_document:
-            raise
+            raise AlreadyExistsError('Identity Document already exists and auditing pending.')
+        identity_doc_obj = IdentityDocument.objects.create(
+            profile=self.profile,
+            id_number=id_number,
+            identity_type=identity_type,
+            image=image
+        )
+        # Invoke task to send mail to admins for validation
+        return identity_doc_obj
