@@ -2,23 +2,23 @@ from django.db import DataError, IntegrityError
 
 from activity.models import Activity
 
-from case.models import Case
+from debate.models import Debate
 
 from profiles.models import User
 
 
-class CaseMetrics:
+class DebateMetrics:
 
-    def __init__(self, case_uuid: str = None):
-        if case_uuid:
-            self.case = Case.objects.get(case_uuid)
+    def __init__(self, debate_uuid: str = None):
+        if debate_uuid:
+            self.debate = Debate.objects.get(uuid=debate_uuid)
 
     @staticmethod
-    def increment_views(case_uuids: [str], user: User) -> None:
-        for case_uuid in case_uuids:
+    def increment_views(debate_uuids: [str], user: User) -> None:
+        for debate_uuid in debate_uuids:
             try:
-                case = Case.objects.get(uuid=case_uuid)
-                case.activities.create(
+                debate = Debate.objects.get(uuid=debate_uuid)
+                debate.activities.create(
                     activity_type=Activity.ActivityChoices.VIEW,
                     profile=user.profile
                 )
@@ -28,13 +28,13 @@ class CaseMetrics:
     def like_or_unlike(self, user: User) -> None:
         try:
             Activity.objects.get(
-                content_object=self.case,
+                content_object=self.debate,
                 activity_type=Activity.ActivityChoices.LIKE,
                 profile=user.profile
             ).delete()
         except Activity.DoesNotExist:
             Activity.objects.create(
-                content_object=self.case,
+                content_object=self.debate,
                 activity_type=Activity.ActivityChoices.LIKE,
                 profile=user.profile
             )
@@ -42,26 +42,26 @@ class CaseMetrics:
     def report_or_unreport(self, user: User) -> None:
         try:
             Activity.objects.get(
-                content_object=self.case,
+                content_object=self.debate,
                 activity_type=Activity.ActivityChoices.REPORT,
                 profile=user.profile
             ).delete()
         except Activity.DoesNotExist:
             Activity.objects.create(
-                content_object=self.case,
+                content_object=self.debate,
                 activity_type=Activity.ActivityChoices.REPORT,
                 profile=user.profile
             )
 
-    def get_metrics_for_case(self) -> dict:
+    def get_metrics_for_debate(self) -> dict:
         return {
-            'likes': self.case.activities.filter(
+            'likes': self.debate.activities.filter(
                 activity_type=Activity.ActivityChoices.LIKE
             ).count(),
-            'reports': self.case.activities.filter(
+            'reports': self.debate.activities.filter(
                 activity_type=Activity.ActivityChoices.REPORT
             ).count(),
-            'views': self.case.activities.filter(
+            'views': self.debate.activities.filter(
                 activity_type=Activity.ActivityChoices.VIEW
             ).count()
         }
