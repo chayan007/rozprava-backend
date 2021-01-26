@@ -11,11 +11,17 @@ from tracker.controllers.location_handler import LocationHandler
 class CaseHandler:
 
     @staticmethod
-    def get(slug):
+    def get(slug) -> Case:
         return get_object_or_404(Case, slug=slug)
 
     @staticmethod
-    def create(user, ip_address, **kwargs):
+    def filter_by_category(category: int) -> [Case]:
+        return Case.objects.filter(
+            category=category
+        )
+
+    @staticmethod
+    def create(user: str, ip_address: str, **kwargs) -> Case:
         question = kwargs.get('question')
         case = Case.objects.create(**{
             'profile': user.profile,
@@ -28,7 +34,7 @@ class CaseHandler:
         return case
 
     @staticmethod
-    def update(slug, **kwargs):
+    def update(slug: str, **kwargs) -> Case:
         case = Case.objects.get(slug=slug)
         if kwargs.get('question') and (get_string_matching_coefficient(case.question, kwargs.get('question')) > 0.8):
             case.question = kwargs.get('question')
@@ -39,6 +45,6 @@ class CaseHandler:
         return case
 
     @staticmethod
-    def delete(slug):
+    def delete(slug: str) -> None:
         case = Case.objects.get(slug=slug)
         case.delete()

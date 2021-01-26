@@ -11,6 +11,7 @@ class Activity(BaseModel):
     class ActivityChoices(models.IntegerChoices):
         REPORT = 0
         LIKE = 1
+        VIEW = 2
 
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     activity_type = models.SmallIntegerField(choices=ActivityChoices.choices)
@@ -21,7 +22,7 @@ class Activity(BaseModel):
     content_object = GenericForeignKey()
 
     class Meta:
-        unique_together = ('content_type', 'profile', 'activity_type',)
+        unique_together = ('content_type', 'object_id', 'profile', 'activity_type',)
 
     def __str__(self):
         return '{} -> {}'.format(
