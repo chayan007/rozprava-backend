@@ -64,10 +64,8 @@ class IdentityDocument(BaseModel):
     image = models.ImageField(upload_to=get_profile_verification_image_upload_path)
     id_number = models.CharField(max_length=100, null=True, blank=True)
     kyc_json = models.JSONField(null=True, blank=True)
-
-    class Meta:
-
-        unique_together = ('profile', 'identity_type',)
+    is_valid = models.BooleanField(default=False)
+    is_audited = models.BooleanField(default=False)
 
     def __str__(self):
         return f'{self.profile.user.get_full_name()}'
