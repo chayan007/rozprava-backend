@@ -2,7 +2,7 @@
 
 from django.db import migrations, models
 import django.db.models.deletion
-import proof.utils
+import proof.utilities
 import uuid
 
 
@@ -21,7 +21,7 @@ class Migration(migrations.Migration):
                 ('uuid', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
                 ('created_at', models.DateTimeField(auto_now_add=True, db_index=True, verbose_name='Created At')),
                 ('modified_at', models.DateTimeField(auto_now=True, verbose_name='Last Modified At')),
-                ('file', models.FileField(upload_to=proof.utils.get_proof_upload_path)),
+                ('file', models.FileField(upload_to=proof.utilities.get_proof_upload_path)),
                 ('profile', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='profiles.profile')),
             ],
             options={
