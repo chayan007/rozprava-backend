@@ -13,10 +13,10 @@ class OTPVerification(BaseModel):
 
     class VerifierTag(models.IntegerChoices):
         """Reason for generating OTP."""
+        OTHER = 0, _('OTHER')
         MAIL_VERIFICATION = 1, _('MAIL VERIFICATION')
         PHONE_VERIFICATION = 2, _('PHONE VERIFICATION')
         PASSWORD_RESET = 3, _('PASSWORD RESET')
-        OTHER = 0, _('OTHER')
 
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     otp = models.CharField(max_length=6)
