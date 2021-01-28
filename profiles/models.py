@@ -40,6 +40,7 @@ class Profile(BaseModel):
     country = models.CharField(max_length=30, null=True, blank=True)
     is_verified = models.BooleanField(default=False)
     celebrity_rank = models.SmallIntegerField(choices=CelebrityRank.choices, default=CelebrityRank.NOBODY.value)
+    is_celebrity = models.BooleanField(default=False)
     profession = models.CharField(max_length=200, null=True)
     gender = models.CharField(max_length=10, choices=GenderChoices.choices)
     relationship_status = models.SmallIntegerField(choices=RelationshipStatusChoices.choices, default=RelationshipStatusChoices.SINGLE.value)
