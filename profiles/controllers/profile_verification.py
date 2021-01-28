@@ -52,5 +52,5 @@ class ProfileVerification:
         """Reject the profile verification flow."""
         identity_document_obj = self.get_identity_document(identity_document_uuid)
         identity_document_obj.is_valid = False
-        identity_document_obj.is_audited = False
+        identity_document_obj.is_audited = True
         identity_document_obj.save()
