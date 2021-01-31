@@ -84,7 +84,7 @@ class Group(BaseModel):
         return '{}: {} members'.format(self.name, self.profiles.count())
 
 
-class FollowerMap:
+class FollowerMap(BaseModel):
     """Model to store followers."""
 
     follower = models.ForeignKey(Profile, on_delete=models.CASCADE)
