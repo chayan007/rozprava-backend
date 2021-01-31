@@ -9,7 +9,7 @@ class TagHandler:
     """Handle all tag functions."""
 
     @staticmethod
-    def extract_tags(raw_string):
+    def extract_tags(raw_string: str):
         """Extract all tag."""
         return set(
             part[1:]
@@ -18,21 +18,18 @@ class TagHandler:
         )
 
     @staticmethod
-    def increment_tags_count(tag_objs):
+    def increment_tags_count(tag_objs: [Tag]):
         """Increment count of tag."""
         for tag_obj in tag_objs:
             tag_obj.views += 1
             tag_obj.save()
 
     @staticmethod
-    def store_and_get_tag(tag):
+    def store_and_get_tag(tag: str):
         """Store all tags present in description."""
-        try:
-            return Tag.objects.create(name=tag)
-        except BaseException:
-            return Tag.objects.get(name=tag)
+        return Tag.objects.get_or_create(name=tag)
 
-    def handle_tag_cycle(self, raw_string, indicator_uuid, indicator):
+    def handle_tag_cycle(self, raw_string: str, indicator_uuid: str, indicator: str):
         """Handle all tags."""
         try:
             tags = self.extract_tags(raw_string)
