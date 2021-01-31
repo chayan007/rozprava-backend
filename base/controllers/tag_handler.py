@@ -37,9 +37,9 @@ class TagHandler:
             for tag in tags:
                 extracted_tags.append(self.store_and_get_tag(tag))
             if indicator.lower() == 'case':
-                Case.objects.get(uuid=indicator_uuid).tags(*extracted_tags)
+                Case.objects.get(uuid=indicator_uuid).tags.add(*extracted_tags)
             elif indicator.lower() == 'debate':
-                Debate.objects.get(uuid=indicator_uuid).tags(*extracted_tags)
+                Debate.objects.get(uuid=indicator_uuid).tags.add(*extracted_tags)
             return extracted_tags
-        except BaseException as e:
+        except BaseException:
             return False
