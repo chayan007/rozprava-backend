@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from django.utils.text import slugify
 
@@ -21,7 +22,7 @@ class CaseHandler:
         )
 
     @staticmethod
-    def create(user: str, ip_address: str, **kwargs) -> Case:
+    def create(user: User, ip_address: str, **kwargs) -> Case:
         question = kwargs.get('question')
         case = Case.objects.create(**{
             'profile': user.profile,
@@ -29,7 +30,9 @@ class CaseHandler:
             'description': kwargs.get('description'),
             'category': int(kwargs.get('category')),
             'slug': slugify('{}-{}'.format(user.username, question)),
-            'location': LocationHandler().get_location(ip_address)
+            'location': LocationHandler().get_location(ip_address),
+            'for_label': kwargs.get('for_label'),
+            'against_label': kwargs.get('against_label')
         })
         return case
 
