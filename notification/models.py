@@ -19,6 +19,7 @@ class Notification(BaseModel):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     message = models.TextField()
     type = models.SmallIntegerField(choices=NotificationType.choices, default=NotificationType.EMAIL.value)
+    is_read = models.BooleanField(default=False)
 
     def __str__(self):
         return f'{self.get_type_display()}: {self.profile.user.get_full_name()}'
