@@ -10,7 +10,7 @@ class Notification(BaseModel):
 
     class NotificationType(models.IntegerChoices):
 
-        ALL = 0
+        OTHER = 0
         SMS = 1
         EMAIL = 2
         PUSH = 3

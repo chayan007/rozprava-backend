@@ -33,7 +33,7 @@ class NotificationInjector:
         for profile in self.profiles:
             try:
                 notification_objs.append(
-                    Notification(profile=profile, message=message, type=Notification.NotificationType.SMS.value)
+                    Notification(profile=profile, message=message, type=Notification.NotificationType.SMS.value, is_read=True)
                 )
             except (AttributeError, ValueError):
                 continue
@@ -44,7 +44,7 @@ class NotificationInjector:
         for profile in self.profiles:
             try:
                 notification_objs.append(
-                    Notification(profile=profile, message=message, type=Notification.NotificationType.EMAIL.value)
+                    Notification(profile=profile, message=message, type=Notification.NotificationType.EMAIL.value, is_read=True)
                 )
             except (AttributeError, ValueError):
                 continue
@@ -55,18 +55,7 @@ class NotificationInjector:
         for profile in self.profiles:
             try:
                 notification_objs.append(
-                    Notification(profile=profile, message=message, type=Notification.NotificationType.CALL.value)
-                )
-            except (AttributeError, ValueError):
-                continue
-        Notification.objects.bulk_create(notification_objs)
-
-    def all(self, message: str):
-        notification_objs = []
-        for profile in self.profiles:
-            try:
-                notification_objs.append(
-                    Notification(profile=profile, message=message, type=Notification.NotificationType.ALL.value)
+                    Notification(profile=profile, message=message, type=Notification.NotificationType.CALL.value, is_read=True)
                 )
             except (AttributeError, ValueError):
                 continue
