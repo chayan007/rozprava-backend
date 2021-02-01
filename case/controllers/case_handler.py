@@ -39,11 +39,25 @@ class CaseHandler:
     @staticmethod
     def update(slug: str, **kwargs) -> Case:
         case = Case.objects.get(slug=slug)
-        if kwargs.get('question') and (get_string_matching_coefficient(case.question, kwargs.get('question')) > 0.8):
-            case.question = kwargs.get('question')
 
-        case.description = kwargs.get('description', case.description)
+        case.question = kwargs.get('question') if (
+                kwargs.get('question') and
+                (get_string_matching_coefficient(case.question, kwargs.get('question')) > 0.8)
+        ) else case.question
+        case.description = kwargs.get('description', case.description) if (
+                kwargs.get('description') and
+                (get_string_matching_coefficient(case.description, kwargs.get('description')) > 0.8)
+        ) else case.description
+        case.for_label = kwargs.get('for_label', case.for_label) if (
+                kwargs.get('for_label') and
+                (get_string_matching_coefficient(case.for_label, kwargs.get('for_label')) > 0.8)
+        ) else case.for_label
+        case.against_label = kwargs.get('against_label', case.against_label) if (
+                kwargs.get('against_label') and
+                (get_string_matching_coefficient(case.against_label, kwargs.get('against_label')) > 0.8)
+        ) else case.against_label
         case.category = int(kwargs.get('category', case.category))
+
         case.save()
         return case
 
