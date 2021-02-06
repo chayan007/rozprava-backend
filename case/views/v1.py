@@ -10,6 +10,9 @@ class CaseListView(ListAPIView):
     paginate_by = 50
 
     def get_queryset(self):
-        poster_id = self.kwargs['poster_id']
-        queryset = self.model.objects.filter(poster_id=poster_id)
-        return queryset.order_by('-post_time')
+        category = self.kwargs.get('category')
+        if category:
+            queryset = self.model.objects.filter(uuid=category)
+        else:
+            queryset = self.model.objects.all()
+        return queryset.order_by('-created_at')
