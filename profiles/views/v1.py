@@ -1,4 +1,4 @@
-from django.db.models import Q
+from django.db.models import Q, Count
 from rest_framework.generics import ListAPIView
 
 from profiles.models import Profile
@@ -24,5 +24,6 @@ class ProfileListView(ListAPIView):
             ))
         else:
             queryset = self.model.objects.all()
+        queryset.annotate(follower_count=Count('follower')).order_by('-follower_count')
         return queryset.order_by('-created_at')
 
