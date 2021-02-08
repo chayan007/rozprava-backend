@@ -87,8 +87,8 @@ class Group(BaseModel):
 class FollowerMap(BaseModel):
     """Model to store followers."""
 
-    follower = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    following = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    follower = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='follower')
+    following = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='following')
 
     class Meta:
 
