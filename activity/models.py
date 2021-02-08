@@ -35,7 +35,11 @@ class Tag(BaseModel):
 
     name = models.CharField(unique=True, max_length=100)
     views = models.BigIntegerField(default=0)
-    is_trending = models.BooleanField(default=False)
+
+    def is_trending(self):
+        if self.views > 100:
+            return True
+        return False
 
     def __str__(self):
         return self.name
