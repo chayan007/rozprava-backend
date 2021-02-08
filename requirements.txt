@@ -18,7 +18,7 @@ Django==3.1.5
 django-allauth==0.44.0
 django-rest-auth==0.9.5
 djangorestframework==3.12.2
-djangorestframework-jwt==1.11.0
+djangorestframework-jwt
 idna==2.10
 ipdb==0.13.4
 ipython==7.19.0
@@ -34,7 +34,7 @@ prompt-toolkit==3.0.8
 ptyprocess==0.7.0
 pycparser==2.20
 Pygments==2.7.4
-PyJWT==2.0.1
+PyJWT
 python3-openid==3.2.0
 pytz==2020.5
 redis==3.5.3
