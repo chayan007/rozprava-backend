@@ -1,4 +1,5 @@
-![Two men fighting](https://i.pinimg.com/originals/1c/ea/68/1cea689a9e6111d1de83e6c017253d0e.gif)
+![Two men fighting](https://i.pinimg.com/originals/1c/ea/68/1cea689a9e6111d1de83e6c017253d0e.gif) ![Build Status](https://github.com/chayan007/rozprava/.github/workflows/django.yml/badge.svg)
+
 
 # Rozprava - Platform to debate openly
 
