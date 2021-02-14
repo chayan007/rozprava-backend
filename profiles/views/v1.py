@@ -1,5 +1,6 @@
 from django.db.models import Q, Count
 from rest_framework.generics import ListAPIView
+from rest_framework.views import APIView
 
 from profiles.models import Profile
 from profiles.serializers import ProfileSerializer
@@ -27,3 +28,15 @@ class ProfileListView(ListAPIView):
         queryset.annotate(follower_count=Count('follower')).order_by('-follower_count')
         return queryset.order_by('-created_at')
 
+
+class ProfileUpdateView(APIView):
+    """Update profile details."""
+
+    def post(self, request, *args, **kwargs):
+        pass
+
+
+class PasswordUpdateView(APIView):
+
+    def post(self, request, *args, **kwargs):
+        pass
