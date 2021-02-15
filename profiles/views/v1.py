@@ -1,7 +1,10 @@
 from django.db.models import Q, Count
+from rest_framework import status
 from rest_framework.generics import ListAPIView
+from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from profiles.exceptions import UserValidationFailedException
 from profiles.models import Profile
 from profiles.serializers import ProfileSerializer
 
@@ -39,4 +42,16 @@ class ProfileUpdateView(APIView):
 class PasswordUpdateView(APIView):
 
     def post(self, request, *args, **kwargs):
-        pass
+        if request.data.get('check_old_password'):
+            if not request.user.check_password(
+                request.data.get('old_password').strip()
+            ):
+                raise UserValidationFailedException('Old password provided is wrong!')
+        if request.data.get('new_password1').strip() == request.data.get('new_password2').strip():
+            request.user.set_password(request.data.get('new_password1').strip())
+            request.user.save()
+            return Response(
+                data={'message': 'Password has been changed.'},
+                status=status.HTTP_200_OK
+            )
+        raise UserValidationFailedException('New passwords supplied does not match!')
