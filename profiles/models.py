@@ -14,6 +14,7 @@ class Profile(BaseModel):
         MALE = 'MALE'
         FEMALE = 'FEMALE'
         TRANSGENDER = 'TRANS'
+        OTHER = 'OTHER'
 
     class CelebrityRank(models.IntegerChoices):
 

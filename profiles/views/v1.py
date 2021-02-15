@@ -35,8 +35,30 @@ class ProfileListView(ListAPIView):
 class ProfileUpdateView(APIView):
     """Update profile details."""
 
+    FIELDS_ALLOWED_TO_BE_UPDATED = [
+        'dob', 'mobile_number', 'address', 'country',
+        'profession', 'gender', 'relationship_status'
+    ]
+
     def post(self, request, *args, **kwargs):
-        pass
+        profile = request.user.profile
+        for field in self.FIELDS_ALLOWED_TO_BE_UPDATED:
+            setattr(
+                profile,
+                field,
+                request.data.get(field) or getattr(profile, field)
+            )
+        try:
+            profile.save()
+            return Response(
+                data={'message': 'Profile has been updated.'},
+                status=status.HTTP_201_CREATED
+            )
+        except (AttributeError, ValueError, KeyError):
+            return Response(
+                data={'error': 'Profile could not be updated.'},
+                status=status.HTTP_201_CREATED
+            )
 
 
 class PasswordUpdateView(APIView):
@@ -52,6 +74,6 @@ class PasswordUpdateView(APIView):
             request.user.save()
             return Response(
                 data={'message': 'Password has been changed.'},
-                status=status.HTTP_200_OK
+                status=status.HTTP_201_CREATED
             )
         raise UserValidationFailedException('New passwords supplied does not match!')
