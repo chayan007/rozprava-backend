@@ -12,7 +12,7 @@ from profiles.serializers import ProfileSerializer
 class ProfileListView(ListAPIView):
     """Get list of profiles."""
 
-    serializer_class = ProfileSerializer
+    serializer_class = ProfileSerializer()
     model = Profile
     paginate_by = 50
 

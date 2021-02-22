@@ -29,13 +29,13 @@ class CaseMetrics:
         try:
             Activity.objects.get(
                 content_object=self.case,
-                activity_type=Activity.ActivityChoices.LIKE,
+                activity_type=Activity.ActivityChoices.UPVOTE,
                 profile=user.profile
             ).delete()
         except Activity.DoesNotExist:
             Activity.objects.create(
                 content_object=self.case,
-                activity_type=Activity.ActivityChoices.LIKE,
+                activity_type=Activity.ActivityChoices.UPVOTE,
                 profile=user.profile
             )
 
@@ -56,7 +56,7 @@ class CaseMetrics:
     def get_metrics_for_case(self) -> dict:
         return {
             'likes': self.case.activities.filter(
-                activity_type=Activity.ActivityChoices.LIKE
+                activity_type=Activity.ActivityChoices.UPVOTE
             ).count(),
             'reports': self.case.activities.filter(
                 activity_type=Activity.ActivityChoices.REPORT

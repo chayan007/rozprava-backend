@@ -29,13 +29,13 @@ class DebateMetrics:
         try:
             Activity.objects.get(
                 content_object=self.debate,
-                activity_type=Activity.ActivityChoices.LIKE,
+                activity_type=Activity.ActivityChoices.UPVOTE,
                 profile=user.profile
             ).delete()
         except Activity.DoesNotExist:
             Activity.objects.create(
                 content_object=self.debate,
-                activity_type=Activity.ActivityChoices.LIKE,
+                activity_type=Activity.ActivityChoices.UPVOTE,
                 profile=user.profile
             )
 
@@ -56,7 +56,7 @@ class DebateMetrics:
     def get_metrics_for_debate(self) -> dict:
         return {
             'likes': self.debate.activities.filter(
-                activity_type=Activity.ActivityChoices.LIKE
+                activity_type=Activity.ActivityChoices.UPVOTE
             ).count(),
             'reports': self.debate.activities.filter(
                 activity_type=Activity.ActivityChoices.REPORT

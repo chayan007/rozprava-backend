@@ -10,8 +10,9 @@ class Activity(BaseModel):
 
     class ActivityChoices(models.IntegerChoices):
         REPORT = 0
-        LIKE = 1
-        VIEW = 2
+        UPVOTE = 1
+        DOWNVOTE = 2
+        VIEW = 3
 
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     activity_type = models.SmallIntegerField(choices=ActivityChoices.choices)

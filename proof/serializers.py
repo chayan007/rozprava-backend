@@ -5,9 +5,9 @@ from proof.models import Proof
 from profiles.serializers import ProfileSerializer
 
 
-class DebateSerializer(ModelSerializer):
+class ProofSerializer(ModelSerializer):
 
-    profile = ProfileSerializer
+    profile = ProfileSerializer()
 
     class Meta:
         model = Proof
