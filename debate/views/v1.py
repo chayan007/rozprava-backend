@@ -1,9 +1,5 @@
 from rest_framework.generics import ListAPIView
 
-from activity.models import Activity
-
-from case.models import Case
-
 from debate.models import Debate
 from debate.serializers import DebateSerializer
 
