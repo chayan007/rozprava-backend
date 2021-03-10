@@ -9,7 +9,7 @@ from profiles.models import Profile
 
 class ChatEngine:
 
-    def __init__(self,  receiver_profile_uuid, sender_profile_uuid=None):
+    def __init__(self, receiver_profile_uuid, sender_profile_uuid=None):
         self.sender = Profile.objects.get(uuid=sender_profile_uuid) if sender_profile_uuid else None
         self.receiver = Profile.objects.get(uuid=receiver_profile_uuid) if sender_profile_uuid else None
 
@@ -40,11 +40,21 @@ class ChatEngine:
 
     def show_messaging_list(self):
         """Show messages unread/read grouped by user."""
-        return OneToOneMessage.objects.filter(
+        distinct_profile_uuids = OneToOneMessage.records.values_list(
+            'sender__uuid', flat=True
+        ).filter(
             receiver=self.receiver
+        ).distinct('sender').order_by('created_at')
+
+        message_list = Profile.objects.filter(
+            uuid__in=distinct_profile_uuids
         ).annotate(
-            no_of_unreads=Count(Case(When(is_seen=True, then=1)))
-        ).distinct('profile').order_by('created_at')
+            no_of_unreads=Count(
+                'one_to_one_message',
+                filter=Q(one_to_one_message__is_seen=False)
+            )
+        )
+        return message_list
 
     @staticmethod
     def update_message_as_seen(messages: [OneToOneMessage]):

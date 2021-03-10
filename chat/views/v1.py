@@ -46,7 +46,15 @@ class ChatMenuView(ListAPIView):
 
     def get(self, request, *args, **kwargs):
         """Gets list of all messages from users."""
-        pass
+        receiver = request.user.profile
+        messaging_list = ChatEngine(
+            receiver_profile_uuid=receiver.uuid
+        ).show_messaging_list()
+        serialized_messaging_list = OneToOneMessageSerializer(messaging_list, many=True)
+        return Response(
+            data=serialized_messaging_list.data,
+            status=status.HTTP_200_OK
+        )
 
     def delete(self, request, *args, **kwargs):
         """Deletes all messages of an user."""
