@@ -1,6 +1,6 @@
 from typing import Any
 
-from django.db.models import Count, Q
+from django.db.models import Count, Case, When, Q
 
 from chat.models import OneToOneMessage
 
@@ -42,8 +42,8 @@ class ChatEngine:
         """Show messages unread/read grouped by user."""
         return OneToOneMessage.objects.filter(
             receiver=self.receiver
-        ).aggregate(
-            no_of_unreads=Count('is_seen', filter=Q())
+        ).annotate(
+            no_of_unreads=Count(Case(When(is_seen=True, then=1)))
         ).distinct('profile').order_by('created_at')
 
     @staticmethod

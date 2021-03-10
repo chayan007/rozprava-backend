@@ -1,4 +1,5 @@
 from rest_framework import status
+from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -38,3 +39,15 @@ class ChatView(APIView):
                 'status': is_message_sent
             }
         )
+
+
+class ChatMenuView(ListAPIView):
+    """Perform operations on chat menu."""
+
+    def get(self, request, *args, **kwargs):
+        """Gets list of all messages from users."""
+        pass
+
+    def delete(self, request, *args, **kwargs):
+        """Deletes all messages of an user."""
+        pass
