@@ -1,3 +1,5 @@
+from typing import Any
+
 from django.db.models import Count, Q
 
 from chat.models import OneToOneMessage
@@ -11,14 +13,14 @@ class ChatEngine:
         self.sender = Profile.objects.get(uuid=sender_profile_uuid) if sender_profile_uuid else None
         self.receiver = Profile.objects.get(uuid=receiver_profile_uuid) if sender_profile_uuid else None
 
-    def send(self, **kwargs):
+    def send(self, message: str = None, media: Any = None):
         """Send message handler."""
         try:
             OneToOneMessage.objects.create(
                 sender=self.sender,
                 receiver=self.receiver,
-                message=kwargs.get('message', None),
-                media=kwargs.get('media', None)
+                message=message,
+                media=media
             )
             return True
         except BaseException:
