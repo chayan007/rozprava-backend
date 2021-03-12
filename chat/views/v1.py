@@ -5,6 +5,7 @@ from rest_framework.views import APIView
 
 from chat.controllers.chat_engine import ChatEngine
 from chat.serializers import OneToOneMessageSerializer
+from profiles.serializers import ProfileSerializer
 
 
 class ChatView(APIView):
@@ -50,7 +51,7 @@ class ChatMenuView(ListAPIView):
         messaging_list = ChatEngine(
             receiver_profile_uuid=receiver.uuid
         ).show_messaging_list()
-        serialized_messaging_list = OneToOneMessageSerializer(messaging_list, many=True)
+        serialized_messaging_list = ProfileSerializer(messaging_list, many=True)
         return Response(
             data=serialized_messaging_list.data,
             status=status.HTTP_200_OK
