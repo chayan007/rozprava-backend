@@ -43,6 +43,7 @@ THIRD_PARTY_APPS = [
     'rest_framework.authtoken',
     'rest_auth',
     'django.contrib.sites',
+    'drf_yasg'
 ] + SOCIAL_AUTHENTICATION_PROVIDERS
 
 INSTALLED_APPS = [
