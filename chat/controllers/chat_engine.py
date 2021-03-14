@@ -1,6 +1,6 @@
 from typing import Any
 
-from django.db.models import Count, Case, When, Q
+from django.db.models import Count, Q
 
 from chat.models import OneToOneMessage
 
