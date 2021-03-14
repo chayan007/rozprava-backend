@@ -12,7 +12,7 @@ Core Rozprava Business Logic Routes
 
 core_urls = [
     path('admin/', admin.site.urls),
-    path('profile/', include('profiles.urls')),
+    path('profile/', include('profiles.urls'), name='profile'),
 ]
 
 """
