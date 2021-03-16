@@ -21,6 +21,7 @@ class BaseModel(models.Model):
     modified_at = models.DateTimeField(
         auto_now=True, verbose_name='Last Modified At'
     )
+    is_deleted = models.BooleanField(default=False)
     objects = models.Manager()
     records = BaseModelManager()
 

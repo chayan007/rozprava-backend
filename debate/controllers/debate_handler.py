@@ -79,4 +79,5 @@ class DebateHandler:
     @staticmethod
     def delete(debate_uuid) -> None:
         debate = Debate.objects.get(uuid=debate_uuid)
-        debate.delete()
+        debate.is_deleted = True
+        debate.save()

@@ -64,4 +64,5 @@ class CaseHandler:
     @staticmethod
     def delete(slug: str) -> None:
         case = Case.objects.get(slug=slug)
-        case.delete()
+        case.is_deleted = True
+        case.save()

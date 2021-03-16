@@ -19,9 +19,9 @@ class CaseListView(ListAPIView):
     def get_queryset(self):
         category = self.kwargs.get('category')
         if category:
-            queryset = self.model.objects.filter(uuid=category)
+            queryset = self.model.records.filter(uuid=category)
         else:
-            queryset = self.model.objects.all()
+            queryset = self.model.records.all()
         return queryset.order_by('-created_at')
 
 
@@ -29,7 +29,7 @@ class CaseDetailView(RetrieveAPIView):
     """Retrieve specific case."""
 
     lookup_field = 'slug'
-    queryset = Case.objects.all()
+    queryset = Case.records.all()
     serializer_class = CaseSerializer
 
 

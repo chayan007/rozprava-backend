@@ -14,8 +14,8 @@ class DebateListView(ListAPIView):
     def get_queryset(self):
         slug = self.kwargs.get('slug')
         if slug:
-            queryset = self.model.objects.filter(case__slug=slug)
+            queryset = self.model.records.filter(case__slug=slug)
         else:
-            queryset = self.model.objects.all()
+            queryset = self.model.records.all()
         return queryset.order_by('-created_at')
 
