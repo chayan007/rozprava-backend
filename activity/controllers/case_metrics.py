@@ -1,5 +1,6 @@
 from django.db import DataError, IntegrityError
 
+from activity.controllers.review_handler import ReviewHandler
 from activity.models import Activity
 
 from case.models import Case
@@ -52,6 +53,7 @@ class CaseMetrics:
                 activity_type=Activity.ActivityChoices.REPORT,
                 profile=user.profile
             )
+        ReviewHandler().put_case_for_review(self.case.uuid)
 
     def get_metrics_for_case(self) -> dict:
         return {

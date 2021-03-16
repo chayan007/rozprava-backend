@@ -1,5 +1,6 @@
 from django.db import DataError, IntegrityError
 
+from activity.controllers.review_handler import ReviewHandler
 from activity.models import Activity
 
 from debate.models import Debate
@@ -52,6 +53,7 @@ class DebateMetrics:
                 activity_type=Activity.ActivityChoices.REPORT,
                 profile=user.profile
             )
+        ReviewHandler().put_debate_for_review(self.debate.uuid)
 
     def get_metrics_for_debate(self) -> dict:
         return {
