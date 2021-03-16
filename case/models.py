@@ -28,6 +28,12 @@ class Case(BaseModel):
         TECHNOLOGY = 8, _('Technology')
         NATURE = 9, _('Nature')
 
+    class CaseStatus(models.IntegerChoices):
+
+        REVOKED = 0, _('Revoked')
+        ACTIVE = 1, _('Active')
+        UNDER_REVIEW = 2, _('Under Review')
+
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     question = models.CharField(max_length=450)
     description = models.TextField(null=True, blank=True)
@@ -35,6 +41,7 @@ class Case(BaseModel):
     slug = models.CharField(max_length=200)
     for_label = models.CharField(max_length=100, default='For')
     against_label = models.CharField(max_length=100, default='Against')
+    status = models.SmallIntegerField(choices=CaseStatus.choices, default=CaseStatus.ACTIVE.value)
 
     proofs = models.ManyToManyField(Proof)
     activities = GenericRelation(Activity)

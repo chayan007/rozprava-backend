@@ -23,6 +23,12 @@ class Debate(BaseModel):
         FOR = 1, _('For')
         AGAINST = 0, _('Against')
 
+    class DebateStatus(models.IntegerChoices):
+
+        REVOKED = 0, _('Revoked')
+        ACTIVE = 1, _('Active')
+        UNDER_REVIEW = 2, _('Under Review')
+
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     case = models.ForeignKey(Case, on_delete=models.CASCADE)
     comment = models.TextField()
@@ -32,6 +38,7 @@ class Debate(BaseModel):
         MaxValueValidator(5),
         MinValueValidator(0)
     ])
+    status = models.SmallIntegerField(choices=DebateStatus.choices, default=DebateStatus.ACTIVE.value)
 
     proofs = models.ManyToManyField(Proof)
     activities = GenericRelation(Activity)
