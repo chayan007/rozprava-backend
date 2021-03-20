@@ -8,7 +8,7 @@ from case.views.v1 import (
 
 urlpatterns = [
     # Class Based Views
-    path('list/', CaseListView.as_view(), name='list'),
-    path('activity/<case_uuid>/<activity_type>', CaseActivityView.as_view(), name='activity'),
-    path('detail/<slug>/', CaseDetailView.as_view(), name='detail'),
+    path('v1/list/', CaseListView.as_view(), name='list'),
+    path('v1/activity/<case_uuid>/<activity_type>', CaseActivityView.as_view(), name='activity'),
+    path('v1/detail/<slug>/', CaseDetailView.as_view(), name='detail'),
 ]
