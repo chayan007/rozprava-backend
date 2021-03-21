@@ -6,6 +6,7 @@ from rest_framework.views import APIView
 from base.utilities import get_client_ip
 
 from case.controllers.case_handler import CaseHandler
+from case.forms import CaseForm
 from case.models import Case
 from case.serializers import CaseSerializer
 
@@ -53,10 +54,21 @@ class CaseView(GenericAPIView):
 
     def post(self, request, *args, **kwargs):
         """Create a case."""
+        case_form_validation = CaseForm(data=request.POST)
+        if not case_form_validation.is_valid():
+            return Response(
+                data=case_form_validation.errors,
+                status=status.HTTP_400_BAD_REQUEST
+            )
         case = CaseHandler().create(
             user=request.user,
             ip_address=get_client_ip(request),
             **kwargs
+        )
+        serialized_case = self.serializer_class(case)
+        return Response(
+            data=serialized_case.data,
+            status=status.HTTP_201_CREATED
         )
 
 
