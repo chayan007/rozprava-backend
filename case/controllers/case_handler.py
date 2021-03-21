@@ -1,7 +1,9 @@
+import datetime
+
 from django.contrib.auth.models import User
-from django.shortcuts import get_object_or_404
 from django.utils.text import slugify
 
+from base.constants import UNIQUE_DATE_FORMAT
 from base.utils.string import get_string_matching_coefficient
 
 from case.models import Case
@@ -29,7 +31,7 @@ class CaseHandler:
             'question': question,
             'description': kwargs.get('description'),
             'category': int(kwargs.get('category')),
-            'slug': slugify('{}-{}'.format(user.username, question)),
+            'slug': slugify(f"{user.username}-{datetime.datetime.now().strftime(UNIQUE_DATE_FORMAT)}-{question[:20]}"),
             'location': LocationHandler().get_location(ip_address),
             'for_label': kwargs.get('for_label'),
             'against_label': kwargs.get('against_label')

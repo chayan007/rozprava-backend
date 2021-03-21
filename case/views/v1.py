@@ -3,6 +3,8 @@ from rest_framework.generics import ListAPIView, RetrieveAPIView, GenericAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from base.utilities import get_client_ip
+
 from case.controllers.case_handler import CaseHandler
 from case.models import Case
 from case.serializers import CaseSerializer
@@ -47,6 +49,14 @@ class CaseView(GenericAPIView):
         return Response(
             data=serialized_case.data,
             status=status.HTTP_200_OK
+        )
+
+    def post(self, request, *args, **kwargs):
+        """Create a case."""
+        case = CaseHandler().create(
+            user=request.user,
+            ip_address=get_client_ip(request),
+            **kwargs
         )
 
 
