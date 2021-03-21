@@ -30,6 +30,7 @@ class Debate(BaseModel):
         UNDER_REVIEW = 2, _('Under Review')
 
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    is_posted_anonymously = models.BooleanField(default=False)
     case = models.ForeignKey(Case, on_delete=models.CASCADE)
     comment = models.TextField()
     inclination = models.SmallIntegerField(choices=InclinationChoices.choices, default=InclinationChoices.FOR.value)
