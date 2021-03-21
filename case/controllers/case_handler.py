@@ -12,14 +12,14 @@ from tracker.controllers.location_handler import LocationHandler
 class CaseHandler:
 
     @staticmethod
-    def get(slug) -> Case:
-        return get_object_or_404(Case, slug=slug)
+    def get(slug: str) -> Case:
+        return Case.records.get(slug=slug)
 
     @staticmethod
-    def filter_by_category(category: int) -> [Case]:
-        return Case.objects.filter(
+    def filter_by_category(category: int = None) -> [Case]:
+        return Case.records.filter(
             category=category
-        )
+        ) if category else Case.records.all()
 
     @staticmethod
     def create(user: User, ip_address: str, **kwargs) -> Case:

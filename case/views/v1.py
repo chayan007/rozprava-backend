@@ -1,8 +1,9 @@
 from rest_framework import status
-from rest_framework.generics import ListAPIView, RetrieveAPIView
+from rest_framework.generics import ListAPIView, RetrieveAPIView, GenericAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from case.controllers.case_handler import CaseHandler
 from case.models import Case
 from case.serializers import CaseSerializer
 
@@ -18,19 +19,35 @@ class CaseListView(ListAPIView):
 
     def get_queryset(self):
         category = self.kwargs.get('category')
-        if category:
-            queryset = self.model.records.filter(uuid=category)
-        else:
-            queryset = self.model.records.all()
-        return queryset.order_by('-created_at')
+        return CaseHandler().filter_by_category(category)
 
 
 class CaseDetailView(RetrieveAPIView):
     """Retrieve specific case."""
 
-    lookup_field = 'slug'
+    lookup_field = 'uuid'
     queryset = Case.records.all()
     serializer_class = CaseSerializer
+
+
+class CaseView(GenericAPIView):
+    """Handles cases CRUD operations."""
+
+    serializer_class = CaseSerializer
+
+    def get(self, request, slug):
+        """Get one single case based on slug."""
+        case = CaseHandler().get(slug)
+        if not case:
+            return Response(
+                data={'error': 'No case found! Please try again with proper details.'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        serialized_case = self.serializer_class(case)
+        return Response(
+            data=serialized_case.data,
+            status=status.HTTP_200_OK
+        )
 
 
 class CaseActivityView(APIView):
