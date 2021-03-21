@@ -47,6 +47,7 @@ class DebateHandler:
     def create(self, user, ip_address, **kwargs) -> Debate:
         debate = Debate.objects.create(**{
             'profile': user.profile,
+            'is_posted_anonymously': kwargs['is_posted_anonymously'],
             'case': self.case,
             'comment': kwargs['comment'],
             'inclination': kwargs.get('inclination'),
@@ -59,6 +60,7 @@ class DebateHandler:
         if original_debate and not original_debate.pointer:
             debate = Debate.objects.create(**{
                 'profile': user.profile,
+                'is_posted_anonymously': kwargs['is_posted_anonymously'],
                 'case': self.case,
                 'comment': kwargs['comment'],
                 'inclination': kwargs.get('inclination'),
@@ -66,6 +68,13 @@ class DebateHandler:
             })
             return debate
         raise RebuttalFailedException('Failed to upload rebuttal to the specific debate.')
+
+    @staticmethod
+    def change_debate_anonymity_status(user, debate_uuid):
+        debate = Debate.records.get(uuid=debate_uuid)
+        assert debate.profile == user.profile
+        debate.is_posted_anonymously = not debate.is_posted_anonymously
+        debate.save()
 
     @staticmethod
     def update(debate_uuid, **kwargs) -> Debate:
