@@ -9,6 +9,6 @@ urlpatterns = [
     # Class Based Views
     path('v1/', include([
         path('menu/', ChatMenuView.as_view(), name='menu'),
-        path('messaging/<sender_uuid>/', ChatView.as_view(), name='send'),
+        path('messaging/<sender_uuid>/', ChatView.as_view(), name='messaging'),
     ])),
 ]
