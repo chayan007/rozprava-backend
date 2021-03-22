@@ -63,12 +63,21 @@ class CaseView(GenericAPIView):
         case = CaseHandler().create(
             user=request.user,
             ip_address=get_client_ip(request),
-            **kwargs
+            **case_form_validation.data
         )
         serialized_case = self.serializer_class(case)
         return Response(
             data=serialized_case.data,
             status=status.HTTP_201_CREATED
+        )
+
+    def put(self, request, slug):
+        """Edit an existing case."""
+        case = CaseHandler().update(slug, **request.POST)
+        serialized_case = self.serializer_class(case)
+        return Response(
+            data=serialized_case.data,
+            status=status.HTTP_202_ACCEPTED
         )
 
 
