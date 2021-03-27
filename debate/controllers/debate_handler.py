@@ -12,12 +12,12 @@ from tracker.controllers.location_handler import LocationHandler
 
 class DebateHandler:
 
-    def __init__(self, case_uuid):
-        self.case = Case.objects.get(uuid=case_uuid)
+    def __init__(self, case_uuid: str = None):
+        self.case = Case.objects.get(uuid=case_uuid) if case_uuid else None
 
     @staticmethod
-    def get_based_on_case(case_uuid: str) -> [Debate]:
-        case = Case.objects.get(uuid=case_uuid)
+    def get_based_on_case(case_slug: str) -> [Debate]:
+        case = Case.objects.get(slug=case_slug)
         debates = Debate.objects.filter(
             case=case,
             pointer__isnull=True
@@ -42,7 +42,7 @@ class DebateHandler:
 
     @staticmethod
     def get(debate_uuid: str) -> Debate:
-        return get_object_or_404(Debate, uuid=debate_uuid)
+        return Debate.records.get(uuid=debate_uuid)
 
     def create(self, user, ip_address, **kwargs) -> Debate:
         debate = Debate.objects.create(**{
