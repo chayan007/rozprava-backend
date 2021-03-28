@@ -14,3 +14,4 @@ class RebuttalForm(forms.Form):
 
     is_posted_anonymously = forms.BooleanField(required=False)
     comment = forms.CharField(max_length=5000)
+    debate_uuid = forms.UUIDField()

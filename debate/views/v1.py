@@ -96,8 +96,35 @@ class RebuttalView(GenericAPIView):
 
     def post(self, request, *args, **kwargs):
         """Post rebuttal against a debate."""
-        pass
+        rebuttal_form_validation = RebuttalForm(data=request.POST)
+        if not rebuttal_form_validation.is_valid():
+            return Response(
+                data=rebuttal_form_validation.errors,
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        rebuttal = DebateHandler(
+            case_uuid=kwargs.get('case_uuid')
+        ).create_rebuttal(
+            user=request.user,
+            ip_address=get_client_ip(request),
+            **rebuttal_form_validation.data
+        )
+        serialized_rebuttal = self.serializer_class(rebuttal)
+        return Response(
+            data=serialized_rebuttal.data,
+            status=status.HTTP_201_CREATED
+        )
 
     def put(self, request, *args, **kwargs):
         """Update rebuttal against a debate."""
-        pass
+        rebuttal = DebateHandler().update(
+            kwargs.get('rebuttal_uuid'),
+            is_rebuttal=True,
+            **request.POST
+        )
+        serialized_rebuttal = self.serializer_class(rebuttal)
+        return Response(
+            data=serialized_rebuttal.data,
+            status=status.HTTP_202_ACCEPTED
+        )
+
