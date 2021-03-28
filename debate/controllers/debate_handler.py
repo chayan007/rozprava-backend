@@ -63,7 +63,7 @@ class DebateHandler:
                 'is_posted_anonymously': kwargs['is_posted_anonymously'],
                 'case': self.case,
                 'comment': kwargs['comment'],
-                'inclination': kwargs.get('inclination'),
+                'inclination': not original_debate.inclination,
                 'pointer': original_debate
             })
             return debate
