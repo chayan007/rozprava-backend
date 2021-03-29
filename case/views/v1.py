@@ -25,14 +25,6 @@ class CaseListView(ListAPIView):
         return CaseHandler().filter_by_category(category)
 
 
-class CaseDetailView(RetrieveAPIView):
-    """Retrieve specific case."""
-
-    lookup_field = 'uuid'
-    queryset = Case.records.all()
-    serializer_class = CaseSerializer
-
-
 class CaseView(GenericAPIView):
     """Handles cases CRUD operations."""
 
