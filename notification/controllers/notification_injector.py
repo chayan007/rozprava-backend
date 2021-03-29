@@ -4,7 +4,7 @@ from profiles.models import Profile
 
 
 class NotificationInjector:
-    """Handle entire end to end operations for notifications."""
+    """Handle entire end to end injection ops for notifications."""
 
     def __init__(self, profile_uuids: [str]):
         self.profiles = [
@@ -14,7 +14,7 @@ class NotificationInjector:
 
     def trigger(self, notification_label: str, message_id):
         """Triggers the notification kicking process."""
-        message = message_id or None
+        message = message_id or None # Use generic messages.
         getattr(self, notification_label)(message)
 
     def push(self, message: str):

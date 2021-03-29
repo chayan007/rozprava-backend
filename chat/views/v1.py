@@ -1,14 +1,13 @@
 from rest_framework import status
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListAPIView, GenericAPIView
 from rest_framework.response import Response
-from rest_framework.views import APIView
 
 from chat.controllers.chat_engine import ChatEngine
 from chat.serializers import OneToOneMessageSerializer
 from profiles.serializers import ProfileSerializer
 
 
-class ChatView(APIView):
+class ChatView(GenericAPIView):
     """Chat view for users."""
 
     def get(self, request, *args, **kwargs):
