@@ -12,7 +12,7 @@ urlpatterns = [
         path('list/', CaseListView.as_view(), name='list'),
         path('activity/<case_uuid>/<activity_type>', CaseActivityView.as_view(), name='activity'),
         path('detail/<slug>/', CaseView.as_view({'get': 'get'}), name='detail'),
-        path('create/', CaseView.as_view({'post': 'post'}), name='detail'),
-        path('update/', CaseView.as_view({'put': 'put'}), name='detail'),
+        path('create/', CaseView.as_view({'post': 'post'}), name='create'),
+        path('update/', CaseView.as_view({'put': 'put'}), name='update'),
     ])),
 ]
