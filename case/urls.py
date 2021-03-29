@@ -2,6 +2,7 @@ from django.urls import path, include
 
 from case.views.v1 import (
     CaseActivityView,
+    CaseCreateView,
     CaseListView,
     CaseView
 )
@@ -11,8 +12,7 @@ urlpatterns = [
     path('v1/', include([
         path('list/', CaseListView.as_view(), name='list'),
         path('activity/<case_uuid>/<activity_type>', CaseActivityView.as_view(), name='activity'),
-        path('detail/<slug>/', CaseView.as_view({'get': 'get'}), name='detail'),
-        path('create/', CaseView.as_view({'post': 'post'}), name='create'),
-        path('update/', CaseView.as_view({'put': 'put'}), name='update'),
+        path('create/', CaseCreateView.as_view(), name='create'),
+        path('<slug>/', CaseView.as_view(), name='detail'),
     ])),
 ]

@@ -1,7 +1,6 @@
 from rest_framework import status
-from rest_framework.generics import ListAPIView, RetrieveAPIView, GenericAPIView
+from rest_framework.generics import GenericAPIView, ListAPIView
 from rest_framework.response import Response
-from rest_framework.views import APIView
 
 from base.utilities import get_client_ip
 
@@ -44,6 +43,18 @@ class CaseView(GenericAPIView):
             status=status.HTTP_200_OK
         )
 
+    def put(self, request, slug):
+        """Edit an existing case."""
+        case = CaseHandler().update(slug, **request.POST)
+        serialized_case = self.serializer_class(case)
+        return Response(
+            data=serialized_case.data,
+            status=status.HTTP_202_ACCEPTED
+        )
+
+
+class CaseCreateView(GenericAPIView):
+
     def post(self, request, *args, **kwargs):
         """Create a case."""
         case_form_validation = CaseForm(data=request.POST)
@@ -63,17 +74,8 @@ class CaseView(GenericAPIView):
             status=status.HTTP_201_CREATED
         )
 
-    def put(self, request, slug):
-        """Edit an existing case."""
-        case = CaseHandler().update(slug, **request.POST)
-        serialized_case = self.serializer_class(case)
-        return Response(
-            data=serialized_case.data,
-            status=status.HTTP_202_ACCEPTED
-        )
 
-
-class CaseActivityView(APIView):
+class CaseActivityView(GenericAPIView):
     """Record any activity on case as Like or Report."""
 
     def post(self, request, *args, **kwargs):
