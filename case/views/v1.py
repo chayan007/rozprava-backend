@@ -93,7 +93,7 @@ class CaseActivityView(APIView):
         activity_type = kwargs.get('activity_type')
 
         if case_uuid and activity_type:
-            case = Case.objects.get(uuid=case_uuid)
+            case = Case.records.get(uuid=case_uuid)
             case.activities.create(activity_type=activity_type, profile=profile)
             return Response(
                 data={'message': 'Wow! You have interacted with the post.'},

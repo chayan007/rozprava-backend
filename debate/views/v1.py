@@ -8,6 +8,7 @@ from debate.controllers.debate_handler import DebateHandler
 from debate.forms import DebateForm, RebuttalForm
 from debate.models import Debate
 from debate.serializers import DebateSerializer
+from profiles.exceptions import UserValidationFailedException
 
 
 class DebateListView(ListAPIView):
@@ -128,3 +129,26 @@ class RebuttalView(GenericAPIView):
             status=status.HTTP_202_ACCEPTED
         )
 
+
+class DebateActivityView(GenericAPIView):
+    """Record any activity on Debate as Like or Report."""
+
+    def post(self, request, *args, **kwargs):
+        profile = request.user.profile
+        if not profile:
+            raise UserValidationFailedException('You need to be logged in to perform this action!')
+
+        debate_uuid = kwargs.get('debate_uuid')
+        activity_type = kwargs.get('activity_type')
+
+        if debate_uuid and activity_type:
+            debate = Debate.records.get(uuid=debate_uuid)
+            debate.activities.create(activity_type=activity_type, profile=profile)
+            return Response(
+                data={'message': 'Wow! You have interacted with the debate.'},
+                status=status.HTTP_201_CREATED
+            )
+        return Response(
+            data={'message': 'Oops! Something went wrong. Try again later.'},
+            status=status.HTTP_304_NOT_MODIFIED
+        )
