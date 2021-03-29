@@ -24,7 +24,11 @@ class NotificationHandler:
                 notification_objs.append(notification)
             except Notification.DoesNotExist:
                 continue
-        Notification.objects.bulk_update(notification_objs, ['is_read'])
+        try:
+            Notification.objects.bulk_update(notification_objs, ['is_read'])
+            return True
+        except (AttributeError, ValueError, Notification.DoesNotExist):
+            return False
 
     def push(self):
         return Notification.objects.filter(
