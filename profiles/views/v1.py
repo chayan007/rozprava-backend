@@ -1,12 +1,25 @@
 from django.db.models import Q, Count
 from rest_framework import status
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import GenericAPIView, ListAPIView
 from rest_framework.response import Response
-from rest_framework.views import APIView
 
 from profiles.exceptions import UserValidationFailedException
 from profiles.models import Profile
 from profiles.serializers import ProfileSerializer
+
+
+class ProfileView(GenericAPIView):
+    """Individual profile view."""
+
+    def get(self, request, username: str):
+        """Get profile by username."""
+        user_name = username or request.user.username
+        profile = Profile.objects.get(user__username=user_name)
+        serialized_profile = ProfileSerializer(profile)
+        return Response(
+            status=status.HTTP_200_OK,
+            data=serialized_profile.data
+        )
 
 
 class ProfileListView(ListAPIView):
@@ -32,7 +45,7 @@ class ProfileListView(ListAPIView):
         return queryset.order_by('-created_at')
 
 
-class ProfileUpdateView(APIView):
+class ProfileUpdateView(GenericAPIView):
     """Update profile details."""
 
     FIELDS_ALLOWED_TO_BE_UPDATED = [
@@ -61,7 +74,7 @@ class ProfileUpdateView(APIView):
             )
 
 
-class PasswordUpdateView(APIView):
+class PasswordUpdateView(GenericAPIView):
 
     def post(self, request, *args, **kwargs):
         if request.data.get('check_old_password'):

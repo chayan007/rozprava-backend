@@ -1,6 +1,8 @@
+from django.conf import settings
 from django.contrib.auth.models import User
 from rest_framework import serializers
 
+from profiles.constants import PROFILE_PAGE_URL
 from profiles.models import Profile
 
 
@@ -28,6 +30,14 @@ class ProfileSerializer(serializers.ModelSerializer):
     """Serialize profile model object."""
 
     user = UserSerializer()
+    profile_link = serializers.SerializerMethodField()
+
+    def get_profile_link(self, obj):
+        """Generate profile link using the object."""
+        return PROFILE_PAGE_URL.format(
+            base_url=settings.BASE_URL,
+            username=obj.user.username
+        )
 
     class Meta:
         model = Profile
@@ -36,6 +46,7 @@ class ProfileSerializer(serializers.ModelSerializer):
             'dob',
             'display_pic',
             'mobile_number',
+            'profile_link',
             'address',
             'country',
             'is_verified',

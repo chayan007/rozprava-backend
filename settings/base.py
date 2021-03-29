@@ -9,6 +9,7 @@ SECRET_KEY = '*k5s)mhyfq@^mh3#!nops^3o^ib4+hf%q7c4=)#83y(bvvn^b^'
 DEBUG = True
 
 SITE_ID = 1
+BASE_URL = os.getenv('BASE_URL', 'http://127.0.0.1:8000')
 
 ALLOWED_HOSTS = ['*']
 
