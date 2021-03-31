@@ -14,5 +14,5 @@ urlpatterns = [
         path('activity/<case_uuid>/<activity_type>', CaseActivityView.as_view(), name='activity'),
         path('create/', CaseCreateView.as_view(), name='create'),
         path('<slug>/', CaseView.as_view(), name='detail'),
-    ])),
+    ]))
 ]
