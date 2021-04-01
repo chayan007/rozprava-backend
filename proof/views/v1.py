@@ -2,6 +2,7 @@ from rest_framework import status
 from rest_framework.generics import GenericAPIView, ListAPIView
 from rest_framework.response import Response
 
+from proof.controllers.case_proof_handler import CaseProofHandler
 from proof.controllers.debate_proof_handler import DebateProofHandler
 from proof.models import Proof
 from proof.serializers import ProofSerializer
@@ -76,3 +77,41 @@ class CaseProofListView(ListAPIView):
             else self.model.records.all()
         )
         return queryset.order_by('-created_at')
+
+
+class CaseProofSerializer(GenericAPIView):
+
+    def post(self, request, *args, **kwargs):
+        """Upload proof for the case."""
+        is_uploaded = CaseProofHandler(
+            kwargs.get('debate_uuid')
+        ).add(
+            request.user, request.FILES
+        )
+        if is_uploaded:
+            return Response(
+                status=status.HTTP_201_CREATED,
+                data={'message': 'Proofs uploaded successfully for the case.'}
+            )
+        return Response(
+            status=status.HTTP_400_BAD_REQUEST,
+            data={'error': 'Proofs failed to upload for the case.'}
+        )
+
+    def delete(self, request, *args, **kwargs):
+        """Delete proof for the case."""
+        is_deleted = DebateProofHandler(
+            kwargs.get('debate_uuid')
+        ).delete(
+            request.user, kwargs.get('proof_uuid')
+        )
+        if is_deleted:
+            return Response(
+                status=status.HTTP_201_CREATED,
+                data={'message': 'Proofs deleted successfully for the case.'}
+            )
+        return Response(
+            status=status.HTTP_400_BAD_REQUEST,
+            data={'error': 'Proofs failed to upload for the case.'}
+        )
+
