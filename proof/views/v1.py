@@ -24,8 +24,45 @@ class DebateProofListView(ListAPIView):
         return queryset.order_by('-created_at')
 
 
+class DebateProofSerializer(GenericAPIView):
+
+    def post(self, request, *args, **kwargs):
+        """Upload proof for the debate."""
+        is_uploaded = DebateProofHandler(
+            kwargs.get('debate_uuid')
+        ).add(
+            request.user, request.FILES
+        )
+        if is_uploaded:
+            return Response(
+                status=status.HTTP_201_CREATED,
+                data={'message': 'Proofs uploaded successfully for the debate.'}
+            )
+        return Response(
+            status=status.HTTP_400_BAD_REQUEST,
+            data={'error': 'Proofs failed to upload for the debate.'}
+        )
+
+    def delete(self, request, *args, **kwargs):
+        """Delete proof for the debate."""
+        is_deleted = DebateProofHandler(
+            kwargs.get('debate_uuid')
+        ).delete(
+            request.user, kwargs.get('proof_uuid')
+        )
+        if is_deleted:
+            return Response(
+                status=status.HTTP_201_CREATED,
+                data={'message': 'Proofs deleted successfully for the debate.'}
+            )
+        return Response(
+            status=status.HTTP_400_BAD_REQUEST,
+            data={'error': 'Proofs failed to upload for the debate.'}
+        )
+
+
 class CaseProofListView(ListAPIView):
-    """List all proofs for a specific debate."""
+    """List all proofs for a specific case."""
 
     serializer_class = ProofSerializer
     model = Proof
@@ -39,4 +76,3 @@ class CaseProofListView(ListAPIView):
             else self.model.records.all()
         )
         return queryset.order_by('-created_at')
-
