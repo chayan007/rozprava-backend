@@ -7,7 +7,7 @@ from proof.models import Proof
 class CaseProofHandler(CoreProofHandler):
 
     def __init__(self, case_slug: str):
-        self.case = Case.objects.get(slug=case_slug)
+        self.case = Case.records.get(slug=case_slug)
 
     def add(self, user, **kwargs):
         proofs = []

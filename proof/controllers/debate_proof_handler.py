@@ -7,7 +7,7 @@ from proof.models import Proof
 class DebateProofHandler(CoreProofHandler):
 
     def __init__(self, debate_uuid: str):
-        self.debate = Debate.objects.get(uuid=debate_uuid)
+        self.debate = Debate.records.get(uuid=debate_uuid)
 
     def add(self, user, **kwargs):
         proofs = []

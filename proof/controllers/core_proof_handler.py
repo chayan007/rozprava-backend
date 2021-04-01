@@ -6,8 +6,9 @@ class CoreProofHandler:
     @staticmethod
     def delete(proof_uuid):
         proof = Proof.objects.get(uuid=proof_uuid)
-        proof.delete()
+        proof.is_deleted = True
+        proof.save()
 
     @staticmethod
     def list():
-        return Proof.objects.all()
+        return Proof.records.all()
