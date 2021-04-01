@@ -25,7 +25,7 @@ class DebateProofListView(ListAPIView):
         return queryset.order_by('-created_at')
 
 
-class DebateProofSerializer(GenericAPIView):
+class DebateProofView(GenericAPIView):
 
     def post(self, request, *args, **kwargs):
         """Upload proof for the debate."""
@@ -79,7 +79,7 @@ class CaseProofListView(ListAPIView):
         return queryset.order_by('-created_at')
 
 
-class CaseProofSerializer(GenericAPIView):
+class CaseProofView(GenericAPIView):
 
     def post(self, request, *args, **kwargs):
         """Upload proof for the case."""
