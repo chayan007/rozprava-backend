@@ -15,5 +15,5 @@ urlpatterns = [
         path('case/list/', CaseProofListView.as_view(), name='case-list'),
         path('case/', CaseProofView.as_view(), name='case'),
         path('debate/', DebateProofView.as_view(), name='debate')
-    ])),
+    ]))
 ]
