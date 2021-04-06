@@ -1,7 +1,5 @@
 from settings.base import *
 
-BASE_URL = '127.0.0.1:8000'
-
 # Provider specific settings
 SOCIALACCOUNT_PROVIDERS = {
     'google': {

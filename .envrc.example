@@ -7,3 +7,5 @@ export DB_NAME=
 
 export EMAIL_USER=
 export EMAIL_PASSWORD=
+
+export BASE_URL=
