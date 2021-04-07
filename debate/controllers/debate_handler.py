@@ -95,3 +95,21 @@ class DebateHandler:
         debate = Debate.objects.get(uuid=debate_uuid)
         debate.is_deleted = True
         debate.save()
+
+    @staticmethod
+    def vote_to_shift_to_opposite_indicator(debate_uuid: str):
+        debate = Debate.records.get(uuid=debate_uuid)
+        if debate.inclination:
+            debate.votes_to_shift_to_against += 1
+        else:
+            debate.votes_to_shift_to_for += 1
+        debate.save()
+
+    @staticmethod
+    def shift_to_opposite_indicator(debate_uuid: str):
+        debate = Debate.records.get(uuid=debate_uuid)
+        if debate.inclination:
+            debate.inclination = Debate.InclinationChoices.AGAINST
+        else:
+            debate.inclination = Debate.InclinationChoices.FOR
+        debate.save()
