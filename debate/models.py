@@ -17,6 +17,7 @@ from tracker.models import Location
 
 
 class Debate(BaseModel):
+    """Model to store debate."""
 
     class InclinationChoices(models.IntegerChoices):
 
@@ -35,11 +36,9 @@ class Debate(BaseModel):
     comment = models.TextField()
     inclination = models.SmallIntegerField(choices=InclinationChoices.choices, default=InclinationChoices.FOR.value)
     pointer = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
-    impact = models.SmallIntegerField(default=0, validators=[
-        MaxValueValidator(5),
-        MinValueValidator(0)
-    ])
     status = models.SmallIntegerField(choices=DebateStatus.choices, default=DebateStatus.ACTIVE.value)
+    shift_to_for = models.IntegerField(default=0)
+    shift_to_against = models.IntegerField(default=0)
 
     proofs = models.ManyToManyField(Proof)
     activities = GenericRelation(Activity)
@@ -51,3 +50,17 @@ class Debate(BaseModel):
             self.profile.user.get_full_name(),
             self.case.__str__()
         )
+
+
+class DebateImpactHit(BaseModel):
+    """Model to store debate impact mappings."""
+
+    debate = models.ForeignKey(Debate, on_delete=models.CASCADE)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    impact = models.SmallIntegerField(default=0, validators=[
+        MaxValueValidator(5),
+        MinValueValidator(0)
+    ])
+
+    def __str__(self):
+        return f'{self.impact}: {self.profile.user.username}'
