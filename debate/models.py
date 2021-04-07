@@ -37,8 +37,9 @@ class Debate(BaseModel):
     inclination = models.SmallIntegerField(choices=InclinationChoices.choices, default=InclinationChoices.FOR.value)
     pointer = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
     status = models.SmallIntegerField(choices=DebateStatus.choices, default=DebateStatus.ACTIVE.value)
-    shift_to_for = models.IntegerField(default=0)
-    shift_to_against = models.IntegerField(default=0)
+
+    votes_to_shift_to_for = models.IntegerField(default=0)
+    votes_to_shift_to_against = models.IntegerField(default=0)
 
     proofs = models.ManyToManyField(Proof)
     activities = GenericRelation(Activity)
