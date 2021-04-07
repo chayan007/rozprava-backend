@@ -1,5 +1,10 @@
 [
   {
-    "name": "Debate "
+    "name": "Debate Config",
+    "key": "DEBATE_CONFIG",
+    "value": {
+      "SHIFTING_THRESHOLD": 10,
+      "REPORT_THRESHOLD": 20
+    }
   }
 ]

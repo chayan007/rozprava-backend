@@ -30,3 +30,13 @@ class BaseModel(models.Model):
 
         abstract = True
         ordering = ('-created_at',)
+
+
+class Configuration(models.Model):
+
+    name = models.CharField(max_length=300, unique=True)
+    key = models.CharField(max_length=300, unique=True)
+    value = models.JSONField()
+
+    def __str__(self):
+        return self.name
