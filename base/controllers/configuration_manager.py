@@ -34,3 +34,8 @@ class ConfigurationManager:
                         'value': value
                     }
                 )
+
+    @staticmethod
+    def get(key: str):
+        """Get a specific configuration."""
+        return Configuration.objects.get(key=key)
