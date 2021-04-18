@@ -1,5 +1,6 @@
 from django.shortcuts import get_object_or_404
 
+from base.controllers.configuration_manager import ConfigurationManager
 from base.utils.string import get_string_matching_coefficient
 
 from case.models import Case
@@ -96,14 +97,17 @@ class DebateHandler:
         debate.is_deleted = True
         debate.save()
 
-    @staticmethod
-    def vote_to_shift_to_opposite_indicator(debate_uuid: str):
+    def vote_to_shift_to_opposite_indicator(self, debate_uuid: str):
         debate = Debate.records.get(uuid=debate_uuid)
         if debate.inclination:
             debate.votes_to_shift_to_against += 1
         else:
             debate.votes_to_shift_to_for += 1
         debate.save()
+
+        shifting_threshold = ConfigurationManager().get('DEBATE_CONFIG')['SHIFTING_THRESHOLD']
+        if debate.votes_to_shift_to_for > shifting_threshold or debate.votes_to_shift_to_against > shifting_threshold:
+            self.shift_to_opposite_indicator(debate_uuid)
 
     @staticmethod
     def shift_to_opposite_indicator(debate_uuid: str):
