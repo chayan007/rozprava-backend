@@ -103,6 +103,7 @@ class DebateHandler:
             debate.votes_to_shift_to_against += 1
         else:
             debate.votes_to_shift_to_for += 1
+
         debate.save()
 
         shifting_threshold = ConfigurationManager().get('DEBATE_CONFIG')['SHIFTING_THRESHOLD']
