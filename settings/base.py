@@ -32,6 +32,7 @@ SYSTEM_APPS = [
 SOCIAL_AUTHENTICATION_PROVIDERS = [
     'allauth',
     'allauth.account',
+
     'rest_auth.registration',
 
     'allauth.socialaccount',
