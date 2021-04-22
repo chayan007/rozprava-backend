@@ -1,3 +1,9 @@
 from django.contrib import admin
 
-# Register your models here.
+from profiles.models import FollowerMap, IdentityDocument, Group, Profile
+
+
+@admin.site.register(Profile)
+@admin.site.register(FollowerMap)
+@admin.site.register(IdentityDocument)
+@admin.site.register(Group)
