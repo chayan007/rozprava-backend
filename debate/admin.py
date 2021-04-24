@@ -1,3 +1,6 @@
 from django.contrib import admin
 
-# Register your models here.
+from debate.models import Debate, DebateImpactHit
+
+admin.site.register(Debate)
+admin.site.register(DebateImpactHit)
