@@ -1,3 +1,5 @@
 from django.contrib import admin
 
-# Register your models here.
+from proof.models import Proof
+
+admin.site.register(Proof)
