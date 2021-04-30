@@ -3,8 +3,6 @@ from django.db import models
 
 from base.models import BaseModel
 
-from profiles.utilities import get_profile_verification_image_upload_path
-
 
 class Profile(BaseModel):
     """Profile class based on top of user."""
@@ -48,29 +46,6 @@ class Profile(BaseModel):
 
     def __str__(self):
         return self.user.get_full_name()
-
-
-class IdentityDocument(BaseModel):
-
-    class IdentityChoices(models.TextChoices):
-
-        UIDAI = 'UIDAI'
-        PAN = 'PAN'
-        PASSPORT = 'PASSPORT'
-        DRIVING_LICENSE = 'DRIVING_LICENSE'
-        VOTER_ID = 'VOTER_ID'
-        OTHER = 'OTHER'
-
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    identity_type = models.CharField(max_length=20, choices=IdentityChoices.choices, default=IdentityChoices.OTHER.value)
-    image = models.ImageField(upload_to=get_profile_verification_image_upload_path)
-    id_number = models.CharField(max_length=100, null=True, blank=True)
-    kyc_json = models.JSONField(null=True, blank=True)
-    is_valid = models.BooleanField(default=False)
-    is_audited = models.BooleanField(default=False)
-
-    def __str__(self):
-        return f'{self.profile.user.get_full_name()}'
 
 
 class Group(BaseModel):

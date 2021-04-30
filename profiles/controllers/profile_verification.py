@@ -1,13 +1,14 @@
 from base.exceptions import AlreadyExistsError
 
-from profiles.models import Profile, IdentityDocument
+from profiles.models import Profile
+from verification.models import KYCVerification
 
 
 class ProfileVerification:
 
     @staticmethod
     def get_identity_document(identity_document_uuid: str):
-        return IdentityDocument.objects.get(uuid=identity_document_uuid)
+        return KYCVerification.objects.get(uuid=identity_document_uuid)
 
     @staticmethod
     def request(profile: Profile, celebrity_rank: int, identity_type: str, id_number: str, image):
@@ -15,7 +16,7 @@ class ProfileVerification:
         profile.celebrity_rank = celebrity_rank
         profile.save()
 
-        existing_document = IdentityDocument.objects.filter(
+        existing_document = KYCVerification.objects.filter(
             profile=profile,
             id_number=id_number,
             identity_type=identity_type,
@@ -24,7 +25,7 @@ class ProfileVerification:
         if existing_document:
             raise AlreadyExistsError('Identity Document already exists and auditing pending.')
 
-        identity_doc_obj = IdentityDocument.objects.create(
+        identity_doc_obj = KYCVerification.objects.create(
             profile=profile,
             id_number=id_number,
             identity_type=identity_type,

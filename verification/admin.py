@@ -1,3 +1,6 @@
 from django.contrib import admin
 
-# Register your models here.
+from verification.models import KYCVerification, OTPVerification
+
+admin.site.register(KYCVerification)
+admin.site.register(OTPVerification)
