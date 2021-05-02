@@ -65,3 +65,6 @@ class DebateImpactHit(BaseModel):
 
     def __str__(self):
         return f'{self.impact}: {self.profile.user.username}'
+
+    class Meta:
+        unique_together = ('profile', 'debate',)
