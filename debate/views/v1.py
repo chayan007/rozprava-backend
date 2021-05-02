@@ -9,6 +9,7 @@ from debate.controllers.debate_impact_handler import DebateImpactHandler
 from debate.forms import DebateForm, RebuttalForm
 from debate.models import Debate
 from debate.serializers import DebateSerializer
+
 from profiles.exceptions import UserValidationFailedException
 
 
