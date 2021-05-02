@@ -161,12 +161,15 @@ class DebateImpactView(GenericAPIView):
     def post(self, request, *args, **kwargs):
         profile = request.user.profile
         rating = request.data.get('rating')
-        impact_obj = DebateImpactHandler(kwargs['debate_uuid']).rate(profile, rating)
+        debate_uuid = kwargs['debate_uuid']
+
+        impact_obj = DebateImpactHandler(debate_uuid).rate(profile, rating)
         if not impact_obj:
             return Response(
                 data={'error': 'Failed to rate the debate!'},
                 status=status.HTTP_400_BAD_REQUEST
             )
+
         return Response(
             data={
                 'message': 'Successfully rated the debate.',
@@ -176,4 +179,17 @@ class DebateImpactView(GenericAPIView):
         )
 
     def get(self, request, *args, **kwargs):
-        pass
+        profile = request.user.profile
+        debate_uuid = kwargs['debate_uuid']
+
+        impact_obj = DebateImpactHandler(debate_uuid).get_impact_for_profile(profile)
+        if not impact_obj:
+            return Response(
+                data={'error': 'User have not rated for this debate.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        return Response(
+            data={'impact': impact_obj.impact},
+            status=status.HTTP_200_OK
+        )

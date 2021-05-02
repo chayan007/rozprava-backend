@@ -32,3 +32,12 @@ class DebateImpactHandler:
             'average_impact'
         )
         return round(getattr(debate_summary, 'average_impact', 0))
+
+    def get_impact_for_profile(self, profile: Profile):
+        try:
+            return DebateImpactHit.objects.get(
+                debate=self.debate,
+                profile=profile
+            )
+        except DebateImpactHit.DoesNotExist:
+            return False
