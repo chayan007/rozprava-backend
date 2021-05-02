@@ -22,7 +22,7 @@ class DebateImpactHandler:
         except (IntegrityError, ValueError):
             return False
 
-    def get_impact(self):
+    def get_aggregate_impact(self):
         """Get aggregate debate impact hit for each debate."""
         debate_summary = DebateImpactHit.objects.filter(
             debate=self.debate

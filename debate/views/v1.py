@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from base.utilities import get_client_ip
 
 from debate.controllers.debate_handler import DebateHandler
+from debate.controllers.debate_impact_handler import DebateImpactHandler
 from debate.forms import DebateForm, RebuttalForm
 from debate.models import Debate
 from debate.serializers import DebateSerializer
@@ -152,3 +153,27 @@ class DebateActivityView(GenericAPIView):
             data={'message': 'Oops! Something went wrong. Try again later.'},
             status=status.HTTP_304_NOT_MODIFIED
         )
+
+
+class DebateImpactView(GenericAPIView):
+    """Handle entire debate impact related flow."""
+
+    def post(self, request, *args, **kwargs):
+        profile = request.user.profile
+        rating = request.data.get('rating')
+        impact_obj = DebateImpactHandler(kwargs['debate_uuid']).rate(profile, rating)
+        if not impact_obj:
+            return Response(
+                data={'error': 'Failed to rate the debate!'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        return Response(
+            data={
+                'message': 'Successfully rated the debate.',
+                'impact': impact_obj.impact
+            },
+            status=status.HTTP_201_CREATED
+        )
+
+    def get(self, request, *args, **kwargs):
+        pass

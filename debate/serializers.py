@@ -20,7 +20,7 @@ class DebateSerializer(serializers.ModelSerializer):
         return get_debate_metrics(obj)
 
     def get_impact(self, obj):
-        return DebateImpactHandler(obj.uuid).get_impact()
+        return DebateImpactHandler(obj.uuid).get_aggregate_impact()
 
     class Meta:
         model = Debate
