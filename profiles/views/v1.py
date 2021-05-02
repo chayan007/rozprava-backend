@@ -90,3 +90,6 @@ class PasswordUpdateView(GenericAPIView):
                 status=status.HTTP_201_CREATED
             )
         raise UserValidationFailedException('New passwords supplied does not match!')
+
+
+class GroupView(GenericAPIView):

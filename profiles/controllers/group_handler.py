@@ -43,6 +43,14 @@ class GroupObjectHandler:
         except (AttributeError, IntegrityError, ValueError):
             return False
 
+    @staticmethod
+    def get(group_uuid: str) -> Group:
+        return Group.objects.get(uuid=group_uuid)
+
+    @staticmethod
+    def list() -> [Group]:
+        return Group.objects.all()
+
 
 class GroupProfileHandler:
 
