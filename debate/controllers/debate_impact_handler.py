@@ -1,4 +1,5 @@
 from django.db import IntegrityError
+from django.db.models import Avg
 
 from debate.models import Debate, DebateImpactHit
 
@@ -22,4 +23,12 @@ class DebateImpactHandler:
             return False
 
     def get_impact(self):
-        return DebateImpactHit.objects.get(debate=self.debate)
+        """Get aggregate debate impact hit for each debate."""
+        debate_summary = DebateImpactHit.objects.filter(
+            debate=self.debate
+        ).annotate(
+            average_impact=Avg('impact')
+        ).values(
+            'average_impact'
+        )
+        return round(getattr(debate_summary, 'average_impact', 0))

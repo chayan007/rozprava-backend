@@ -1,7 +1,8 @@
 from rest_framework import serializers
 
+from debate.controllers.debate_impact_handler import DebateImpactHandler
 from debate.models import Debate
-from debate.utilities import get_debate_impact, get_debate_metrics
+from debate.utilities import get_debate_metrics
 
 from profiles.serializers import ProfileSerializer
 
@@ -19,7 +20,7 @@ class DebateSerializer(serializers.ModelSerializer):
         return get_debate_metrics(obj)
 
     def get_impact(self, obj):
-        return get_debate_impact(obj)
+        return DebateImpactHandler(obj.uuid).get_impact()
 
     class Meta:
         model = Debate
