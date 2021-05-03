@@ -93,3 +93,8 @@ class PasswordUpdateView(GenericAPIView):
 
 
 class GroupView(GenericAPIView):
+    pass
+
+
+class GroupProfileView(GenericAPIView):
+    pass
