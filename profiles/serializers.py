@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from rest_framework import serializers
 
 from profiles.constants import PROFILE_PAGE_URL
-from profiles.models import Profile
+from profiles.models import Group, Profile
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -56,3 +56,22 @@ class ProfileSerializer(serializers.ModelSerializer):
             'relationship_status'
         )
 
+
+class GroupSerializer(serializers.ModelSerializer):
+    """Serialize Group model object."""
+
+    admins = ProfileSerializer(read_only=True, many=True)
+    profiles = ProfileSerializer(read_only=True, many=True)
+    created_by = ProfileSerializer()
+
+    class Meta:
+
+        model = Group
+        fields = (
+            'name',
+            'description',
+            'profiles',
+            'is_paid',
+            'admins',
+            'created_by',
+        )
