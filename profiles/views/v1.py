@@ -3,9 +3,10 @@ from rest_framework import status
 from rest_framework.generics import GenericAPIView, ListAPIView
 from rest_framework.response import Response
 
+from profiles.controllers.group_handler import GroupObjectHandler
 from profiles.exceptions import UserValidationFailedException
 from profiles.models import Profile
-from profiles.serializers import ProfileSerializer
+from profiles.serializers import ProfileSerializer, GroupSerializer
 
 
 class ProfileView(GenericAPIView):
@@ -93,7 +94,56 @@ class PasswordUpdateView(GenericAPIView):
 
 
 class GroupView(GenericAPIView):
-    pass
+
+    def post(self, request, *args, **kwargs):
+        """Create a group."""
+        name = request.data['name']
+        description = request.data['description']
+        is_paid = request.data.get('is_paid', 0)
+
+        group = GroupObjectHandler().create(
+            profile=request.user.profile,
+            name=name,
+            description=description,
+            is_paid=is_paid,
+        )
+
+        if not group:
+            return Response(
+                data={'error': 'Could not create group'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        return Response(
+            data={
+                'message': 'Group has been created',
+                'name': group.name,
+                'is_paid': group.is_paid
+            },
+            status=status.HTTP_201_CREATED
+        )
+
+    def get(self, request, *args, **kwargs):
+        """Get list of groups or just a group."""
+        group_uuid = kwargs.get('group_uuid')
+        group_handler = GroupObjectHandler()
+
+        # If group_id is present, then directly serve the Group details.
+        groups = [group_handler.get(group_uuid)] if group_uuid else group_handler.list()
+
+        if not groups:
+            return Response(
+                data={'error': 'No group found'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        paginated_groups = self.paginate_queryset(groups)
+        serialized_groups = GroupSerializer(paginated_groups, many=True)
+
+        return Response(
+            data={'groups': serialized_groups.data},
+            status=status.HTTP_200_OK
+        )
 
 
 class GroupProfileView(GenericAPIView):
