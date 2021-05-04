@@ -6,7 +6,14 @@ from profiles.views.v1 import (
     PasswordUpdateView,
     ProfileListView,
     ProfileUpdateView,
-    ProfileView
+    ProfileView,
+    GroupView,
+    GroupSearchView,
+    GroupDeleteView,
+    JoinGroupView,
+    LeaveGroupView,
+    GroupAdminChangeView,
+    ProfileInterestView
 )
 
 urlpatterns = [
@@ -19,6 +26,14 @@ urlpatterns = [
     # Class Based Views
     path('list/', ProfileListView.as_view(), name='list'),
     path('password/reset/', PasswordUpdateView.as_view(), name='password-reset'),
-    path('profile/update/', ProfileUpdateView.as_view(), name='profile-update'),
-    path('profile/<username>/', ProfileView.as_view(), name='profile-detail'),
+    path('update/', ProfileUpdateView.as_view(), name='profile-update'),
+    path('interests/', ProfileInterestView.as_view(), name='profile-interest'),
+    path('group/', GroupView.as_view(), name='group'),
+    path('group/search/<group_uuid: str>', GroupSearchView.as_view(), name='group-search'),
+    path('group/delete/<group_uuid: str>', GroupDeleteView.as_view(), name='group-delete'),
+    path('group/join/<group_uuid: str>', JoinGroupView.as_view(), name='group-delete'),
+    path('group/leave/<group_uuid: str>', LeaveGroupView.as_view(), name='group-delete'),
+    path('group/admin/<group_uuid: str>', GroupAdminChangeView.as_view(), name='group-delete'),
+    path('group/admin/<group_uuid: str>', GroupAdminChangeView.as_view(), name='group-delete'),
+    path('<username>/', ProfileView.as_view(), name='profile-detail')
 ]
