@@ -51,11 +51,19 @@ class Profile(BaseModel):
 class Group(BaseModel):
     """Group of profiles."""
 
+    class GroupPrivacy(models.IntegerChoices):
+        """Privacy choices for a group."""
+        PUBLIC = 0
+        PRIVATE = 1
+
     name = models.CharField(max_length=300)
     description = models.TextField(null=True, blank=True)
     profiles = models.ManyToManyField(Profile)
+    profile_requests = models.ManyToManyField(Profile)
     is_paid = models.BooleanField(default=False)
     admins = models.ManyToManyField(Profile)
+    privacy = models.SmallIntegerField(choices=GroupPrivacy.choices, default=GroupPrivacy.PUBLIC.value)
+    interview = models.JSONField(null=True, blank=True)
     created_by = models.ForeignKey(Profile, on_delete=models.CASCADE)
 
     def __str__(self):

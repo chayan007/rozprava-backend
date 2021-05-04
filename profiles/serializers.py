@@ -74,4 +74,6 @@ class GroupSerializer(serializers.ModelSerializer):
             'is_paid',
             'admins',
             'created_by',
+            'interview',
+            'privacy'
         )
