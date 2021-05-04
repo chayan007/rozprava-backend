@@ -126,11 +126,9 @@ class GroupView(GenericAPIView):
 
     def get(self, request, *args, **kwargs):
         """Get list of groups or just a group."""
-        group_uuid = kwargs.get('group_uuid')
         group_handler = GroupObjectHandler()
 
-        # If group_id is present, then directly serve the Group details.
-        groups = [group_handler.get(group_uuid)] if group_uuid else group_handler.list()
+        groups = group_handler.list()
 
         if not groups:
             return Response(
@@ -145,6 +143,31 @@ class GroupView(GenericAPIView):
             data={'groups': serialized_groups.data},
             status=status.HTTP_200_OK
         )
+
+
+class GroupSearchView(GenericAPIView):
+
+    def get(self, request, group_uuid: str):
+        """Get list of groups or just a group."""
+        group_handler = GroupObjectHandler()
+
+        group = group_handler.get(group_uuid)
+
+        if not group:
+            return Response(
+                data={'error': 'No group found'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        serialized_groups = GroupSerializer(group)
+
+        return Response(
+            data={'groups': serialized_groups.data},
+            status=status.HTTP_200_OK
+        )
+
+
+class GroupDeleteView(GenericAPIView):
 
     def delete(self, request, group_uuid: str):
         """Retire a group."""
