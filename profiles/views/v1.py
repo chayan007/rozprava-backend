@@ -4,6 +4,7 @@ from rest_framework.generics import GenericAPIView, ListAPIView
 from rest_framework.response import Response
 
 from profiles.controllers.group_handler import GroupObjectHandler, GroupProfileHandler
+from profiles.controllers.profile_interest_handler import ProfileInterestHandler
 from profiles.exceptions import UserValidationFailedException
 from profiles.models import Profile
 from profiles.serializers import ProfileSerializer, GroupSerializer
@@ -219,4 +220,32 @@ class GroupAdminChangeView(GenericAPIView):
         return Response(
             data={'error': 'Failed to add as admin.'},
             status=status.HTTP_400_BAD_REQUEST
+        )
+
+
+class ProfileInterestView(GenericAPIView):
+    """Handle e2e flow of ProfileInterest."""
+
+    def post(self, request, *args, **kwargs):
+        """Add interests to profile."""
+        ProfileInterestHandler(
+            request.user.profile
+        ).add(
+            request.data.get('categories')
+        )
+        return Response(
+            data={'message': 'Added category(s) to profile interest.'},
+            status=status.HTTP_201_CREATED
+        )
+
+    def delete(self, request, *args, **kwargs):
+        """Remove interests from profile."""
+        ProfileInterestHandler(
+            request.user.profile
+        ).remove(
+            request.data.get('categories')
+        )
+        return Response(
+            data={'message': 'Removed category(s) from profile interest.'},
+            status=status.HTTP_200_OK
         )
