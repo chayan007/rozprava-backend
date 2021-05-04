@@ -3,7 +3,7 @@ from rest_framework import status
 from rest_framework.generics import GenericAPIView, ListAPIView
 from rest_framework.response import Response
 
-from profiles.controllers.group_handler import GroupObjectHandler
+from profiles.controllers.group_handler import GroupObjectHandler, GroupProfileHandler
 from profiles.exceptions import UserValidationFailedException
 from profiles.models import Profile
 from profiles.serializers import ProfileSerializer, GroupSerializer
@@ -158,9 +158,65 @@ class GroupView(GenericAPIView):
             )
         return Response(
             data={'error': 'Group has not been retired.'},
-            status=status.HTTP_200_OK
+            status=status.HTTP_400_BAD_REQUEST
         )
 
 
-class GroupProfileView(GenericAPIView):
-    pass
+class JoinGroupView(GenericAPIView):
+
+    def post(self, request, group_uuid: str):
+        """Join a group."""
+        group_profile_handler = GroupProfileHandler(group_uuid)
+        has_joined = group_profile_handler.join(request.user.profile)
+
+        if has_joined:
+            return Response(
+                data={'message': 'Successfully joined the group.'},
+                status=status.HTTP_200_OK
+            )
+
+        return Response(
+            data={'error': 'Failed to join the group.'},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+
+class LeaveGroupView(GenericAPIView):
+
+    def post(self, request, group_uuid: str):
+        """Leave a group."""
+        group_profile_handler = GroupProfileHandler(group_uuid)
+        has_left = group_profile_handler.leave(request.user.profile)
+
+        if has_left:
+            return Response(
+                data={'message': 'Successfully left the group.'},
+                status=status.HTTP_200_OK
+            )
+
+        return Response(
+            data={'error': 'Failed to leave the group.'},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+
+class GroupAdminChangeView(GenericAPIView):
+
+    def post(self, request, group_uuid: str):
+        """Add admin to a group."""
+        group_profile_handler = GroupProfileHandler(group_uuid)
+        added_admin = group_profile_handler.make_admin(
+            request.user.profile,
+            request.query_params['profile_uuid']
+        )
+
+        if added_admin:
+            return Response(
+                data={'message': 'Successfully added the admin.'},
+                status=status.HTTP_200_OK
+            )
+
+        return Response(
+            data={'error': 'Failed to add as admin.'},
+            status=status.HTTP_400_BAD_REQUEST
+        )
