@@ -1,10 +1,7 @@
 from django.contrib.auth.models import User
-from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
 from base.models import BaseModel
-
-from case.models import Case
 
 
 class Profile(BaseModel):
@@ -51,23 +48,6 @@ class Profile(BaseModel):
         return self.user.get_full_name()
 
 
-class ProfileInterest(BaseModel):
-    """Record profile interests."""
-
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    category = models.IntegerField(null=False, blank=False, validators=[
-        MaxValueValidator(len(Case.CaseCategory.choices) + 1),
-        MinValueValidator(0)
-    ])
-
-    def __str__(self):
-        return self.profile.user.get_full_name()
-
-    class Meta:
-
-        unique_together = ('profile', 'category',)
-
-
 class Group(BaseModel):
     """Group of profiles."""
 
@@ -78,13 +58,13 @@ class Group(BaseModel):
 
     name = models.CharField(max_length=300)
     description = models.TextField(null=True, blank=True)
-    profiles = models.ManyToManyField(Profile)
-    profile_requests = models.ManyToManyField(Profile)
+    profiles = models.ManyToManyField(Profile, related_name='members')
+    profile_requests = models.ManyToManyField(Profile, related_name='pending_request_profiles')
     is_paid = models.BooleanField(default=False)
-    admins = models.ManyToManyField(Profile)
+    admins = models.ManyToManyField(Profile, related_name='admins')
     privacy = models.SmallIntegerField(choices=GroupPrivacy.choices, default=GroupPrivacy.PUBLIC.value)
     interview = models.JSONField(null=True, blank=True)
-    created_by = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    created_by = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='created_by')
 
     def __str__(self):
         return '{}: {} members'.format(self.name, self.profiles.count())

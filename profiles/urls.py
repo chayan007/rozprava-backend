@@ -31,12 +31,12 @@ urlpatterns = [
     path('interests/', ProfileInterestView.as_view(), name='profile-interest'),
 
     path('group/', GroupView.as_view(), name='group'),
-    path('group/search/<group_uuid: str>', GroupSearchView.as_view(), name='group-search'),
-    path('group/delete/<group_uuid: str>', GroupDeleteView.as_view(), name='group-delete'),
-    path('group/join/<group_uuid: str>', JoinGroupView.as_view(), name='group-delete'),
-    path('group/leave/<group_uuid: str>', LeaveGroupView.as_view(), name='group-delete'),
-    path('group/admin/<group_uuid: str>', GroupAdminChangeView.as_view(), name='group-delete'),
-    path('group/admin/<group_uuid: str>', GroupAdminChangeView.as_view(), name='group-delete'),
+    path('group/search/<group_uuid>', GroupSearchView.as_view(), name='group-search'),
+    path('group/delete/<group_uuid>', GroupDeleteView.as_view(), name='group-delete'),
+    path('group/join/<group_uuid>', JoinGroupView.as_view(), name='group-delete'),
+    path('group/leave/<group_uuid>', LeaveGroupView.as_view(), name='group-delete'),
+    path('group/admin/<group_uuid>', GroupAdminChangeView.as_view(), name='group-delete'),
+    path('group/admin/<group_uuid>', GroupAdminChangeView.as_view(), name='group-delete'),
 
     path('<username>/', ProfileView.as_view(), name='profile-detail')
 ]

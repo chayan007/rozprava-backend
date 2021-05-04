@@ -1,4 +1,5 @@
 from django.contrib.contenttypes.fields import GenericRelation
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -53,3 +54,20 @@ class Case(BaseModel):
             self.get_category_display(),
             self.profile.user.get_full_name()
         )
+
+
+class ProfileInterest(BaseModel):
+    """Record profile interests."""
+
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    category = models.IntegerField(null=False, blank=False, validators=[
+        MaxValueValidator(len(Case.CaseCategory.choices) + 1),
+        MinValueValidator(0)
+    ])
+
+    def __str__(self):
+        return self.profile.user.get_full_name()
+
+    class Meta:
+
+        unique_together = ('profile', 'category',)

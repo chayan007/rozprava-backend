@@ -1,6 +1,7 @@
 import datetime
 
 from django.db import models
+from django.utils import timezone
 
 from ads.utilities import (
     get_ads_image_upload_path,
@@ -37,8 +38,8 @@ class Boost(BaseModel):
 
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     case = models.ForeignKey(Case, on_delete=models.CASCADE)
-    amount = models.DecimalField()
-    start_date = models.DateField(default=datetime.date.today())
+    amount = models.DecimalField(max_digits=10, decimal_places=4)
+    start_date = models.DateField(auto_now_add=True)
     end_date = models.DateField()
 
     def __str__(self):

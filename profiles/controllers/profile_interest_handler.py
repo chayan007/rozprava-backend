@@ -1,6 +1,7 @@
 from django.db import IntegrityError
 
-from profiles.models import Profile, ProfileInterest
+from profiles.models import Profile
+from case.models import ProfileInterest
 
 
 class ProfileInterestHandler:

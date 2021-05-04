@@ -3,6 +3,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.db import models
 
 from base.models import BaseModel
+
 from profiles.models import Profile
 
 
