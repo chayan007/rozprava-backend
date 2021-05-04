@@ -33,14 +33,18 @@ class GroupObjectHandler:
             return False
 
     @staticmethod
-    def retire(group_uuid: str) -> bool:
+    def retire(profile: Profile, group_uuid: str) -> bool:
         """Retire a group."""
         try:
             group = Group.objects.get(uuid=group_uuid)
+
+            if profile not in group.admins:
+                raise AssertionError('This user does not have rights to retire a group.')
+
             group.is_deleted = True
             group.save()
             return True
-        except (AttributeError, IntegrityError, ValueError):
+        except (AssertionError, AttributeError, IntegrityError, ValueError):
             return False
 
     @staticmethod

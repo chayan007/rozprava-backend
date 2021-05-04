@@ -145,6 +145,22 @@ class GroupView(GenericAPIView):
             status=status.HTTP_200_OK
         )
 
+    def delete(self, request, group_uuid: str):
+        """Retire a group."""
+        is_retired = GroupObjectHandler().retire(
+            request.user.profile,
+            group_uuid
+        )
+        if is_retired:
+            return Response(
+                data={'message': 'Group has been retired.'},
+                status=status.HTTP_200_OK
+            )
+        return Response(
+            data={'error': 'Group has not been retired.'},
+            status=status.HTTP_200_OK
+        )
+
 
 class GroupProfileView(GenericAPIView):
     pass
