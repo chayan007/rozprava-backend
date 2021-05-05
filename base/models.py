@@ -29,7 +29,7 @@ class BaseModel(models.Model):
         """Define meta params for model."""
 
         abstract = True
-        ordering = ('-created_at',)
+        ordering = ('-created_at', )
 
 
 class Configuration(models.Model):
