@@ -71,3 +71,7 @@ class CaseBooster:
 
         boost.per_day_allotment = (boost.per_day_allotment * remaining_days) + adjusting_amount / remaining_days
         boost.save()
+
+    def list(self):
+        """List all the boosts applicable for a profile."""
+        return Boost.objects.filter(profile=self.profile)
