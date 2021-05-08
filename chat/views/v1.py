@@ -10,6 +10,8 @@ from profiles.serializers import ProfileSerializer
 class ChatView(GenericAPIView):
     """Chat view for users."""
 
+    serializer_class = OneToOneMessageSerializer
+
     def get(self, request, *args, **kwargs):
         receiver_uuid = request.user.profile.uuid
         sender_uuid = kwargs.get('sender_uuid')
@@ -17,7 +19,7 @@ class ChatView(GenericAPIView):
             sender_profile_uuid=sender_uuid,
             receiver_profile_uuid=receiver_uuid
         ).receive()
-        serialized_messages = OneToOneMessageSerializer(messaging_list, many=True)
+        serialized_messages = self.serializer_class(messaging_list, many=True)
         return Response(
             status=status.HTTP_200_OK,
             data=serialized_messages
@@ -44,13 +46,15 @@ class ChatView(GenericAPIView):
 class ChatMenuView(ListAPIView):
     """Perform operations on chat menu."""
 
+    serializer_class = ProfileSerializer
+
     def get(self, request, *args, **kwargs):
         """Gets list of all messages from users."""
         receiver = request.user.profile
         messaging_list = ChatEngine(
             receiver_profile_uuid=receiver.uuid
         ).show_messaging_list()
-        serialized_messaging_list = ProfileSerializer(messaging_list, many=True)
+        serialized_messaging_list = self.serializer_class(messaging_list, many=True)
         return Response(
             data=serialized_messaging_list.data,
             status=status.HTTP_200_OK

@@ -14,7 +14,7 @@ class DebateSerializer(serializers.ModelSerializer):
     profile = ProfileSerializer()
     proofs = ProofSerializer(many=True)
     activities = serializers.SerializerMethodField()
-    impact = serializers.SerializerMethodField
+    impact = serializers.SerializerMethodField()
 
     def get_activities(self, obj):
         return get_debate_metrics(obj)

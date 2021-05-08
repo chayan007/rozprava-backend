@@ -9,11 +9,13 @@ from ads.serializers import BoostSerializer
 class CaseBoosterView(GenericAPIView):
     """Handles end to end case booster operations."""
 
+    serializer_class = BoostSerializer
+
     def get(self, request, *args, **kwargs):
         """Get list of all boosts for a profile."""
         boosts = CaseBooster(request.user.profile).list()
         paginated_boosts = self.paginate_queryset(boosts)
-        serialized_boosts = BoostSerializer(paginated_boosts, many=True)
+        serialized_boosts = self.serializer_class(paginated_boosts, many=True)
         return Response(
             status=status.HTTP_200_OK,
             data=serialized_boosts.data
@@ -27,7 +29,7 @@ class CaseBoosterView(GenericAPIView):
             start_date=request.data['start_date'],
             end_date=request.data['end_date']
         )
-        serialized_boost = BoostSerializer(boost)
+        serialized_boost = self.serializer_class(boost)
         return Response(
             status=status.HTTP_201_CREATED,
             data=serialized_boost.data
@@ -40,7 +42,7 @@ class CaseBoosterView(GenericAPIView):
             additional_amount=request.data.get('additional_amount'),
             end_date=request.data.get('end_date')
         )
-        serialized_boost = BoostSerializer(boost)
+        serialized_boost = self.serializer_class(boost)
         return Response(
             status=status.HTTP_200_OK,
             data=serialized_boost.data

@@ -135,6 +135,8 @@ class RebuttalView(GenericAPIView):
 class DebateActivityView(GenericAPIView):
     """Record any activity on Debate as Like or Report."""
 
+    serializer_class = DebateSerializer
+
     def post(self, request, *args, **kwargs):
         profile = request.user.profile
         if not profile:

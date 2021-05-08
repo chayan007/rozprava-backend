@@ -96,6 +96,8 @@ class PasswordUpdateView(GenericAPIView):
 
 class GroupView(GenericAPIView):
 
+    serializer_class = GroupSerializer
+
     def post(self, request, *args, **kwargs):
         """Create a group."""
         name = request.data['name']
@@ -137,7 +139,7 @@ class GroupView(GenericAPIView):
             )
 
         paginated_groups = self.paginate_queryset(groups)
-        serialized_groups = GroupSerializer(paginated_groups, many=True)
+        serialized_groups = self.serializer_class(paginated_groups, many=True)
 
         return Response(
             data={'groups': serialized_groups.data},
@@ -225,6 +227,8 @@ class LeaveGroupView(GenericAPIView):
 
 
 class GroupAdminChangeView(GenericAPIView):
+
+    serializer_class = GroupSerializer
 
     def post(self, request, group_uuid: str):
         """Add admin to a group."""
