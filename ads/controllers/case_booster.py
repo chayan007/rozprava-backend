@@ -18,13 +18,13 @@ class CaseBooster:
     def __init__(self, profile: Profile):
         self.profile = profile
 
-    def create(self, **kwargs):
+    def create(self, **kwargs) -> Boost:
         """Create a case boost request."""
         total_amount = kwargs['amount']
         start_date = datetime.datetime.strptime(kwargs['start_date'], UNIQUE_DATE_FORMAT)
         end_date = datetime.datetime.strptime(kwargs['end_date'], UNIQUE_DATE_FORMAT)
 
-        number_of_days = (end_date - start_date).days
+        number_of_days = (end_date - start_date).days or 1
         per_day_amount_allotment = total_amount / number_of_days
 
         minimum_per_day_amount_allotment = ConfigurationManager.get('MINIMUM_PER_DAY_AMOUNT_ALLOTMENT')
@@ -35,7 +35,7 @@ class CaseBooster:
                 f'whereas your per day boost allocation is INR {per_day_amount_allotment}.'
             )
 
-        Boost.records.create(
+        return Boost.records.create(
             profile=self.profile,
             case=Case.objects.get(kwargs['case_uuid']),
             amount=total_amount,
@@ -44,7 +44,7 @@ class CaseBooster:
             end_date=end_date
         )
 
-    def update(self, boost_uuid: str, **kwargs):
+    def update(self, boost_uuid: str, **kwargs) -> Boost:
         """
         Following updates are only allowed.
 
@@ -58,7 +58,9 @@ class CaseBooster:
                 f'{self.profile.user.username} has no rights over this advertisement.'
             )
 
-        if kwargs.get('additional_amount'):
+        adjusting_amount = kwargs.get('additional_amount', 0)
+
+        if adjusting_amount:
             boost.total_amount += kwargs.get('additional_amount')
 
         if kwargs.get('end_date'):
@@ -66,11 +68,11 @@ class CaseBooster:
             assert end_date > boost.end_date
             boost.end_date = end_date
 
-        adjusting_amount = kwargs.get('additional_amount', 0)
-        remaining_days = (boost.end_date - boost.start_date).days
+        remaining_days = (boost.end_date - boost.start_date).days or 1
 
         boost.per_day_allotment = (boost.per_day_allotment * remaining_days) + adjusting_amount / remaining_days
         boost.save()
+        return boost
 
     def list(self):
         """List all the boosts applicable for a profile."""
