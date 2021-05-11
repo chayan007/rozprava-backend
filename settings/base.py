@@ -1,5 +1,9 @@
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+
 import os
 from pathlib import Path
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -170,3 +174,18 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = os.getenv('EMAIL_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASSWORD')
+
+# Sentry Configuration
+sentry_sdk.init(
+    dsn="https://a0fa2c4d506345b09205d75dc0e220e0@o647115.ingest.sentry.io/5759559",
+    integrations=[DjangoIntegration()],
+
+    # Set traces_sample_rate to 1.0 to capture 100%
+    # of transactions for performance monitoring.
+    # We recommend adjusting this value in production.
+    traces_sample_rate=1.0,
+
+    # If you wish to associate users to errors (assuming you are using
+    # django.contrib.auth) you may enable sending PII data.
+    send_default_pii=True
+)
