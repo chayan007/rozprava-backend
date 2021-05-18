@@ -42,4 +42,5 @@ class TagHandler:
                 Debate.objects.get(uuid=indicator_uuid).tags.add(*extracted_tags)
             return extracted_tags
         except BaseException:
+
             return False

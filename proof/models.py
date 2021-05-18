@@ -12,7 +12,4 @@ class Proof(BaseModel):
     file = models.FileField(upload_to=get_proof_upload_path)
 
     def __str__(self):
-        return '{} uploaded {}'.format(
-            self.profile.user.get_full_name(),
-            self.file.name
-        )
+        return self.file.name
