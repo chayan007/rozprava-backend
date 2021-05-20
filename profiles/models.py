@@ -82,3 +82,21 @@ class FollowerMap(BaseModel):
 
     def __str__(self):
         return f'{self.follower} follows {self.following}'
+
+
+class InviteLead(BaseModel):
+    """Model to store user invites."""
+
+    class InviteMedium(models.IntegerChoices):
+        """Invite medium choices for a profile."""
+        OTHER = 0
+        MOBILE = 1
+        EMAIL = 2
+
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    invited_type = models.SmallIntegerField(choices=InviteMedium.choices, default=InviteMedium.OTHER.value)
+    invited_contact = models.CharField(max_length=120, null=True, blank=True, unique=True)
+    has_registered = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.invited_contact

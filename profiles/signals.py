@@ -9,6 +9,7 @@ from profiles.models import Profile
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance)
+        # TODO: `check_and_process_invite_lead` invoke this through async task.
 
 
 @receiver(post_save, sender=User)
