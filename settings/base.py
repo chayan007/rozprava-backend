@@ -163,7 +163,7 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = os.getenv('EMAIL_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASSWORD')
 
-# Sentry Configuration
+# Sentry Configurations
 sentry_sdk.init(
     dsn="https://a0fa2c4d506345b09205d75dc0e220e0@o647115.ingest.sentry.io/5759559",
     integrations=[DjangoIntegration()],
@@ -178,6 +178,7 @@ sentry_sdk.init(
     send_default_pii=True
 )
 
+# Storage Configurations
 AWS_STORAGE_PERMITTED = os.getenv('AWS_STORAGE_PERMITTED', False)
 
 if AWS_STORAGE_PERMITTED:
