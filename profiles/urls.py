@@ -1,6 +1,7 @@
 from django.urls import path, include
 
 from profiles.controllers.social.facebook_login import FacebookLogin
+from profiles.controllers.social.google_login import GoogleLogin
 from profiles.controllers.social.twitter_login import TwitterLogin
 from profiles.views.v1 import (
     PasswordUpdateView,
@@ -22,6 +23,7 @@ urlpatterns = [
     path('social-auth/registration/', include('rest_auth.registration.urls')),
     path('social-auth/facebook/', FacebookLogin.as_view(), name='fb-login'),
     path('social-auth/twitter/', TwitterLogin.as_view(), name='twitter-login'),
+    path('social-auth/google/', GoogleLogin.as_view(), name='google-login'),
 
     # Class Based Views
     path('list/', ProfileListView.as_view(), name='list'),
