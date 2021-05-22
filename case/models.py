@@ -3,7 +3,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from activity.models import Activity, Tag
+from activity.models import Activity, HashTag
 
 from base.models import BaseModel
 
@@ -46,7 +46,7 @@ class Case(BaseModel):
 
     proofs = models.ManyToManyField(Proof)
     activities = GenericRelation(Activity)
-    tags = models.ManyToManyField(Tag)
+    tags = models.ManyToManyField(HashTag)
     location = models.ForeignKey(Location, on_delete=models.CASCADE, null=True)
 
     def __str__(self):

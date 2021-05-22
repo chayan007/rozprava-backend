@@ -33,7 +33,7 @@ class Activity(BaseModel):
         )
 
 
-class Tag(BaseModel):
+class HashTag(BaseModel):
 
     name = models.CharField(unique=True, max_length=100)
     views = models.BigIntegerField(default=0)

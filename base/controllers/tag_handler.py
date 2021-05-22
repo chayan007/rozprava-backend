@@ -1,4 +1,4 @@
-from activity.models import Tag
+from activity.models import HashTag
 
 from case.models import Case
 
@@ -18,7 +18,7 @@ class TagHandler:
         )
 
     @staticmethod
-    def increment_tags_count(tag_objs: [Tag]):
+    def increment_tags_count(tag_objs: [HashTag]):
         """Increment count of tag."""
         for tag_obj in tag_objs:
             tag_obj.views += 1
@@ -27,7 +27,7 @@ class TagHandler:
     @staticmethod
     def store_and_get_tag(tag: str):
         """Store all tags present in description."""
-        return Tag.objects.get_or_create(name=tag)
+        return HashTag.objects.get_or_create(name=tag)
 
     def handle_tag_cycle(self, raw_string: str, indicator_uuid: str, indicator: str):
         """Handle all tags."""
