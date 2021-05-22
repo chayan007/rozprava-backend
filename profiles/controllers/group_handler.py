@@ -1,6 +1,7 @@
 from typing import Union
 
 from django.db import IntegrityError
+from sentry_sdk import capture_exception
 
 from profiles.exceptions import UserValidationFailedException
 from profiles.models import Group, Profile
@@ -30,6 +31,7 @@ class GroupObjectHandler:
 
             return group
         except (AttributeError, IntegrityError):
+            capture_exception()
             return False
 
     @staticmethod
@@ -45,6 +47,7 @@ class GroupObjectHandler:
             group.save()
             return True
         except (AssertionError, AttributeError, IntegrityError, ValueError):
+            capture_exception()
             return False
 
     @staticmethod
@@ -68,6 +71,7 @@ class GroupProfileHandler:
             self.group.save()
             return True
         except (AttributeError, IntegrityError, ValueError):
+            capture_exception()
             return False
 
     def leave(self, profile: Profile) -> bool:
@@ -77,6 +81,7 @@ class GroupProfileHandler:
             self.group.save()
             return True
         except (AttributeError, IntegrityError, ValueError):
+            capture_exception()
             return False
 
     def make_admin(self, admin_profile: Profile, profile_uuid: str) -> bool:
@@ -91,4 +96,5 @@ class GroupProfileHandler:
             self.group.save()
             return True
         except (AttributeError, IntegrityError, ValueError):
+            capture_exception()
             return False

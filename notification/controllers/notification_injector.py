@@ -1,3 +1,5 @@
+from sentry_sdk import capture_exception
+
 from notification.models import Notification
 
 from profiles.models import Profile
@@ -25,6 +27,7 @@ class NotificationInjector:
                     Notification(profile=profile, message=message, type=Notification.NotificationType.PUSH.value)
                 )
             except (AttributeError, ValueError):
+                capture_exception()
                 continue
         Notification.objects.bulk_create(notification_objs)
 
@@ -36,6 +39,7 @@ class NotificationInjector:
                     Notification(profile=profile, message=message, type=Notification.NotificationType.SMS.value, is_read=True)
                 )
             except (AttributeError, ValueError):
+                capture_exception()
                 continue
         Notification.objects.bulk_create(notification_objs)
 
@@ -47,6 +51,7 @@ class NotificationInjector:
                     Notification(profile=profile, message=message, type=Notification.NotificationType.EMAIL.value, is_read=True)
                 )
             except (AttributeError, ValueError):
+                capture_exception()
                 continue
         Notification.objects.bulk_create(notification_objs)
 
@@ -58,5 +63,6 @@ class NotificationInjector:
                     Notification(profile=profile, message=message, type=Notification.NotificationType.CALL.value, is_read=True)
                 )
             except (AttributeError, ValueError):
+                capture_exception()
                 continue
         Notification.objects.bulk_create(notification_objs)

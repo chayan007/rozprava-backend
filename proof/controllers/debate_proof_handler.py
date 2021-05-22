@@ -1,3 +1,5 @@
+from sentry_sdk import capture_exception
+
 from debate.models import Debate
 
 from proof.controllers.core_proof_handler import CoreProofHandler
@@ -25,6 +27,7 @@ class DebateProofHandler(CoreProofHandler):
                 self.debate.save()
                 return True
         except (AttributeError, ValueError, IndexError):
+            capture_exception()
             return False
 
     def list(self):

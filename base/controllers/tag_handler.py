@@ -1,3 +1,5 @@
+from sentry_sdk import capture_exception
+
 from activity.models import HashTag
 
 from case.models import Case
@@ -42,5 +44,5 @@ class TagHandler:
                 Debate.objects.get(uuid=indicator_uuid).tags.add(*extracted_tags)
             return extracted_tags
         except BaseException:
-
+            capture_exception()
             return False

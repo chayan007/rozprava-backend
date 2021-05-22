@@ -1,3 +1,5 @@
+from sentry_sdk import capture_exception
+
 from profiles.models import Profile
 
 
@@ -22,5 +24,5 @@ class ProfileHandler:
             self.profile.save()
             return True
         except (AttributeError, ValueError):
-            print(f'Could not update {self.profile.user.username}')
+            capture_exception()
             return False

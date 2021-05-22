@@ -1,3 +1,5 @@
+from sentry_sdk import capture_exception
+
 from notification.models import Notification
 from profiles.models import Profile
 
@@ -23,11 +25,13 @@ class NotificationHandler:
                 notification.is_read = True
                 notification_objs.append(notification)
             except Notification.DoesNotExist:
+                capture_exception()
                 continue
         try:
             Notification.objects.bulk_update(notification_objs, ['is_read'])
             return True
         except (AttributeError, ValueError, Notification.DoesNotExist):
+            capture_exception()
             return False
 
     def push(self):

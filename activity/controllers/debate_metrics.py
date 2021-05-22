@@ -1,4 +1,5 @@
 from django.db import DataError, IntegrityError
+from sentry_sdk import capture_exception
 
 from activity.controllers.review_handler import ReviewHandler
 from activity.models import Activity
@@ -24,6 +25,7 @@ class DebateMetrics:
                     profile=user.profile
                 )
             except (DataError, IntegrityError):
+                capture_exception()
                 continue
 
     def like_or_unlike(self, user: User) -> None:

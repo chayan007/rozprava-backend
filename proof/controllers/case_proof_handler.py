@@ -1,3 +1,5 @@
+from sentry_sdk import capture_exception
+
 from case.models import Case
 
 from proof.controllers.core_proof_handler import CoreProofHandler
@@ -25,6 +27,7 @@ class CaseProofHandler(CoreProofHandler):
                 self.case.save()
                 return True
         except (AttributeError, ValueError, IndexError):
+            capture_exception()
             return False
 
     def list(self):

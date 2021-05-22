@@ -1,5 +1,6 @@
 from django.db import IntegrityError
 from django.db.models import Avg
+from sentry_sdk import capture_exception
 
 from debate.models import Debate, DebateImpactHit
 
@@ -20,6 +21,7 @@ class DebateImpactHandler:
             )
             return impact_obj
         except (IntegrityError, ValueError):
+            capture_exception()
             return False
 
     def get_aggregate_impact(self):

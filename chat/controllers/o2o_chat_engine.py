@@ -1,3 +1,4 @@
+from sentry_sdk import capture_exception
 from typing import Any
 
 from django.db.models import Count, Q
@@ -24,6 +25,7 @@ class OneToOneChatEngine:
             )
             return True
         except BaseException:
+            capture_exception()
             return False
 
     def receive(self, **kwargs):
@@ -36,6 +38,7 @@ class OneToOneChatEngine:
             self.update_message_as_seen(messages)
             return messages
         except BaseException:
+            capture_exception()
             return False
 
     def show_messaging_list(self):
@@ -67,4 +70,5 @@ class OneToOneChatEngine:
         try:
             return OneToOneMessage.objects.filter(receiver=self.receiver)
         except BaseException:
+            capture_exception()
             return

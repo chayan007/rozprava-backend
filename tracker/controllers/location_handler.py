@@ -1,4 +1,5 @@
 from django.contrib.gis.geoip2 import GeoIP2
+from sentry_sdk import capture_exception
 
 from profiles.models import Profile
 
@@ -24,4 +25,5 @@ class LocationHandler:
                 create_queryset['profile'] = self.profile
             return Location.objects.create(**create_queryset)
         except BaseException:
+            capture_exception()
             return
