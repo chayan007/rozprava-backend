@@ -2,7 +2,7 @@ from rest_framework import status
 from rest_framework.generics import ListAPIView, GenericAPIView
 from rest_framework.response import Response
 
-from chat.controllers.chat_engine import ChatEngine
+from chat.controllers.o2o_chat_engine import OneToOneChatEngine
 from chat.serializers import OneToOneMessageSerializer
 from profiles.serializers import ProfileSerializer
 
@@ -15,7 +15,7 @@ class ChatView(GenericAPIView):
     def get(self, request, *args, **kwargs):
         receiver_uuid = request.user.profile.uuid
         sender_uuid = kwargs.get('sender_uuid')
-        messaging_list = ChatEngine(
+        messaging_list = OneToOneChatEngine(
             sender_profile_uuid=sender_uuid,
             receiver_profile_uuid=receiver_uuid
         ).receive()
@@ -28,7 +28,7 @@ class ChatView(GenericAPIView):
     def post(self, request, *args, **kwargs):
         receiver_uuid = request.user.profile.uuid
         sender_uuid = kwargs.get('sender_uuid')
-        is_message_sent = ChatEngine(
+        is_message_sent = OneToOneChatEngine(
             sender_profile_uuid=sender_uuid,
             receiver_profile_uuid=receiver_uuid
         ).send(
@@ -51,7 +51,7 @@ class ChatMenuView(ListAPIView):
     def get(self, request, *args, **kwargs):
         """Gets list of all messages from users."""
         receiver = request.user.profile
-        messaging_list = ChatEngine(
+        messaging_list = OneToOneChatEngine(
             receiver_profile_uuid=receiver.uuid
         ).show_messaging_list()
         serialized_messaging_list = self.serializer_class(messaging_list, many=True)

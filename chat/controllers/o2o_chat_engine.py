@@ -7,7 +7,7 @@ from chat.models import OneToOneMessage
 from profiles.models import Profile
 
 
-class ChatEngine:
+class OneToOneChatEngine:
 
     def __init__(self, receiver_profile_uuid, sender_profile_uuid=None):
         self.sender = Profile.objects.get(uuid=sender_profile_uuid) if sender_profile_uuid else None
