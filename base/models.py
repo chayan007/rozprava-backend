@@ -32,7 +32,7 @@ class BaseModel(models.Model):
         ordering = ('-created_at', )
 
 
-class Configuration(models.Model):
+class Configuration(BaseModel):
 
     name = models.CharField(max_length=300, unique=True)
     key = models.CharField(max_length=300, unique=True)
