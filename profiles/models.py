@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.db import models
 
 from base.models import BaseModel
+from profiles.utilities import get_profile_dp_image_upload_path
 
 
 class Profile(BaseModel):
@@ -33,7 +34,7 @@ class Profile(BaseModel):
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     dob = models.DateField(null=True, blank=True)
-    display_pic = models.ImageField(upload_to='user/dp/', null=True, blank=True)
+    display_pic = models.ImageField(upload_to=get_profile_dp_image_upload_path, null=True, blank=True)
     mobile_number = models.CharField(max_length=20, null=True, blank=True)
     address = models.CharField(max_length=500, null=True, blank=True)
     country = models.CharField(max_length=30, null=True, blank=True)
