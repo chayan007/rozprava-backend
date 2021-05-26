@@ -3,6 +3,7 @@ from django.db import models
 from base.models import BaseModel
 
 from profiles.models import Profile
+
 from proof.utilities import get_proof_upload_path
 
 
