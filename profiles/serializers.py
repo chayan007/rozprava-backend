@@ -44,6 +44,7 @@ class ProfileSerializer(serializers.ModelSerializer):
         fields = (
             'user',
             'dob',
+            'bio',
             'display_pic',
             'mobile_number',
             'profile_link',
