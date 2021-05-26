@@ -12,7 +12,7 @@ class Authenticator:
     @staticmethod
     def register(**kwargs):
         first_name = kwargs.get('first_name')
-        last_name = kwargs.get('last_name')
+        last_name = f"{kwargs.get('middle_name')} {kwargs.get('last_name')}".strip()
         username = kwargs.get('username')
         password = kwargs.get('password')
         email = kwargs.get('email')
