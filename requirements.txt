@@ -50,6 +50,7 @@ pickleshare==0.7.5
 Pillow==8.1.0
 prompt-toolkit==3.0.8
 ptyprocess==0.7.0
+psycopg2-binary==2.8.6
 pycparser==2.20
 Pygments==2.7.4
 PyJWT==1.7.1

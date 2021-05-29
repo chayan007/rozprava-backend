@@ -2,6 +2,7 @@ version: '3'
 
 services:
   db:
+    container_name: rozprava_database
     image: postgres:9.6.5
     volumes:
       - postgres_data:/var/lib/postgresql/data/
@@ -10,8 +11,10 @@ services:
     ports:
       - 5432:5432
   redis:
+    container_name: rozprava_redis
     image: "redis:alpine"
   web:
+    container_name: rozprava_server
     build: .
     command: bash -c "python /code/manage.py migrate --noinput && python /code/manage.py runserver 0.0.0.0:8000"
     volumes:
@@ -24,6 +27,7 @@ services:
     env_file:
       - variables.env
   celery:
+    container_name: rozprava_celery
     build: .
     command: celery -A rozprava worker -l info
     volumes:
@@ -32,6 +36,7 @@ services:
       - db
       - redis
   celery-beat:
+    container_name: rozprava_scheduler
     build: .
     command: celery -A rozprava beat -l info
     volumes:
