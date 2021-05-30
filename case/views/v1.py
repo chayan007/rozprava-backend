@@ -22,7 +22,7 @@ class CaseListView(ListAPIView):
 
     def get_queryset(self):
         category = self.kwargs.get('category')
-        return CaseHandler().filter_by_category(category)
+        return CaseHandler().filter(category)
 
 
 class CaseView(GenericAPIView):

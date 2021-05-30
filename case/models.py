@@ -7,7 +7,7 @@ from activity.models import Activity, HashTag
 
 from base.models import BaseModel
 
-from profiles.models import Profile
+from profiles.models import Profile, Group
 
 from proof.models import Proof
 
@@ -43,6 +43,7 @@ class Case(BaseModel):
     for_label = models.CharField(max_length=100, default='For')
     against_label = models.CharField(max_length=100, default='Against')
     status = models.SmallIntegerField(choices=CaseStatus.choices, default=CaseStatus.ACTIVE.value)
+    group = models.ForeignKey(Group, on_delete=models.CASCADE, null=True, blank=True)
 
     proofs = models.ManyToManyField(Proof)
     activities = GenericRelation(Activity)

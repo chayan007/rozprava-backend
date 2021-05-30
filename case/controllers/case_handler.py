@@ -1,6 +1,7 @@
 import datetime
 
 from django.contrib.auth.models import User
+from django.db.models import Count
 from django.utils.text import slugify
 
 from base.constants import UNIQUE_DATETIME_FORMAT
@@ -18,10 +19,9 @@ class CaseHandler:
         return Case.records.get(slug=slug)
 
     @staticmethod
-    def filter_by_category(category: int = None) -> [Case]:
-        return Case.records.filter(
-            category=category
-        ) if category else Case.records.all()
+    def filter(category: int = None) -> [Case]:
+        cases = Case.records.filter(category=category) if category else Case.records.all()
+        return cases.annotate(activity_hype=Count('activity')).order_by('-activity_hype')
 
     @staticmethod
     def create(user: User, ip_address: str, **kwargs) -> Case:
@@ -46,18 +46,22 @@ class CaseHandler:
                 kwargs.get('question') and
                 (get_string_matching_coefficient(case.question, kwargs.get('question')) > 0.8)
         ) else case.question
+
         case.description = kwargs.get('description', case.description) if (
                 kwargs.get('description') and
                 (get_string_matching_coefficient(case.description, kwargs.get('description')) > 0.8)
         ) else case.description
+
         case.for_label = kwargs.get('for_label', case.for_label) if (
                 kwargs.get('for_label') and
                 (get_string_matching_coefficient(case.for_label, kwargs.get('for_label')) > 0.8)
         ) else case.for_label
+
         case.against_label = kwargs.get('against_label', case.against_label) if (
                 kwargs.get('against_label') and
                 (get_string_matching_coefficient(case.against_label, kwargs.get('against_label')) > 0.8)
         ) else case.against_label
+
         case.category = int(kwargs.get('category', case.category))
 
         case.save()
