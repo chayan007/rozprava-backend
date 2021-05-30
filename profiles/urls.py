@@ -40,5 +40,5 @@ urlpatterns = [
     path('group/admin/<group_uuid>', GroupAdminChangeView.as_view(), name='group-delete'),
     path('group/admin/<group_uuid>', GroupAdminChangeView.as_view(), name='group-delete'),
 
-    path('<username>/', ProfileView.as_view(), name='profile-detail')
+    path('user/<username>/', ProfileView.as_view(), name='profile-detail')
 ]

@@ -4,6 +4,7 @@ from rest_framework import serializers
 
 from profiles.constants import PROFILE_PAGE_URL
 from profiles.models import Group, Profile
+from profiles.utilities import is_following, check_if_request_authenticated
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -31,6 +32,16 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     user = UserSerializer()
     profile_link = serializers.SerializerMethodField()
+    authenticated_details = serializers.SerializerMethodField()
+
+    def get_authenticated_details(self, obj):
+        """Return details that authenticated profiles can see."""
+        request = self.context.get('request')
+        if check_if_request_authenticated(request):
+            return {}
+        return {
+            'is_following': is_following(request.user.profile, obj)
+        }
 
     def get_profile_link(self, obj):
         """Generate profile link using the object."""

@@ -18,7 +18,7 @@ class ProfileView(GenericAPIView):
         """Get profile by username."""
         user_name = username or request.user.username
         profile = Profile.objects.get(user__username=user_name)
-        serialized_profile = ProfileSerializer(profile)
+        serialized_profile = ProfileSerializer(profile, context={'request': request})
         return Response(
             status=status.HTTP_200_OK,
             data=serialized_profile.data
@@ -28,7 +28,6 @@ class ProfileView(GenericAPIView):
 class ProfileListView(ListAPIView):
     """Get list of profiles."""
 
-    serializer_class = ProfileSerializer()
     model = Profile
     paginate_by = 50
 
