@@ -3,8 +3,8 @@ from django.contrib.auth.models import User
 from rest_framework import serializers
 
 from profiles.constants import PROFILE_PAGE_URL
-from profiles.models import Group, Profile
-from profiles.utilities import is_following, check_if_request_authenticated
+from profiles.models import Group, Profile, FollowerMap
+from profiles.utilities import check_if_request_authenticated
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -34,13 +34,20 @@ class ProfileSerializer(serializers.ModelSerializer):
     profile_link = serializers.SerializerMethodField()
     authenticated_details = serializers.SerializerMethodField()
 
+    @staticmethod
+    def is_following(follower, following) -> bool:
+        return FollowerMap.objects.filter(
+            follower=follower,
+            following=following
+        ).exists()
+
     def get_authenticated_details(self, obj):
         """Return details that authenticated profiles can see."""
         request = self.context.get('request')
         if check_if_request_authenticated(request):
             return {}
         return {
-            'is_following': is_following(request.user.profile, obj)
+            'is_following': self.is_following(request.user.profile, obj)
         }
 
     def get_profile_link(self, obj):

@@ -17,11 +17,14 @@ BASE_URL = os.getenv('BASE_URL', 'http://127.0.0.1:8000')
 
 ALLOWED_HOSTS = ['*']
 
+CORS_ORIGIN_ALLOW_ALL = True
+
 
 # Application definition
 SYSTEM_APPS = [
     'base.apps.BaseConfig',
     'activity.apps.ActivityConfig',
+    'analytics.apps.AnalyticsConfig',
     'ads.apps.AdsConfig',
     'case.apps.CaseConfig',
     'chat.apps.ChatConfig',
@@ -51,7 +54,9 @@ THIRD_PARTY_APPS = [
     'rest_auth',
     'django.contrib.sites',
     'drf_yasg',
-    'storages'
+    'storages',
+    'corsheaders',
+    'channels'
 ] + SOCIAL_AUTHENTICATION_PROVIDERS
 
 INSTALLED_APPS = [
@@ -67,6 +72,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -114,6 +120,17 @@ DATABASES = {
         'HOST': os.getenv('POSTGRES_HOST', 'localhost'),
         'PORT': 5432
     }
+}
+
+ASGI_APPLICATION = "rozprava.channels_app.routing.application"
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": ['redis://redis:6379/4']
+        }
+    },
 }
 
 
