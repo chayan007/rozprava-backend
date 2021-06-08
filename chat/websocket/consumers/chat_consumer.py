@@ -46,7 +46,8 @@ class ChatConsumer(WebsocketConsumer):
             result.append(self.message_to_json(message))
         return result
 
-    def message_to_json(self, message):
+    @staticmethod
+    def message_to_json(message):
         return {
             'id': str(message.id),
             'author': message.author.username,
