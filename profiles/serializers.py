@@ -1,5 +1,10 @@
+from allauth.account import app_settings as allauth_settings
+from allauth.account.adapter import get_adapter
+from allauth.account.utils import setup_user_email
+from allauth.utils import email_address_exists
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.utils.translation import ugettext_lazy as _
 from rest_framework import serializers
 
 from profiles.constants import PROFILE_PAGE_URL
@@ -96,3 +101,69 @@ class GroupSerializer(serializers.ModelSerializer):
             'interview',
             'privacy'
         )
+
+
+class RegisterSerializer(serializers.Serializer):
+    """Wrapper serializer over all-auth serializer."""
+
+    username = serializers.CharField(
+        max_length=1,
+        min_length=50,
+        required=True
+    )
+    email = serializers.EmailField(required=True)
+    password1 = serializers.CharField(required=True, write_only=True)
+    password2 = serializers.CharField(required=True, write_only=True)
+    first_name = serializers.CharField(required=True)
+    last_name = serializers.CharField(required=True)
+    mobile_number = serializers.CharField(required=True)
+
+    @staticmethod
+    def validate_username(username: str):
+        return get_adapter().clean_username(username)
+
+    @staticmethod
+    def validate_email(email: str):
+        email = get_adapter().clean_email(email)
+        if email and email_address_exists(email):
+            raise serializers.ValidationError(_("A user is already registered with this e-mail address."))
+        return email
+
+    @staticmethod
+    def validate_password1(password: str):
+        return get_adapter().clean_password(password)
+
+    def validate(self, data: dict):
+        if data['password1'] != data['password2']:
+            raise serializers.ValidationError(_("The two password fields didn't match."))
+        return data
+
+    def custom_signup(self, request, user: User):
+        user.first_name = self.cleaned_data.get('first_name')
+        user.last_name = self.cleaned_data.get('last_name')
+        user.save()
+
+        user.profile.mobile_number = self.cleaned_data.get('mobile_number')
+        user.profile.save()
+
+    def get_cleaned_data(self):
+        return {
+            'username': self.validated_data.get('username', ''),
+            'password1': self.validated_data.get('password1', ''),
+            'email': self.validated_data.get('email', ''),
+            'first_name': self.validated_data.get('first_name'),
+            'last_name': self.validated_data.get('last_name'),
+            'mobile_number': self.validated_data.get('mobile_number')
+        }
+
+    def save(self, request):
+        adapter = get_adapter()
+
+        user = adapter.new_user(request)
+        self.cleaned_data = self.get_cleaned_data()
+        adapter.save_user(request, user, self)
+
+        self.custom_signup(request, user)
+        setup_user_email(request, user, [])
+
+        return user

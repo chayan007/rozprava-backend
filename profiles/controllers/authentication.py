@@ -16,9 +16,12 @@ class Authenticator:
         username = kwargs.get('username')
         password = kwargs.get('password')
         email = kwargs.get('email')
+        phone_number = kwargs.get('phone_number')
         user = User.objects.filter(Q(username=username) | Q(email=email))
+
         if user:
             raise AssertionError('User Already Exists !')
+
         User.objects.create_user(
             username=username,
             email=email,
@@ -27,6 +30,10 @@ class Authenticator:
             last_name=last_name
         )
         user = authenticate(username=username, password=password)
+
+        user.profile.mobile_number = phone_number
+        user.profile.save()
+
         if not user:
             return None, {'error': 'Username/Password is incorrect.'}
         return user, {}

@@ -103,6 +103,10 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
+REST_AUTH_SERIALIZERS = {
+    'REGISTER_SERIALIZER': 'profiles.serializers.RegisterSerializer'
+}
+
 REST_USE_JWT = True
 
 WSGI_APPLICATION = 'rozprava.wsgi.application'
