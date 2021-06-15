@@ -126,7 +126,7 @@ DATABASES = {
     }
 }
 
-ASGI_APPLICATION = "rozprava.channels_app.routing.application"
+ASGI_APPLICATION = "chat.websocket.routing.application"
 
 CHANNEL_LAYERS = {
     "default": {
