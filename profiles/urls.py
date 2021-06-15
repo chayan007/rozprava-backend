@@ -19,8 +19,8 @@ from profiles.views.v1 import (
 
 urlpatterns = [
     # Functional Views
-    path('social-auth/', include('rest_auth.urls')),
-    path('social-auth/registration/', include('rest_auth.registration.urls')),
+    path('auth/', include('rest_auth.urls')),
+    path('auth/registration/', include('rest_auth.registration.urls')),
     path('social-auth/facebook/', FacebookLogin.as_view(), name='fb-login'),
     path('social-auth/twitter/', TwitterLogin.as_view(), name='twitter-login'),
     path('social-auth/google/', GoogleLogin.as_view(), name='google-login'),
