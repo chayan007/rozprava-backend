@@ -20,6 +20,6 @@ def get_profile_dp_image_upload_path(obj, filename: str) -> str:
 def check_if_request_authenticated(request) -> bool:
     return (
         request and
-        getattr(request, 'user') and
-        getattr(request.user, 'profile')
+        getattr(request, 'user', None) and
+        getattr(request.user, 'profile', None)
     )

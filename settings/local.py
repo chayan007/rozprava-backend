@@ -13,3 +13,14 @@ SOCIALACCOUNT_PROVIDERS = {
         }
     }
 }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'system_db',
+        'USER': 'system_db',
+        'PASSWORD': 'system_db',
+        'HOST': '101.53.146.142',
+        'PORT': 5432
+    }
+}
