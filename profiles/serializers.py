@@ -4,6 +4,9 @@ from allauth.utils import email_address_exists
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
+from rest_auth.models import TokenModel
+from rest_auth.serializers import UserDetailsSerializer
+from rest_auth.utils import import_callable
 from rest_framework import serializers
 
 from profiles.constants import PROFILE_PAGE_URL
@@ -76,7 +79,8 @@ class ProfileSerializer(serializers.ModelSerializer):
             'celebrity_rank',
             'is_celebrity',
             'profession',
-            'relationship_status'
+            'relationship_status',
+            'authenticated_details'
         )
 
 
@@ -166,3 +170,16 @@ class RegisterSerializer(serializers.Serializer):
         setup_user_email(request, user, [])
 
         return user
+
+
+class JWTSerializer(serializers.Serializer):
+    """
+    Serializer for JWT authentication.
+    """
+    token = serializers.CharField()
+    profile = serializers.SerializerMethodField()
+
+    def get_profile(self, obj):
+        profile = obj['user'].profile
+        user_data = ProfileSerializer(profile, context=self.context).data
+        return user_data
