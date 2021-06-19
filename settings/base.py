@@ -110,8 +110,10 @@ REST_FRAMEWORK = {
 }
 
 REST_AUTH_SERIALIZERS = {
-    'REGISTER_SERIALIZER': 'profiles.serializers.RegisterSerializer',
     'JWT_SERIALIZER': 'profiles.serializers.JWTSerializer'
+}
+REST_AUTH_REGISTER_SERIALIZERS = {
+    'REGISTER_SERIALIZER': 'profiles.serializers.RegisterSerializer'
 }
 
 REST_USE_JWT = True

@@ -110,8 +110,8 @@ class RegisterSerializer(serializers.Serializer):
     """Wrapper serializer over all-auth serializer."""
 
     username = serializers.CharField(
-        max_length=1,
-        min_length=50,
+        max_length=100,
+        min_length=1,
         required=True
     )
     email = serializers.EmailField(required=True)
