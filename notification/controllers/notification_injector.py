@@ -14,9 +14,9 @@ class NotificationInjector:
             for profile_uuid in profile_uuids
         ]
 
-    def trigger(self, notification_label: str, message_id):
+    def trigger(self, notification_label: str, message):
         """Triggers the notification kicking process."""
-        message = message_id or None # Use generic messages.
+        message = message or None
         getattr(self, notification_label)(message)
 
     def push(self, message: str):
@@ -24,7 +24,11 @@ class NotificationInjector:
         for profile in self.profiles:
             try:
                 notification_objs.append(
-                    Notification(profile=profile, message=message, type=Notification.NotificationType.PUSH.value)
+                    Notification(
+                        profile=profile,
+                        message=message,
+                        type=Notification.NotificationType.PUSH.value
+                    )
                 )
             except (AttributeError, ValueError):
                 capture_exception()
@@ -36,7 +40,11 @@ class NotificationInjector:
         for profile in self.profiles:
             try:
                 notification_objs.append(
-                    Notification(profile=profile, message=message, type=Notification.NotificationType.SMS.value, is_read=True)
+                    Notification(
+                        profile=profile,
+                        message=message, type=Notification.NotificationType.SMS.value,
+                        is_read=True
+                    )
                 )
             except (AttributeError, ValueError):
                 capture_exception()
@@ -48,7 +56,12 @@ class NotificationInjector:
         for profile in self.profiles:
             try:
                 notification_objs.append(
-                    Notification(profile=profile, message=message, type=Notification.NotificationType.EMAIL.value, is_read=True)
+                    Notification(
+                        profile=profile,
+                        message=message,
+                        type=Notification.NotificationType.EMAIL.value,
+                        is_read=True
+                    )
                 )
             except (AttributeError, ValueError):
                 capture_exception()
@@ -60,7 +73,12 @@ class NotificationInjector:
         for profile in self.profiles:
             try:
                 notification_objs.append(
-                    Notification(profile=profile, message=message, type=Notification.NotificationType.CALL.value, is_read=True)
+                    Notification(
+                        profile=profile,
+                        message=message,
+                        type=Notification.NotificationType.CALL.value,
+                        is_read=True
+                    )
                 )
             except (AttributeError, ValueError):
                 capture_exception()
