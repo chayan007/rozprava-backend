@@ -51,7 +51,7 @@ class ProfileSerializer(serializers.ModelSerializer):
     def get_authenticated_details(self, obj):
         """Return details that authenticated profiles can see."""
         request = self.context.get('request')
-        if check_if_request_authenticated(request):
+        if not check_if_request_authenticated(request):
             return {}
         return {
             'is_following': self.is_following(request.user.profile, obj)
