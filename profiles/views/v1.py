@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from sentry_sdk import capture_exception
 
 from profiles.controllers.group_handler import GroupObjectHandler, GroupProfileHandler
+from profiles.controllers.profile_handler import ProfileHandler
 from profiles.controllers.profile_interest_handler import ProfileInterestHandler
 from profiles.exceptions import UserValidationFailedException
 from profiles.models import Profile
@@ -22,6 +23,20 @@ class ProfileView(GenericAPIView):
         return Response(
             status=status.HTTP_200_OK,
             data=serialized_profile.data
+        )
+
+    def put(self, request, username: str):
+        """Update profile details."""
+        is_updated = ProfileHandler(
+            request.user.profile.uuid
+        ).update_details(request.data)
+        if is_updated:
+            message = {'message': f'Profile {request.user.username} details has been updated.'}
+        else:
+            message = {'error': 'Failed to update profile details.'}
+        return Response(
+            data=message,
+            status=status.HTTP_202_ACCEPTED
         )
 
 

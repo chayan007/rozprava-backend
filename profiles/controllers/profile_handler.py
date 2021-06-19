@@ -19,6 +19,12 @@ class ProfileHandler:
         for attribute, value in updated_details.items():
             if attribute in self.NON_UPDATABLE_FIELDS:
                 continue
+
+            if attribute == 'password':
+                self.profile.user.set_password(value)
+                self.profile.user.save()
+                continue
+
             setattr(self.profile, attribute, value)
         try:
             self.profile.save()
