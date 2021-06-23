@@ -1,3 +1,5 @@
+import datetime
+
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 
@@ -105,7 +107,7 @@ AUTHENTICATION_BACKENDS = [
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
     )
 }
 
@@ -117,6 +119,9 @@ REST_AUTH_REGISTER_SERIALIZERS = {
 }
 
 REST_USE_JWT = True
+JWT_AUTH = {
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=7 * 24 * 60 * 60)
+}
 
 WSGI_APPLICATION = 'rozprava.wsgi.application'
 

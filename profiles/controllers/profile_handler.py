@@ -11,13 +11,19 @@ class ProfileHandler:
         'is_verified'
     ]
 
+    USER_FIELDS = [
+        'first_name',
+        'last_name',
+        'username'
+    ]
+
     def __init__(self, profile_uuid: str):
         self.profile = Profile.objects.get(uuid=profile_uuid)
 
     def update_details(self, updated_details: dict):
         """Edit profile object attributes."""
         for attribute, value in updated_details.items():
-            if attribute in self.NON_UPDATABLE_FIELDS:
+            if attribute in self.NON_UPDATABLE_FIELDS or not value:
                 continue
 
             if attribute == 'password':
@@ -25,7 +31,11 @@ class ProfileHandler:
                 self.profile.user.save()
                 continue
 
-            setattr(self.profile, attribute, value)
+            if attribute in self.USER_FIELDS:
+                setattr(self.profile.user, attribute, value)
+                self.profile.user.save()
+            else:
+                setattr(self.profile, attribute, value)
         try:
             self.profile.save()
             return True
