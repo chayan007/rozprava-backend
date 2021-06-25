@@ -15,11 +15,13 @@ from profiles.serializers import ProfileSerializer, GroupSerializer
 class ProfileView(GenericAPIView):
     """Individual profile view."""
 
+    serializer_class = ProfileSerializer
+
     def get(self, request, username: str):
         """Get profile by username."""
         user_name = username or request.user.username
         profile = Profile.objects.get(user__username=user_name)
-        serialized_profile = ProfileSerializer(profile, context={'request': request})
+        serialized_profile = self.serializer_class(profile, context={'request': request})
         return Response(
             status=status.HTTP_200_OK,
             data=serialized_profile.data
@@ -27,11 +29,15 @@ class ProfileView(GenericAPIView):
 
     def put(self, request, username: str):
         """Update profile details."""
-        is_updated = ProfileHandler(
+        profile = ProfileHandler(
             request.user.profile.uuid
         ).update_details(request.data)
-        if is_updated:
-            message = {'message': f'Profile {request.user.username} details has been updated.'}
+        if profile:
+            serialized_profile = self.serializer_class(profile, context={'request': request})
+            message = {
+                'message': f'Profile {request.user.username} details has been updated.',
+                'profile': serialized_profile.data
+            }
         else:
             message = {'error': 'Failed to update profile details.'}
         return Response(

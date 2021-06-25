@@ -38,7 +38,7 @@ class ProfileHandler:
                 setattr(self.profile, attribute, value)
         try:
             self.profile.save()
-            return True
+            return self.profile
         except (AttributeError, ValueError):
             capture_exception()
             return False
