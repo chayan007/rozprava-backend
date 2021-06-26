@@ -33,6 +33,9 @@ class ProfileView(GenericAPIView):
             request.user.profile.uuid
         ).update_details(request.data)
         if profile:
+            if profile.user.username != username:
+                raise UserValidationFailedException('Something is fishy! Please try again properly.')
+
             serialized_profile = self.serializer_class(profile, context={'request': request})
             message = {
                 'message': f'Profile {request.user.username} details has been updated.',
