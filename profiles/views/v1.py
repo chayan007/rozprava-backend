@@ -1,6 +1,7 @@
 from django.db.models import Q, Count
 from rest_framework import status
 from rest_framework.generics import GenericAPIView, ListAPIView
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from sentry_sdk import capture_exception
 
@@ -16,6 +17,7 @@ class ProfileView(GenericAPIView):
     """Individual profile view."""
 
     serializer_class = ProfileSerializer
+    permission_classes = (IsAuthenticated, )
 
     def get(self, request, username: str):
         """Get profile by username."""
