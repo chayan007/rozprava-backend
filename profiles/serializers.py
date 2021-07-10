@@ -4,14 +4,11 @@ from allauth.utils import email_address_exists
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
-from rest_auth.models import TokenModel
-from rest_auth.serializers import UserDetailsSerializer
-from rest_auth.utils import import_callable
 from rest_framework import serializers
 
 from profiles.constants import PROFILE_PAGE_URL
 from profiles.models import Group, Profile, FollowerMap
-from profiles.utilities import check_if_request_authenticated
+from profiles.utilities import check_if_request_authenticated, get_profile_metrics
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -40,6 +37,7 @@ class ProfileSerializer(serializers.ModelSerializer):
     user = UserSerializer()
     profile_link = serializers.SerializerMethodField()
     authenticated_details = serializers.SerializerMethodField()
+    metrics = serializers.SerializerMethodField()
 
     @staticmethod
     def is_following(follower, following) -> bool:
@@ -53,9 +51,7 @@ class ProfileSerializer(serializers.ModelSerializer):
         request = self.context.get('request')
         if not check_if_request_authenticated(request):
             return {}
-        return {
-            'is_following': self.is_following(request.user.profile, obj)
-        }
+        return {'is_following': self.is_following(request.user.profile, obj)}
 
     def get_profile_link(self, obj):
         """Generate profile link using the object."""
@@ -63,6 +59,10 @@ class ProfileSerializer(serializers.ModelSerializer):
             base_url=settings.BASE_URL,
             username=obj.user.username
         )
+
+    def get_metrics(self, obj):
+        """Get profile metrics."""
+        return get_profile_metrics(obj)
 
     class Meta:
         model = Profile
