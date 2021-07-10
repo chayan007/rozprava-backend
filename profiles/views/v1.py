@@ -5,6 +5,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from sentry_sdk import capture_exception
 
+from base.constants import COMMON_ERROR_MESSAGE
+
 from profiles.controllers.group_handler import GroupObjectHandler, GroupProfileHandler
 from profiles.controllers.profile_handler import ProfileHandler
 from profiles.controllers.profile_interest_handler import ProfileInterestHandler
@@ -36,7 +38,7 @@ class ProfileView(GenericAPIView):
         ).update_details(request.data)
         if profile:
             if profile.user.username != username:
-                raise UserValidationFailedException('Something is fishy! Please try again properly.')
+                raise UserValidationFailedException(COMMON_ERROR_MESSAGE)
 
             serialized_profile = self.serializer_class(profile, context={'request': request})
             message = {
