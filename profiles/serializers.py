@@ -6,9 +6,11 @@ from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from rest_framework import serializers
 
+from case.models import Case
+
 from profiles.constants import PROFILE_PAGE_URL
 from profiles.models import Group, Profile, FollowerMap
-from profiles.utilities import check_if_request_authenticated, get_profile_metrics
+from profiles.utilities import check_if_request_authenticated
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -53,6 +55,14 @@ class ProfileSerializer(serializers.ModelSerializer):
             return {}
         return {'is_following': self.is_following(request.user.profile, obj)}
 
+    @staticmethod
+    def get_profile_metrics(profile: Profile) -> dict:
+        return {
+            'posts': Case.objects.filter(profile=profile).count(),
+            'followers': FollowerMap.objects.filter(following=profile).count(),
+            'following': FollowerMap.objects.filter(follower=profile).count()
+        }
+
     def get_profile_link(self, obj):
         """Generate profile link using the object."""
         return PROFILE_PAGE_URL.format(
@@ -62,7 +72,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     def get_metrics(self, obj):
         """Get profile metrics."""
-        return get_profile_metrics(obj)
+        return self.get_profile_metrics(obj)
 
     class Meta:
         model = Profile
