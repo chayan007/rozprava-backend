@@ -231,7 +231,10 @@ class JoinGroupView(GenericAPIView):
             )
 
         return Response(
-            data={'error': 'Failed to join the group.'},
+            data={
+                'error': ('Failed to join the group. In case there are already '
+                          '6 members, you need to opt for paid group.')
+            },
             status=status.HTTP_400_BAD_REQUEST
         )
 

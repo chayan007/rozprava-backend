@@ -3,6 +3,8 @@ from typing import Union
 from django.db import IntegrityError
 from sentry_sdk import capture_exception
 
+from base.controllers.configuration_manager import ConfigurationManager
+
 from profiles.exceptions import UserValidationFailedException
 from profiles.models import Group, Profile
 
@@ -11,10 +13,10 @@ class GroupObjectHandler:
 
     @staticmethod
     def create(
-            profile: Profile,
-            name: str,
-            is_paid: bool,
-            description: Union[str, None]
+        profile: Profile,
+        name: str,
+        is_paid: bool,
+        description: Union[str, None]
     ) -> Union[Group, bool]:
         """Create a group and add the user as admin."""
         try:
@@ -67,6 +69,12 @@ class GroupProfileHandler:
     def join(self, profile: Profile) -> bool:
         """Add profile to a group."""
         try:
+            if (
+                not self.group.is_paid and
+                len(self.group.profiles) > ConfigurationManager().get('FREE_TIER_MAX_MEMBERS')
+            ):
+                return False
+
             self.group.profiles.add(profile)
             self.group.save()
             return True
