@@ -90,7 +90,8 @@ class ProfileSerializer(serializers.ModelSerializer):
             'is_celebrity',
             'profession',
             'relationship_status',
-            'authenticated_details'
+            'authenticated_details',
+            'metrics'
         )
 
 
