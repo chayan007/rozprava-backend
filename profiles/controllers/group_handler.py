@@ -5,7 +5,7 @@ from sentry_sdk import capture_exception
 
 from base.controllers.configuration_manager import ConfigurationManager
 
-from profiles.exceptions import UserValidationFailedException
+from profiles.exceptions import InvalidPermissionException
 from profiles.models import Group, Profile
 
 
@@ -73,7 +73,7 @@ class GroupProfileHandler:
                 not self.group.is_paid and
                 len(self.group.profiles) > ConfigurationManager().get('FREE_TIER_MAX_MEMBERS')
             ):
-                return False
+                raise InvalidPermissionException('You need to purchase paid plan to add more members.')
 
             self.group.profiles.add(profile)
             self.group.save()
@@ -95,7 +95,7 @@ class GroupProfileHandler:
     def make_admin(self, admin_profile: Profile, profile_uuid: str) -> bool:
         """Make profile a group admin."""
         if admin_profile not in self.group.admins:
-            raise UserValidationFailedException('Only admins are allowed to create admins.')
+            raise InvalidPermissionException('Only admins are allowed to create admins.')
 
         try:
             profile = Profile.objects.get(uuid=profile_uuid)

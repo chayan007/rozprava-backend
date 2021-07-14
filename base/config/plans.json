@@ -1,0 +1,21 @@
+[
+  {
+    "name": "Group Plan Config",
+    "key": "GROUP_PLAN_CONFIG",
+    "value": [{
+      "name": "Free",
+      "cost": 0,
+      "period": 30
+    },
+    {
+      "name": "Paid",
+      "cost": 10,
+      "period": 365
+    }]
+  },
+  {
+    "name": "Minimum Per Day Ads Amount Allotment",
+    "key": "MINIMUM_PER_DAY_ADS_AMOUNT_ALLOTMENT",
+    "value": 50
+  }
+]

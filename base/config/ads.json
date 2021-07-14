@@ -1,7 +1,18 @@
 [
   {
-    "name": "Minimum Per Day Amount Allotment",
-    "key": "MINIMUM_PER_DAY_AMOUNT_ALLOTMENT",
-    "value": 75
+    "name": "Company Advertisements",
+    "key": "COMPANY_ADVERTISEMENT",
+    "value": [
+      {
+        "position": "post-ad",
+        "content": "Rozprava launches platform for influencers.",
+        "image_url": "https://i.pinimg.com/originals/cd/4f/c0/cd4fc09b70207bc5e3990cbe6b22be9f.jpg"
+      },
+      {
+        "position": "foot-ad",
+        "content": "Invite your friends and validate your opinions.",
+        "image_url": "https://i.pinimg.com/originals/cd/4f/c0/cd4fc09b70207bc5e3990cbe6b22be9f.jpg"
+      }
+    ]
   }
 ]
