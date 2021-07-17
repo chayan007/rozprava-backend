@@ -8,6 +8,7 @@ class CaseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Case
         fields = (
+            'uuid',
             'profile',
             'question',
             'description',

@@ -25,11 +25,12 @@ class CaseHandler:
             cases = cases.filter(category=category)
         if username:
             cases = cases.filter(profile__user__username=username)
-        return (
-            cases.annotate(activity_hype=Count('activity')).order_by('-activity_hype')
-            if not is_ordered
-            else cases.order_by('created_at')
-        )
+        # return (
+        #     cases.annotate(activity_hype=Count('activities')).order_by('-activity_hype')
+        #     if not is_ordered
+        #     else cases.order_by('created_at')
+        # )
+        return cases.order_by('created_at')
 
     @staticmethod
     def create(user: User, ip_address: str, **kwargs) -> Case:

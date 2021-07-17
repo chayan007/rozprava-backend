@@ -83,7 +83,7 @@ class ProfileUpdateView(GenericAPIView):
         'profession', 'gender', 'relationship_status'
     ]
 
-    def post(self, request, *args, **kwargs):
+    def put(self, request, *args, **kwargs):
         profile = request.user.profile
         for field in self.FIELDS_ALLOWED_TO_BE_UPDATED:
             setattr(
