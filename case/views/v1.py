@@ -22,7 +22,9 @@ class CaseListView(ListAPIView):
 
     def get_queryset(self):
         category = self.kwargs.get('category')
-        return CaseHandler().filter(category)
+        username = self.kwargs.get('username')
+        is_ordered = bool(self.kwargs.get('is_ordered', 0))
+        return CaseHandler().filter(category, username, is_ordered)
 
 
 class CaseView(GenericAPIView):

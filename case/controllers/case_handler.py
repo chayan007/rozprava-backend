@@ -19,9 +19,17 @@ class CaseHandler:
         return Case.records.get(slug=slug)
 
     @staticmethod
-    def filter(category: int = None) -> [Case]:
-        cases = Case.records.filter(category=category) if category else Case.records.all()
-        return cases.annotate(activity_hype=Count('activity')).order_by('-activity_hype')
+    def filter(category: int = None, username: str = None, is_ordered: bool = False) -> [Case]:
+        cases = Case.records.all()
+        if category:
+            cases = cases.filter(category=category)
+        if username:
+            cases = cases.filter(profile__user__username=username)
+        return (
+            cases.annotate(activity_hype=Count('activity')).order_by('-activity_hype')
+            if not is_ordered
+            else cases.order_by('created_at')
+        )
 
     @staticmethod
     def create(user: User, ip_address: str, **kwargs) -> Case:
