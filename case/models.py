@@ -45,10 +45,10 @@ class Case(BaseModel):
     status = models.SmallIntegerField(choices=CaseStatus.choices, default=CaseStatus.ACTIVE.value)
     group = models.ForeignKey(Group, on_delete=models.CASCADE, null=True, blank=True)
 
-    proofs = models.ManyToManyField(Proof)
+    proofs = models.ManyToManyField(Proof, null=True, blank=True)
     activities = GenericRelation(Activity)
-    tags = models.ManyToManyField(HashTag)
-    location = models.ForeignKey(Location, on_delete=models.CASCADE, null=True)
+    tags = models.ManyToManyField(HashTag, null=True, blank=True)
+    location = models.ForeignKey(Location, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return '[{}] -> {}'.format(
