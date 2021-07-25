@@ -14,7 +14,11 @@ from profiles.views.v1 import (
     JoinGroupView,
     LeaveGroupView,
     GroupAdminChangeView,
-    ProfileInterestView
+    ProfileInterestView,
+    ResetPasswordView,
+    ResetPasswordCheckUserView,
+    ResetPasswordSendOTPView,
+    ResetPasswordVerifyOTPView
 )
 
 urlpatterns = [
@@ -40,5 +44,11 @@ urlpatterns = [
     path('group/admin/<group_uuid>', GroupAdminChangeView.as_view(), name='group-delete'),
     path('group/admin/<group_uuid>', GroupAdminChangeView.as_view(), name='group-delete'),
 
-    path('user/<username>/', ProfileView.as_view(), name='profile-detail')
+    path('user/<user_string>/', ProfileView.as_view(), name='profile-detail'),
+
+    # Reset Password APIs
+    path('reset-password/check-user/<user_string>/', ResetPasswordCheckUserView.as_view(), name='check-user'),
+    path('reset-password/send-otp/<username>/', ResetPasswordSendOTPView.as_view(), name='send-otp'),
+    path('reset-password/verify-otp/<username>/<int:otp>/', ResetPasswordVerifyOTPView.as_view(), name='verify-otp'),
+    path('reset-password/change-password/<username>/', ResetPasswordView.as_view(), name='change-password'),
 ]

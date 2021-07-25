@@ -7,6 +7,7 @@ from sentry_sdk import capture_exception
 
 from base.constants import COMMON_ERROR_MESSAGE
 
+from profiles.controllers.authentication import Authenticator
 from profiles.controllers.group_handler import GroupObjectHandler, GroupProfileHandler
 from profiles.controllers.profile_handler import ProfileHandler
 from profiles.controllers.profile_interest_handler import ProfileInterestHandler
@@ -21,10 +22,12 @@ class ProfileView(GenericAPIView):
     serializer_class = ProfileSerializer
     permission_classes = (IsAuthenticated, )
 
-    def get(self, request, username: str):
+    def get(self, request, user_string: str):
         """Get profile by username."""
-        user_name = username or request.user.username
-        profile = Profile.objects.get(user__username=user_name)
+        if '@' in user_string:
+            profile = Profile.objects.get(user__email=user_string)
+        else:
+            profile = Profile.objects.get(user__username=user_string)
         serialized_profile = self.serializer_class(profile, context={'request': request})
         return Response(
             status=status.HTTP_200_OK,
@@ -307,4 +310,65 @@ class ProfileInterestView(GenericAPIView):
         return Response(
             data={'message': 'Removed category(s) from profile interest.'},
             status=status.HTTP_200_OK
+        )
+
+
+class ResetPasswordCheckUserView(GenericAPIView):
+
+    def get(self, request, user_string: str):
+        """Get profile by username/email."""
+        if '@' in user_string:
+            profile = Profile.objects.get(user__email=user_string)
+        else:
+            profile = Profile.objects.get(user__username=user_string)
+
+        return Response(
+            status=status.HTTP_200_OK,
+            data={'username': profile.user.username}
+        )
+
+
+class ResetPasswordSendOTPView(GenericAPIView):
+
+    authenticator_class = Authenticator()
+
+    def post(self, request, username: str):
+        """Send OTP to user."""
+        profile = Profile.objects.get(user__username=username)
+        self.authenticator_class.initiate_reset_password(profile.user.email)
+
+        return Response(
+            status=status.HTTP_200_OK,
+            data={'message': 'OTP has been sent.'}
+        )
+
+
+class ResetPasswordVerifyOTPView(GenericAPIView):
+
+    authenticator_class = Authenticator()
+
+    def put(self, request, username: str, otp: int):
+        """Verify OTP sent to user."""
+        is_verified = self.authenticator_class.verify_otp(username, otp)
+
+        return Response(
+            status=status.HTTP_200_OK if is_verified else status.HTTP_400_BAD_REQUEST,
+            data={'status': bool(is_verified)}
+        )
+
+
+class ResetPasswordView(GenericAPIView):
+
+    authenticator_class = Authenticator()
+
+    def put(self, request, username: str):
+        """Reset password given by user."""
+        is_done = self.authenticator_class.reset_password(
+            username,
+            request.data.get('password')
+        )
+
+        return Response(
+            status=status.HTTP_202_ACCEPTED if is_done else status.HTTP_400_BAD_REQUEST,
+            data={'status': bool(is_done)}
         )

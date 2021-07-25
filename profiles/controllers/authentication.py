@@ -61,18 +61,21 @@ class Authenticator:
         )
 
     @staticmethod
-    def reset_password(username: str, reset_otp: str, password: str):
+    def verify_otp(username: str, otp: int) -> bool:
         user = User.objects.get(username=username)
         otp_object = OTPVerification.objects.get(
             profile=user.profile,
             verifier_tag=OTPVerification.VerifierTag.PASSWORD_RESET,
             is_verified=False
         )
-        if otp_object.otp == reset_otp:
-            # Step 1: Update the flag in OTPVerification object.
+        if otp_object.otp == otp:
             otp_object.is_verified = True
             otp_object.save()
-            # Step 2: Update the password in user.
-            user.set_password(raw_password=password)
-            user.save()
-        raise AssertionError('Wrong OTP provided ! Please try again !')
+            return True
+
+    @staticmethod
+    def reset_password(username: str, password: str):
+        user = User.objects.get(username=username)
+        user.set_password(raw_password=password)
+        user.save()
+        return True
