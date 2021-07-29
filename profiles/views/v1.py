@@ -317,14 +317,15 @@ class ResetPasswordCheckUserView(GenericAPIView):
 
     def get(self, request, user_string: str):
         """Get profile by username/email."""
-        if '@' in user_string:
-            profile = Profile.objects.get(user__email=user_string)
-        else:
-            profile = Profile.objects.get(user__username=user_string)
+        try:
+            profile = (Profile.objects.get(user__email=user_string) if '@' in user_string else Profile.objects.get(user__username=user_string))
+            data = {'username': profile.user.username}
+        except Profile.DoesNotExist:
+            data = {'error': 'No records found for the username / email.'}
 
         return Response(
             status=status.HTTP_200_OK,
-            data={'username': profile.user.username}
+            data=data
         )
 
 
