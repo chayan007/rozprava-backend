@@ -1,5 +1,6 @@
 from rest_framework import status
 from rest_framework.generics import ListAPIView
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from notification.controllers.notification_handler import NotificationHandler
@@ -10,6 +11,7 @@ class NotificationView(ListAPIView):
     """Handle notifications for profile."""
 
     serializer_class = NotificationSerializer
+    permission_class = (IsAuthenticated, )
 
     def get(self, request, *args, **kwargs):
         """Retrieve list of notifications for an user."""
