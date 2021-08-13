@@ -1,6 +1,7 @@
 from sentry_sdk import capture_exception
 
 from notification.models import Notification
+
 from profiles.models import Profile
 
 
@@ -12,7 +13,7 @@ class NotificationHandler:
 
     def get(self, notification_label: str):
         """Get all notifications of specific label for the profile."""
-        notifications = getattr(self, notification_label or 'push')
+        notifications = getattr(self, notification_label or 'push')()
         return notifications
 
     @staticmethod
@@ -36,24 +37,24 @@ class NotificationHandler:
 
     def push(self):
         return Notification.objects.filter(
-            profile=self.profile,
+            profile__in=self.profile,
             type=Notification.NotificationType.PUSH.value
         ).order_by('-created_at')
 
     def sms(self):
         return Notification.objects.filter(
-            profile=self.profile,
+            profile__in=self.profile,
             type=Notification.NotificationType.SMS.value
         ).order_by('-created_at')
 
     def email(self):
         return Notification.objects.filter(
-            profile=self.profile,
+            profile__in=self.profile,
             type=Notification.NotificationType.EMAIL.value
         ).order_by('-created_at')
 
     def call(self):
         return Notification.objects.filter(
-            profile=self.profile,
+            profile__in=self.profile,
             type=Notification.NotificationType.CALL.value
         ).order_by('-created_at')

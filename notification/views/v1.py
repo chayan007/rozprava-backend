@@ -18,7 +18,7 @@ class NotificationView(ListAPIView):
         notifications = NotificationHandler(
             request.user.profile.uuid
         ).get(
-            kwargs.get('notification_type')
+            request.query_params.get('notification_type')
         )
         serialized_notifications = self.serializer_class(notifications, many=True)
         return Response(
