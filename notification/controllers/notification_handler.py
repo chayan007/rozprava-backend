@@ -12,7 +12,7 @@ class NotificationHandler:
 
     def get(self, notification_label: str):
         """Get all notifications of specific label for the profile."""
-        notifications = getattr(self, notification_label)
+        notifications = getattr(self, notification_label or 'push')
         return notifications
 
     @staticmethod
