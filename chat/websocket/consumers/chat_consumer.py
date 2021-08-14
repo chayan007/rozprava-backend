@@ -6,12 +6,24 @@ from django.contrib.auth.models import User
 
 from chat.models import OneToOneMessage
 
+from profiles.models import Profile
+
 
 class ChatConsumer(WebsocketConsumer):
+
+    def __init__(self):
+        self.room_name = None
+        self.room_group_name = None
+        self.sender = None
+        self.receiver = None
 
     async def connect(self):
         self.room_name = self.scope['url_route']['kwargs']['room_name']
         self.room_group_name = 'chat_%s' % self.room_name
+
+        sender_identifier, receiver_identifier = self.room_name.split('><')
+        self.sender = Profile.objects.get(user__username=sender_identifier)
+        self.receiver = Profile.objects.get(user__username=receiver_identifier)
 
         # Join room group
         await self.channel_layer.group_add(

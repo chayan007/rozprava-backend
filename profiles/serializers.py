@@ -8,7 +8,7 @@ from rest_framework import serializers
 
 from case.models import Case
 
-from profiles.constants import PROFILE_PAGE_URL
+from profiles.constants import PROFILE_PAGE_URL, UsernameValidations
 from profiles.models import Group, Profile, FollowerMap
 from profiles.utilities import check_if_request_authenticated
 
@@ -135,7 +135,19 @@ class RegisterSerializer(serializers.Serializer):
 
     @staticmethod
     def validate_username(username: str):
-        return get_adapter().clean_username(username)
+        cleaned_username = get_adapter().clean_username(username)
+
+        if len(username) > UsernameValidations.MAXIMUM_LENGTH:
+            raise serializers.ValidationError(
+                _(f"Username cannot exceed {UsernameValidations.MAXIMUM_LENGTH} characters.")
+            )
+
+        if any(character in username for character in UsernameValidations.BLACKLIST_CHARACTERS):
+            raise serializers.ValidationError(
+                _(f"Username cannot have characters like {','.join(UsernameValidations.BLACKLIST_CHARACTERS)}.")
+            )
+
+        return cleaned_username
 
     @staticmethod
     def validate_email(email: str):
