@@ -16,5 +16,6 @@ class NotificationSerializer(serializers.ModelSerializer):
             'profile',
             'message',
             'type',
-            'is_read'
+            'is_read',
+            'redirect_url'
         )
