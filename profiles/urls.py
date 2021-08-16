@@ -15,6 +15,7 @@ from profiles.views.v1 import (
     LeaveGroupView,
     GroupAdminChangeView,
     ProfileInterestView,
+    ProfileSearchView,
     ResetPasswordView,
     ResetPasswordCheckUserView,
     ResetPasswordSendOTPView,
@@ -44,6 +45,7 @@ urlpatterns = [
     path('group/admin/<group_uuid>', GroupAdminChangeView.as_view(), name='group-delete'),
     path('group/admin/<group_uuid>', GroupAdminChangeView.as_view(), name='group-delete'),
 
+    path('user/search/<username>/', ProfileSearchView.as_view(), name='profile-search'),
     path('user/<user_string>/', ProfileView.as_view(), name='profile-detail'),
 
     # Reset Password APIs
