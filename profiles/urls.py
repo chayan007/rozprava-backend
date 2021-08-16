@@ -5,7 +5,7 @@ from profiles.controllers.social.google_login import GoogleLogin
 from profiles.controllers.social.twitter_login import TwitterLogin
 from profiles.views.v1 import (
     PasswordUpdateView,
-    ProfileListView,
+    ProfileSearchView,
     ProfileUpdateView,
     ProfileView,
     GroupView,
@@ -15,7 +15,6 @@ from profiles.views.v1 import (
     LeaveGroupView,
     GroupAdminChangeView,
     ProfileInterestView,
-    ProfileSearchView,
     ResetPasswordView,
     ResetPasswordCheckUserView,
     ResetPasswordSendOTPView,
@@ -31,7 +30,7 @@ urlpatterns = [
     path('social-auth/google/', GoogleLogin.as_view(), name='google-login'),
 
     # Class Based Views
-    path('list/', ProfileListView.as_view(), name='list'),
+    path('search/<search_username>', ProfileSearchView.as_view(), name='list'),
     path('password/reset/', PasswordUpdateView.as_view(), name='password-reset'),
     path('update/', ProfileUpdateView.as_view(), name='profile-update'),
 
@@ -45,7 +44,6 @@ urlpatterns = [
     path('group/admin/<group_uuid>', GroupAdminChangeView.as_view(), name='group-delete'),
     path('group/admin/<group_uuid>', GroupAdminChangeView.as_view(), name='group-delete'),
 
-    path('user/search/<username>/', ProfileSearchView.as_view(), name='profile-search'),
     path('user/<user_string>/', ProfileView.as_view(), name='profile-detail'),
 
     # Reset Password APIs

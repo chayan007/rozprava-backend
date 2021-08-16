@@ -56,7 +56,7 @@ class ProfileView(GenericAPIView):
         )
 
 
-class ProfileListView(ListAPIView):
+class ProfileSearchView(ListAPIView):
     """Get list of profiles."""
 
     model = Profile
@@ -376,20 +376,4 @@ class ResetPasswordView(GenericAPIView):
         return Response(
             status=status.HTTP_202_ACCEPTED if is_done else status.HTTP_400_BAD_REQUEST,
             data={'status': bool(is_done)}
-        )
-
-
-class ProfileSearchView(ListAPIView):
-    """Search profile based on the keywords sent."""
-
-    serializer_class = ProfileSerializer
-    model = Profile
-    paginate_by = 50
-
-    def get_queryset(self):
-        username = self.kwargs.get('username')
-        return Profile.records.filter(
-            Q(user__username__icontains=username) |
-            Q(user__first_name__icontains=username) |
-            Q(user__last_name__icontains=username)
         )
