@@ -60,7 +60,7 @@ class ProfileSearchView(ListAPIView):
     """Get list of profiles."""
 
     model = Profile
-    paginate_by = 50
+    paginate_by = 20
 
     def get_queryset(self):
         search_username = self.request.query_params.get('username', None)
@@ -377,3 +377,16 @@ class ResetPasswordView(GenericAPIView):
             status=status.HTTP_202_ACCEPTED if is_done else status.HTTP_400_BAD_REQUEST,
             data={'status': bool(is_done)}
         )
+
+
+class RecommendProfileView(ListAPIView):
+    """Get list of recommended profiles."""
+
+    model = Profile
+    paginate_by = 9
+
+    def get_queryset(self):
+        # TODO: Implement better logic for profile recommendations after beta is released.
+        queryset = self.model.objects.all()
+        queryset.annotate(follower_count=Count('follower')).order_by('-follower_count')
+        return queryset.order_by('-created_at')
