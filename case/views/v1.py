@@ -1,3 +1,4 @@
+from django.db.models import Count
 from rest_framework import status
 from rest_framework.generics import GenericAPIView, ListAPIView
 from rest_framework.response import Response
@@ -97,3 +98,16 @@ class CaseActivityView(APIView):
             data={'message': 'Oops! Something went wrong. Try again later.'},
             status=status.HTTP_304_NOT_MODIFIED
         )
+
+
+class RecommendCaseView(ListAPIView):
+    """Get list of recommended cases."""
+
+    model = Case
+    paginate_by = 9
+
+    def get_queryset(self):
+        # TODO: Implement better logic for cases recommendations after beta is released.
+        queryset = self.model.objects.all()
+        queryset.annotate(activity_hype=Count('acitvity')).order_by('-activity_hype')
+        return queryset.order_by('-created_at')
