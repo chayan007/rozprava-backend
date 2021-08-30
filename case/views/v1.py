@@ -105,6 +105,7 @@ class RecommendCaseView(ListAPIView):
 
     model = Case
     paginate_by = 9
+    serializer_class = CaseSerializer
 
     def get_queryset(self):
         # TODO: Implement better logic for cases recommendations after beta is released.

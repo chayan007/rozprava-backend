@@ -384,6 +384,7 @@ class RecommendProfileView(ListAPIView):
 
     model = Profile
     paginate_by = 9
+    serializer_class = ProfileSerializer
 
     def get_queryset(self):
         # TODO: Implement better logic for profile recommendations after beta is released.
