@@ -44,6 +44,7 @@ class Case(BaseModel):
     against_label = models.CharField(max_length=100, default='Against')
     status = models.SmallIntegerField(choices=CaseStatus.choices, default=CaseStatus.ACTIVE.value)
     group = models.ForeignKey(Group, on_delete=models.CASCADE, null=True, blank=True)
+    is_anonymous = models.BooleanField(default=False)
 
     proofs = models.ManyToManyField(Proof, null=True, blank=True)
     activities = GenericRelation(Activity)
