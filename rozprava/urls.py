@@ -12,6 +12,7 @@ Core Rozprava Business Logic Routes
 
 core_urls = [
     path('admin/', admin.site.urls),
+    path('activity/', include('activity.urls'), name='activity'),
     path('ads/', include('ads.urls'), name='ads'),
     path('case/', include('case.urls'), name='case'),
     path('chat/', include('chat.urls'), name='chat'),
