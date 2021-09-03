@@ -7,7 +7,11 @@ from profiles.serializers import ProfileSerializer
 
 class CaseSerializer(serializers.ModelSerializer):
 
-    profile = ProfileSerializer()
+    profile = serializers.SerializerMethodField()
+
+    def get_profile(self, obj):
+        if not obj.is_anonymous:
+            return ProfileSerializer()
 
     class Meta:
         model = Case
