@@ -30,7 +30,7 @@ class CaseSerializer(serializers.ModelSerializer):
             'for_label',
             'against_label',
             'metrics',
-            'created_on'
+            'created_at'
         )
 
 
