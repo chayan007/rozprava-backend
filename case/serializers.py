@@ -28,7 +28,9 @@ class CaseSerializer(serializers.ModelSerializer):
             'category',
             'slug',
             'for_label',
-            'against_label'
+            'against_label',
+            'metrics',
+            'created_on'
         )
 
 
