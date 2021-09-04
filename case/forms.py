@@ -9,3 +9,4 @@ class CaseForm(forms.Form):
     category = forms.IntegerField(min_value=0, max_value=9)
     for_label = forms.CharField(max_length=300, required=False)
     against_label = forms.CharField(max_length=300, required=False)
+

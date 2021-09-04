@@ -58,7 +58,7 @@ class CaseView(GenericAPIView):
 
     def post(self, request, *args, **kwargs):
         """Create a case."""
-        case_form_validation = CaseForm(data=request.POST)
+        case_form_validation = CaseForm(data=request.data)
         if not case_form_validation.is_valid():
             return Response(
                 data=case_form_validation.errors,

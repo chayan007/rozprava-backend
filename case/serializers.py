@@ -11,7 +11,7 @@ class CaseSerializer(serializers.ModelSerializer):
 
     def get_profile(self, obj):
         if not obj.is_anonymous:
-            return ProfileSerializer()
+            return ProfileSerializer(obj.profile).data
 
     class Meta:
         model = Case
