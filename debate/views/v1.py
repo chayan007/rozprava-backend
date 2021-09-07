@@ -21,7 +21,7 @@ class DebateListView(ListAPIView):
     paginate_by = 50
 
     def get_queryset(self):
-        slug = self.kwargs.get('slug')
+        slug = self.request.query_params['slug']
         queryset = (
             DebateHandler().get_based_on_case(slug)
             if slug
