@@ -19,7 +19,7 @@ class ChatConsumer(WebsocketConsumer):
 
     async def connect(self):
         self.room_name = self.scope['url_route']['kwargs']['room_name']
-        self.room_group_name = 'chat_%s' % self.room_name
+        self.room_group_name = f'chat_{self.room_name}'
 
         sender_identifier, receiver_identifier = self.room_name.split('><')
         self.sender = Profile.objects.get(user__username=sender_identifier)

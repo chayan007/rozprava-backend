@@ -81,11 +81,9 @@ class CaseProofListView(ListAPIView):
 
 class CaseProofView(GenericAPIView):
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request, case_slug):
         """Upload proof for the case."""
-        is_uploaded = CaseProofHandler(
-            kwargs.get('debate_uuid')
-        ).add(
+        is_uploaded = CaseProofHandler(case_slug).add(
             request.user, request.FILES
         )
         if is_uploaded:
