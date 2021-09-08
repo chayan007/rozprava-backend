@@ -25,6 +25,7 @@ class DebateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Debate
         fields = (
+            'uuid',
             'profile',
             'comment',
             'inclination',
