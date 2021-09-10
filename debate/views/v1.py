@@ -42,7 +42,12 @@ class DebateView(GenericAPIView):
         rebuttals = debate_handler.get_rebuttals_for_debate(debate)
         return Response(
             status=status.HTTP_200_OK,
-            data=self.serializer_class(rebuttals, many=True).data
+            data={
+                'count': len(rebuttals),
+                # TODO: Add pagination to this.
+                'page': 0,
+                'rebuttals': self.serializer_class(rebuttals, many=True).data
+            }
         )
 
     def post(self, request, *args, **kwargs):

@@ -83,6 +83,7 @@ class CaseProofView(GenericAPIView):
 
     def post(self, request, case_slug):
         """Upload proof for the case."""
+        print(len(request.FILES))
         is_uploaded = CaseProofHandler(case_slug).add(
             request.user, request.FILES
         )
