@@ -42,10 +42,7 @@ class DebateView(GenericAPIView):
         rebuttals = debate_handler.get_rebuttals_for_debate(debate)
         return Response(
             status=status.HTTP_200_OK,
-            data={
-                'debate': self.serializer_class(debate).data,
-                'rebuttals': self.serializer_class(rebuttals, many=True).data
-            }
+            data=self.serializer_class(rebuttals, many=True).data
         )
 
     def post(self, request, *args, **kwargs):
