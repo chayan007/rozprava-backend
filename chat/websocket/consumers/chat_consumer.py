@@ -1,10 +1,5 @@
-from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
 import json
-
-from django.contrib.auth.models import User
-
-from chat.models import OneToOneMessage
 
 from profiles.models import Profile
 
@@ -40,9 +35,8 @@ class ChatConsumer(WebsocketConsumer):
             self.channel_name
         )
 
-        # Receive message from WebSocket
-
-    async def receive(self, text_data):
+    # Receive message from WebSocket
+    async def receive(self, text_data, byte_data=None):
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
 
@@ -55,8 +49,7 @@ class ChatConsumer(WebsocketConsumer):
             }
         )
 
-        # Receive message from room group
-
+    # Receive message from room group
     async def chat_message(self, event):
         message = event['message']
 
