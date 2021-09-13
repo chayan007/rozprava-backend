@@ -30,6 +30,31 @@ class DebateListView(ListAPIView):
         return queryset.order_by('-created_at')
 
 
+class DebateCreateView(GenericAPIView):
+    """Create debate for particular case."""
+
+    def post(self, request, case_uuid: str):
+        """Post a debate against a case."""
+        debate_form_validation = DebateForm(data=request.POST)
+        if not debate_form_validation.is_valid():
+            return Response(
+                data=debate_form_validation.errors,
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        debate = DebateHandler(
+            case_uuid=case_uuid
+        ).create(
+            user=request.user,
+            ip_address=get_client_ip(request),
+            **debate_form_validation.data
+        )
+        serialized_debate = self.serializer_class(debate)
+        return Response(
+            data=serialized_debate.data,
+            status=status.HTTP_201_CREATED
+        )
+
+
 class DebateView(GenericAPIView):
     """Handle all debate operations."""
 
@@ -48,27 +73,6 @@ class DebateView(GenericAPIView):
                 'page': 0,
                 'rebuttals': self.serializer_class(rebuttals, many=True).data
             }
-        )
-
-    def post(self, request, *args, **kwargs):
-        """Post a debate against a case."""
-        debate_form_validation = DebateForm(data=request.POST)
-        if not debate_form_validation.is_valid():
-            return Response(
-                data=debate_form_validation.errors,
-                status=status.HTTP_400_BAD_REQUEST
-            )
-        debate = DebateHandler(
-            case_uuid=kwargs.get('case_uuid')
-        ).create(
-            user=request.user,
-            ip_address=get_client_ip(request),
-            **debate_form_validation.data
-        )
-        serialized_debate = self.serializer_class(debate)
-        return Response(
-            data=serialized_debate.data,
-            status=status.HTTP_201_CREATED
         )
 
     def put(self, request, *args, **kwargs):
