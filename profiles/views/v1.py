@@ -64,7 +64,7 @@ class ProfileSearchView(ListAPIView):
     serializer_class = ProfileSerializer
 
     def get_queryset(self):
-        search_username = self.request.query_params.get('username', None)
+        search_username = self.request.params.get('username', None)
         if search_username:
             queryset = self.model.objects.filter(Q(
                 user__username__icontains=search_username
