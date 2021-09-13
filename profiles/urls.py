@@ -31,7 +31,7 @@ urlpatterns = [
     path('social-auth/google/', GoogleLogin.as_view(), name='google-login'),
 
     # Class Based Views
-    path('search/<search_username>', ProfileSearchView.as_view(), name='list'),
+    path('search/<username>', ProfileSearchView.as_view(), name='list'),
     path('password/reset/', PasswordUpdateView.as_view(), name='password-reset'),
     path('update/', ProfileUpdateView.as_view(), name='profile-update'),
 
