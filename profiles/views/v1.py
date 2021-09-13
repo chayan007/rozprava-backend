@@ -61,6 +61,7 @@ class ProfileSearchView(ListAPIView):
 
     model = Profile
     paginate_by = 20
+    serializer_class = ProfileSerializer
 
     def get_queryset(self):
         search_username = self.request.query_params.get('username', None)
