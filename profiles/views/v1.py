@@ -136,12 +136,14 @@ class GroupView(GenericAPIView):
         name = request.data['name']
         description = request.data['description']
         is_paid = request.data.get('is_paid', 0)
+        members = request.data.get('members', [])
 
         group = GroupObjectHandler().create(
             profile=request.user.profile,
             name=name,
             description=description,
             is_paid=is_paid,
+            members=members
         )
 
         if not group:

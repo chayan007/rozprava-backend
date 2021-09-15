@@ -16,7 +16,8 @@ class GroupObjectHandler:
         profile: Profile,
         name: str,
         is_paid: bool,
-        description: Union[str, None]
+        description: Union[str, None],
+        members: list = None
     ) -> Union[Group, bool]:
         """Create a group and add the user as admin."""
         try:
@@ -27,10 +28,19 @@ class GroupObjectHandler:
                 created_by=profile
             )
 
+            # Add group creator as Admin
             group.profiles.add(profile)
             group.admins.add(profile)
-            group.save()
 
+            # Add other members
+            for username in members:
+                try:
+                    member_profile = Profile.objects.get(user__username=username)
+                    group.profiles.add(member_profile)
+                except Exception:
+                    continue
+
+            group.save()
             return group
         except (AttributeError, IntegrityError):
             capture_exception()
