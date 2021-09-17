@@ -52,7 +52,7 @@ class DebateHandler:
             'case': self.case,
             'comment': kwargs['comment'],
             'inclination': kwargs.get('inclination'),
-            'location': LocationHandler().get_location(ip_address)
+            # 'location': LocationHandler().get_location(ip_address)
         })
         return debate
 
