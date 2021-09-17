@@ -35,7 +35,7 @@ class DebateCreateView(GenericAPIView):
 
     def post(self, request, case_uuid: str):
         """Post a debate against a case."""
-        debate_form_validation = DebateForm(data=request.POST)
+        debate_form_validation = DebateForm(data=request.data)
         if not debate_form_validation.is_valid():
             return Response(
                 data=debate_form_validation.errors,
