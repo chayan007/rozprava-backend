@@ -33,6 +33,8 @@ class DebateListView(ListAPIView):
 class DebateCreateView(GenericAPIView):
     """Create debate for particular case."""
 
+    serializer_class = DebateSerializer
+
     def post(self, request, case_uuid: str):
         """Post a debate against a case."""
         debate_form_validation = DebateForm(data=request.data)
