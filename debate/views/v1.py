@@ -87,6 +87,29 @@ class DebateView(GenericAPIView):
         )
 
 
+class RebuttalCreateView(GenericAPIView):
+
+    def post(self, request, *args, **kwargs):
+        """Post rebuttal against a debate."""
+        rebuttal_form_validation = RebuttalForm(data=request.data)
+        if not rebuttal_form_validation.is_valid():
+            return Response(
+                data=rebuttal_form_validation.errors,
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        rebuttal = DebateHandler().create_rebuttal(
+            user=request.user,
+            ip_address=get_client_ip(request),
+            **rebuttal_form_validation.data
+        )
+        serialized_rebuttal = self.serializer_class(rebuttal)
+        return Response(
+            data=serialized_rebuttal.data,
+            status=status.HTTP_201_CREATED
+        )
+
+
+
 class RebuttalView(GenericAPIView):
     """Handle all rebuttal operations."""
 

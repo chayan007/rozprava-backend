@@ -57,16 +57,16 @@ class DebateHandler:
         return debate
 
     def create_rebuttal(self, user, ip_address, **kwargs) -> Debate:
-        original_debate = self.get(kwargs['debate_uuid'])
+        original_debate = Debate.objects.get(uuid=kwargs['debate_uuid'])
         if original_debate and not original_debate.pointer:
             debate = Debate.objects.create(**{
                 'profile': user.profile,
                 'is_posted_anonymously': kwargs['is_posted_anonymously'],
                 'case': self.case,
                 'comment': kwargs['comment'],
-                'inclination': not original_debate.inclination,
+                'inclination': kwargs.get('inclination', not original_debate.inclination),
                 'pointer': original_debate,
-                'location': LocationHandler().get_location(ip_address)
+                # 'location': LocationHandler().get_location(ip_address)
             })
             return debate
         raise RebuttalFailedException('Failed to upload rebuttal to the specific debate.')
