@@ -89,6 +89,8 @@ class DebateView(GenericAPIView):
 
 class RebuttalCreateView(GenericAPIView):
 
+    serializer_class = DebateSerializer
+
     def post(self, request, *args, **kwargs):
         """Post rebuttal against a debate."""
         rebuttal_form_validation = RebuttalForm(data=request.data)
@@ -107,7 +109,6 @@ class RebuttalCreateView(GenericAPIView):
             data=serialized_rebuttal.data,
             status=status.HTTP_201_CREATED
         )
-
 
 
 class RebuttalView(GenericAPIView):

@@ -62,7 +62,7 @@ class DebateHandler:
             debate = Debate.objects.create(**{
                 'profile': user.profile,
                 'is_posted_anonymously': kwargs['is_posted_anonymously'],
-                'case': self.case,
+                'case': original_debate.case,
                 'comment': kwargs['comment'],
                 'inclination': kwargs.get('inclination', not original_debate.inclination),
                 'pointer': original_debate,
