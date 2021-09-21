@@ -8,6 +8,9 @@ from case.models import Case
 from debate.exceptions import RebuttalFailedException
 from debate.models import Debate
 
+from profiles.exceptions import UserValidationFailedException
+from profiles.models import User
+
 from tracker.controllers.location_handler import LocationHandler
 
 
@@ -18,8 +21,8 @@ class DebateHandler:
 
     @staticmethod
     def get_based_on_case(case_slug: str) -> [Debate]:
-        case = Case.objects.get(slug=case_slug)
-        debates = Debate.objects.filter(
+        case = Case.records.get(slug=case_slug)
+        debates = Debate.records.filter(
             case=case,
             pointer__isnull=True
         )
@@ -56,7 +59,8 @@ class DebateHandler:
         })
         return debate
 
-    def create_rebuttal(self, user, ip_address, **kwargs) -> Debate:
+    @staticmethod
+    def create_rebuttal(user, ip_address, **kwargs) -> Debate:
         original_debate = Debate.objects.get(uuid=kwargs['debate_uuid'])
         if original_debate and not original_debate.pointer:
             debate = Debate.objects.create(**{
@@ -92,8 +96,10 @@ class DebateHandler:
         return debate
 
     @staticmethod
-    def delete(debate_uuid) -> None:
-        debate = Debate.objects.get(uuid=debate_uuid)
+    def delete(debate_uuid: str, user: User) -> None:
+        debate = Debate.records.get(uuid=debate_uuid)
+        if debate.profile != user.profile:
+            raise UserValidationFailedException(f'{user.username} cannot delete debate.')
         debate.is_deleted = True
         debate.save()
 

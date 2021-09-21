@@ -1,6 +1,5 @@
 import datetime
 
-from django.contrib.auth.models import User
 from django.db.models import Count
 from django.utils.text import slugify
 
@@ -8,6 +7,9 @@ from base.constants import UNIQUE_DATETIME_FORMAT
 from base.utils.string import get_string_matching_coefficient
 
 from case.models import Case
+
+from profiles.exceptions import UserValidationFailedException
+from profiles.models import User
 
 from tracker.controllers.location_handler import LocationHandler
 
@@ -78,7 +80,9 @@ class CaseHandler:
         return case
 
     @staticmethod
-    def delete(slug: str) -> None:
-        case = Case.objects.get(slug=slug)
+    def delete(slug: str, user: User) -> None:
+        case = Case.records.get(slug=slug)
+        if case.profile != user.profile:
+            raise UserValidationFailedException(f'{user.username} cannot delete case.')
         case.is_deleted = True
         case.save()

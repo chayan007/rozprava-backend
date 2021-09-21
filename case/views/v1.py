@@ -75,6 +75,25 @@ class CaseView(GenericAPIView):
             status=status.HTTP_201_CREATED
         )
 
+    def delete(self, request, slug):
+        """Delete specific case."""
+        try:
+            CaseHandler().delete(slug, request.user)
+            return Response(
+                data={'message': 'Case has been successfully deleted.'},
+                status=status.HTTP_200_OK
+            )
+        except UserValidationFailedException:
+            return Response(
+                data={'message': f'{request.user.username} cannot delete this case.'},
+                status=status.HTTP_403_FORBIDDEN
+            )
+        except Exception as err:
+            return Response(
+                data={'message': str(err)},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
 
 class CaseActivityView(APIView):
     """Record any activity on case as Like or Report."""

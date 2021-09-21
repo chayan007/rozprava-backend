@@ -86,6 +86,25 @@ class DebateView(GenericAPIView):
             status=status.HTTP_202_ACCEPTED
         )
 
+    def delete(self, request, debate_uuid):
+        """Delete specific debate."""
+        try:
+            DebateHandler().delete(debate_uuid, request.user)
+            return Response(
+                data={'message': 'Debate has been successfully deleted.'},
+                status=status.HTTP_200_OK
+            )
+        except UserValidationFailedException:
+            return Response(
+                data={'message': f'{request.user.username} cannot delete this debate.'},
+                status=status.HTTP_403_FORBIDDEN
+            )
+        except Exception as err:
+            return Response(
+                data={'message': str(err)},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
 
 class RebuttalCreateView(GenericAPIView):
 
