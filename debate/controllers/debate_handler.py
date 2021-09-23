@@ -30,7 +30,7 @@ class DebateHandler:
 
     @staticmethod
     def get_rebuttals_for_debate(debate: Debate) -> [Debate]:
-        return Debate.objects.filter(
+        return Debate.records.filter(
             pointer=debate
         ).order_by('created_at')
 
