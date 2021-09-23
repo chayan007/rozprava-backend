@@ -39,7 +39,7 @@ urlpatterns = [
     path('recommend/', RecommendProfileView.as_view(), name='profile-recommendation'),
 
     path('group/', GroupView.as_view(), name='group'),
-    path('group/search/<group_uuid>', GroupSearchView.as_view(), name='group-search'),
+    path('group/search/<group_name>', GroupSearchView.as_view(), name='group-search'),
     path('group/delete/<group_uuid>', GroupDeleteView.as_view(), name='group-delete'),
     path('group/join/<group_uuid>', JoinGroupView.as_view(), name='group-delete'),
     path('group/leave/<group_uuid>', LeaveGroupView.as_view(), name='group-delete'),

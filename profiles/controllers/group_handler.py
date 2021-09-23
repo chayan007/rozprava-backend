@@ -1,6 +1,7 @@
 from typing import Union
 
 from django.db import IntegrityError
+from django.db.models import Q, Count
 from sentry_sdk import capture_exception
 
 from base.controllers.configuration_manager import ConfigurationManager
@@ -65,6 +66,17 @@ class GroupObjectHandler:
     @staticmethod
     def get(group_uuid: str) -> Group:
         return Group.objects.get(uuid=group_uuid)
+
+    @staticmethod
+    def search(group_name: str):
+        queryset = Group.records.filter(Q(
+            name__icontains=group_name
+        ) | Q(
+            description__icontains=group_name
+        ))
+        # TODO: Implement Group filtering by number of members.
+        return queryset.annotate(joined_profiles=Count('profiles')).order_by('-joined_profiles')
+        # return queryset
 
     @staticmethod
     def list() -> [Group]:

@@ -184,19 +184,19 @@ class GroupView(GenericAPIView):
 
 class GroupSearchView(GenericAPIView):
 
-    def get(self, request, group_uuid: str):
+    def get(self, request, group_name: str):
         """Get list of groups or just a group."""
         group_handler = GroupObjectHandler()
 
-        group = group_handler.get(group_uuid)
+        groups = group_handler.search(group_name)
 
-        if not group:
+        if not groups:
             return Response(
                 data={'error': 'No group found'},
                 status=status.HTTP_404_NOT_FOUND
             )
 
-        serialized_groups = GroupSerializer(group)
+        serialized_groups = GroupSerializer(groups)
 
         return Response(
             data={'groups': serialized_groups.data},
