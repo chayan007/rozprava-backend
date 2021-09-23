@@ -196,7 +196,7 @@ class GroupSearchView(GenericAPIView):
                 status=status.HTTP_404_NOT_FOUND
             )
 
-        serialized_groups = GroupSerializer(groups)
+        serialized_groups = GroupSerializer(groups, many=True)
 
         return Response(
             data={'groups': serialized_groups.data},

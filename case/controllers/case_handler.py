@@ -1,6 +1,6 @@
 import datetime
 
-from django.db.models import Count
+from django.db.models import Count, Q
 from django.utils.text import slugify
 
 from base.constants import UNIQUE_DATETIME_FORMAT
@@ -19,6 +19,17 @@ class CaseHandler:
     @staticmethod
     def get(slug: str) -> Case:
         return Case.records.get(slug=slug)
+
+    @staticmethod
+    def search(search_value: str):
+        queryset = Case.records.filter(Q(
+            question__icontains=search_value
+        ) | Q(
+            description__icontains=search_value
+        ))
+        # TODO: Implement Group filtering by number of members.
+        return queryset.annotate(joined_profiles=Count('profiles')).order_by('-joined_profiles')
+        # return queryset
 
     @staticmethod
     def filter(category: int = None, username: str = None, is_ordered: bool = False) -> [Case]:

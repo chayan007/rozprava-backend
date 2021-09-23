@@ -28,6 +28,28 @@ class CaseListView(ListAPIView):
         return CaseHandler().filter(category, username, is_ordered)
 
 
+class CaseSearchView(GenericAPIView):
+
+    def get(self, request, search_value):
+        """Search cases based on the search_value passed."""
+        case_handler = CaseHandler()
+
+        cases = case_handler.search(search_value)
+
+        if not cases:
+            return Response(
+                data={'error': 'No cases found'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        serialized_cases = CaseSerializer(cases, many=True)
+
+        return Response(
+            data={'cases': serialized_cases.data},
+            status=status.HTTP_200_OK
+        )
+
+
 class CaseView(GenericAPIView):
     """Handles cases CRUD operations."""
 
