@@ -26,8 +26,8 @@ class CaseProofHandler(CoreProofHandler):
                 self.case.proofs.add(*proofs)
                 self.case.save()
                 return True
-        except (AttributeError, ValueError, IndexError):
-            capture_exception()
+        except (AttributeError, ValueError, IndexError) as err:
+            capture_exception(err)
             return False
 
     def list(self):
