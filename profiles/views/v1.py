@@ -1,6 +1,7 @@
 from django.db.models import Q, Count
 from rest_framework import status
 from rest_framework.generics import GenericAPIView, ListAPIView
+from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from sentry_sdk import capture_exception
@@ -62,6 +63,7 @@ class ProfileSearchView(ListAPIView):
     model = Profile
     paginate_by = 20
     serializer_class = ProfileSerializer
+    pagination_class = LimitOffsetPagination
 
     def get_queryset(self):
         search_username = self.kwargs.get('username', None)
@@ -184,6 +186,8 @@ class GroupView(GenericAPIView):
 
 class GroupSearchView(GenericAPIView):
 
+    pagination_class = LimitOffsetPagination
+
     def get(self, request, group_name: str):
         """Get list of groups or just a group."""
         group_handler = GroupObjectHandler()
@@ -197,11 +201,7 @@ class GroupSearchView(GenericAPIView):
             )
 
         serialized_groups = GroupSerializer(groups, many=True)
-
-        return Response(
-            data={'groups': serialized_groups.data},
-            status=status.HTTP_200_OK
-        )
+        return self.get_paginated_response(self.paginate_queryset(serialized_groups.data))
 
 
 class GroupDeleteView(GenericAPIView):

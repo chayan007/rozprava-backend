@@ -11,6 +11,7 @@ class Proof(BaseModel):
 
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     file = models.FileField(upload_to=get_proof_upload_path)
+    url = models.URLField(null=True, blank=True)
 
     def __str__(self):
-        return self.file.name
+        return self.file.name or self.url

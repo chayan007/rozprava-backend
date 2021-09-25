@@ -1,6 +1,7 @@
 from django.db.models import Count
 from rest_framework import status
 from rest_framework.generics import GenericAPIView, ListAPIView
+from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -19,7 +20,7 @@ class CaseListView(ListAPIView):
 
     serializer_class = CaseSerializer
     model = Case
-    paginate_by = 50
+    pagination_class = LimitOffsetPagination
 
     def get_queryset(self):
         category = self.kwargs.get('category')
@@ -33,17 +34,13 @@ class CaseSearchView(GenericAPIView):
     def get(self, request, search_value):
         """Search cases based on the search_value passed."""
         case_handler = CaseHandler()
-
         cases = case_handler.search(search_value)
-
         if not cases:
             return Response(
                 data={'error': 'No cases found'},
                 status=status.HTTP_404_NOT_FOUND
             )
-
         serialized_cases = CaseSerializer(cases, many=True)
-
         return Response(
             data={'cases': serialized_cases.data},
             status=status.HTTP_200_OK
