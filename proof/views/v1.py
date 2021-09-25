@@ -27,10 +27,10 @@ class DebateProofListView(ListAPIView):
 
 class DebateProofView(GenericAPIView):
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request, debate_uuid):
         """Upload proof for the debate."""
         is_uploaded = DebateProofHandler(
-            kwargs.get('debate_uuid')
+            debate_uuid
         ).add(
             request.user, request.FILES
         )

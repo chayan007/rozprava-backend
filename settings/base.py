@@ -19,6 +19,7 @@ BASE_URL = os.getenv('BASE_URL', 'http://127.0.0.1:8000')
 
 ALLOWED_HOSTS = ['*']
 CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
 
 # Application definition
 SYSTEM_APPS = [
