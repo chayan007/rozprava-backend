@@ -107,6 +107,7 @@ class GroupSerializer(serializers.ModelSerializer):
 
         model = Group
         fields = (
+            'uuid',
             'name',
             'description',
             'profiles',
