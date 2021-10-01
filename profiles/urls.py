@@ -9,6 +9,7 @@ from profiles.views.v1 import (
     ProfileUpdateView,
     ProfileView,
     GroupView,
+    GroupCreateView,
     GroupSearchView,
     GroupDeleteView,
     JoinGroupView,
@@ -38,12 +39,13 @@ urlpatterns = [
     path('interests/', ProfileInterestView.as_view(), name='profile-interest'),
     path('recommend/', RecommendProfileView.as_view(), name='profile-recommendation'),
 
-    path('group/', GroupView.as_view(), name='group'),
+    path('group/', GroupCreateView.as_view(), name='group-create'),
+    path('group/<group_uuid>/', GroupView.as_view(), name='group'),
     path('group/search/<group_name>', GroupSearchView.as_view(), name='group-search'),
     path('group/delete/<group_uuid>', GroupDeleteView.as_view(), name='group-delete'),
     path('group/join/<group_uuid>', JoinGroupView.as_view(), name='group-delete'),
-    path('group/leave/<group_uuid>', LeaveGroupView.as_view(), name='group-delete'),
-    path('group/admin/<group_uuid>', GroupAdminChangeView.as_view(), name='group-delete'),
+    path('group/leave/<group_uuid>', LeaveGroupView.as_view(), name='group-leave'),
+    path('group/admin/<group_uuid>', GroupAdminChangeView.as_view(), name='group-admin'),
 
     path('user/<user_string>/', ProfileView.as_view(), name='profile-detail'),
 

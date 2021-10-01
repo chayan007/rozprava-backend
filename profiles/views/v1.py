@@ -133,6 +133,23 @@ class GroupView(GenericAPIView):
 
     serializer_class = GroupSerializer
 
+    def get(self, request, group_uuid):
+        """View a particular group."""
+        try:
+            group = GroupObjectHandler().get(group_uuid)
+            return Response(
+                data=self.serializer_class(group).data,
+                status=status.HTTP_200_OK
+            )
+        except Exception:
+            return Response(
+                data={'error': 'No Group for found.'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+
+class GroupCreateView(GenericAPIView):
+
     def post(self, request, *args, **kwargs):
         """Create a group."""
         name = request.data['name']
@@ -161,26 +178,6 @@ class GroupView(GenericAPIView):
                 'is_paid': group.is_paid
             },
             status=status.HTTP_201_CREATED
-        )
-
-    def get(self, request, *args, **kwargs):
-        """Get list of groups or just a group."""
-        group_handler = GroupObjectHandler()
-
-        groups = group_handler.list()
-
-        if not groups:
-            return Response(
-                data={'error': 'No group found'},
-                status=status.HTTP_404_NOT_FOUND
-            )
-
-        paginated_groups = self.paginate_queryset(groups)
-        serialized_groups = self.serializer_class(paginated_groups, many=True)
-
-        return Response(
-            data={'groups': serialized_groups.data},
-            status=status.HTTP_200_OK
         )
 
 
