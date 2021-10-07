@@ -20,7 +20,7 @@ class Activity(BaseModel):
 
     # Below the mandatory fields for generic relation
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
-    object_id = models.PositiveIntegerField()
+    object_id = models.CharField(max_length=200)
     content_object = GenericForeignKey()
 
     class Meta:

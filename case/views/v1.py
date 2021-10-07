@@ -5,6 +5,7 @@ from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from activity.models import Activity
 from base.utilities import get_client_ip
 
 from case.controllers.case_handler import CaseHandler
@@ -123,12 +124,15 @@ class CaseActivityView(APIView):
             raise UserValidationFailedException('You need to be logged in to perform this action!')
 
         if case_uuid and activity_type:
-            case = Case.records.get(uuid=case_uuid)
-            case.activities.create(activity_type=activity_type, profile=profile)
-            return Response(
-                data={'message': 'Wow! You have interacted with the post.'},
-                status=status.HTTP_201_CREATED
-            )
+            try:
+                case = Case.records.get(uuid=case_uuid)
+                case.activities.create(activity_type=activity_type, profile=profile)
+                return Response(
+                    data={'message': 'Wow! You have interacted with the post.'},
+                    status=status.HTTP_201_CREATED
+                )
+            except Exception:
+                pass
         return Response(
             data={'message': 'Oops! Something went wrong. Try again later.'},
             status=status.HTTP_304_NOT_MODIFIED
