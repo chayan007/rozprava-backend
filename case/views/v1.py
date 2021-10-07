@@ -117,13 +117,10 @@ class CaseView(GenericAPIView):
 class CaseActivityView(APIView):
     """Record any activity on case as Like or Report."""
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request, case_uuid, activity_type):
         profile = request.user.profile
         if not profile:
             raise UserValidationFailedException('You need to be logged in to perform this action!')
-
-        case_uuid = kwargs.get('case_uuid')
-        activity_type = kwargs.get('activity_type')
 
         if case_uuid and activity_type:
             case = Case.records.get(uuid=case_uuid)

@@ -16,7 +16,7 @@ class Activity(BaseModel):
         VIEW = 3
 
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    activity_type = models.SmallIntegerField(choices=ActivityChoices.choices)
+    activity_type = models.IntegerField(choices=ActivityChoices.choices)
 
     # Below the mandatory fields for generic relation
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
