@@ -15,6 +15,7 @@ from profiles.views.v1 import (
     JoinGroupView,
     LeaveGroupView,
     GroupAdminChangeView,
+    ProfileFollowView,
     ProfileInterestView,
     RecommendProfileView,
     ResetPasswordView,
@@ -38,6 +39,7 @@ urlpatterns = [
 
     path('interests/', ProfileInterestView.as_view(), name='profile-interest'),
     path('recommend/', RecommendProfileView.as_view(), name='profile-recommendation'),
+    path('follow/', ProfileFollowView.as_view(), name='profile-follow'),
 
     path('group/', GroupCreateView.as_view(), name='group-create'),
     path('group/<group_uuid>/', GroupView.as_view(), name='group'),

@@ -9,6 +9,7 @@ from sentry_sdk import capture_exception
 from base.constants import COMMON_ERROR_MESSAGE
 
 from profiles.controllers.authentication import Authenticator
+from profiles.controllers.follower_handler import FollowerHandler
 from profiles.controllers.group_handler import GroupObjectHandler, GroupProfileHandler
 from profiles.controllers.profile_handler import ProfileHandler
 from profiles.controllers.profile_interest_handler import ProfileInterestHandler
@@ -391,3 +392,15 @@ class RecommendProfileView(ListAPIView):
         queryset = self.model.objects.all()
         queryset.annotate(follower_count=Count('follower')).order_by('-follower_count')
         return queryset.order_by('-created_at')
+
+
+class ProfileFollowView(GenericAPIView):
+
+    permission_classes = (IsAuthenticated, )
+
+    def post(self, request, following_username: str):
+        response = FollowerHandler(request.user).follow(following_username)
+        return Response(
+            status=status.HTTP_200_OK,
+            data=response
+        )

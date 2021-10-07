@@ -15,9 +15,9 @@ class FollowerHandler:
             following__uuid=profile_uuid
         ).exists()
 
-    def follow(self, profile_uuid: str):
+    def follow(self, profile_username: str):
         """Follow/Unfollow an user."""
-        following_profile = Profile.objects.get(uuid=profile_uuid)
+        following_profile = Profile.objects.get(user__username=profile_username)
         is_already_following = FollowerMap.objects.filter(
             follower=self.profile,
             following=following_profile
