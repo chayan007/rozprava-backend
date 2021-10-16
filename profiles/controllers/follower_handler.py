@@ -25,7 +25,7 @@ class FollowerHandler:
         if is_already_following:
             is_already_following.delete()
             return {'message': f'{is_already_following.following.user.username} has been unfollowed!'}
-        FollowerMap.objects.create(
+        is_already_following = FollowerMap.objects.create(
             follower=self.profile,
             following=following_profile
         )

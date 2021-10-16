@@ -47,7 +47,7 @@ class OneToOneChatEngine:
             'sender__uuid', flat=True
         ).filter(
             receiver=self.receiver
-        ).distinct('sender').order_by('created_at')
+        ).distinct('participant_1').order_by('created_at')
 
         message_list = Profile.objects.filter(
             uuid__in=distinct_profile_uuids

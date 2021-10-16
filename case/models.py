@@ -46,9 +46,9 @@ class Case(BaseModel):
     group = models.ForeignKey(Group, on_delete=models.CASCADE, null=True, blank=True)
     is_anonymous = models.BooleanField(default=False)
 
-    proofs = models.ManyToManyField(Proof, null=True, blank=True)
+    proofs = models.ManyToManyField(Proof)
     activities = GenericRelation(Activity)
-    tags = models.ManyToManyField(HashTag, null=True, blank=True)
+    tags = models.ManyToManyField(HashTag)
     location = models.ForeignKey(Location, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):

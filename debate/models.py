@@ -41,9 +41,9 @@ class Debate(BaseModel):
     votes_to_shift_to_for = models.IntegerField(default=0)
     votes_to_shift_to_against = models.IntegerField(default=0)
 
-    proofs = models.ManyToManyField(Proof, null=True, blank=True)
+    proofs = models.ManyToManyField(Proof)
     activities = GenericRelation(Activity, null=True, blank=True)
-    tags = models.ManyToManyField(HashTag, null=True, blank=True)
+    tags = models.ManyToManyField(HashTag)
     location = models.ForeignKey(Location, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
