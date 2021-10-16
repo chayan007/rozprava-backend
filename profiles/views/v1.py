@@ -175,8 +175,7 @@ class GroupCreateView(GenericAPIView):
         return Response(
             data={
                 'message': 'Group has been created',
-                'name': group.name,
-                'is_paid': group.is_paid
+                'group': GroupSerializer(group).data,
             },
             status=status.HTTP_201_CREATED
         )
