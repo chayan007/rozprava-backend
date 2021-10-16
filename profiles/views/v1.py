@@ -399,6 +399,11 @@ class ProfileFollowView(GenericAPIView):
     permission_classes = (IsAuthenticated, )
 
     def post(self, request, following_username: str):
+        if following_username == request.user.username:
+            return Response(
+                status=status.HTTP_403_FORBIDDEN,
+                data={'error': 'You cannot follow your own profile.'}
+            )
         response = FollowerHandler(request.user).follow(following_username)
         return Response(
             status=status.HTTP_200_OK,
