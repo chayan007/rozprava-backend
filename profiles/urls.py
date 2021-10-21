@@ -8,6 +8,7 @@ from profiles.views.v1 import (
     ProfileSearchView,
     ProfileUpdateView,
     ProfileView,
+    FollowerListView,
     GroupView,
     GroupCreateView,
     GroupSearchView,
@@ -34,6 +35,7 @@ urlpatterns = [
 
     # Class Based Views
     path('search/<username>', ProfileSearchView.as_view(), name='list'),
+    path('followers/<int:is_followers_required>', ProfileSearchView.as_view(), name='list'),
     path('password/reset/', PasswordUpdateView.as_view(), name='password-reset'),
     path('update/', ProfileUpdateView.as_view(), name='profile-update'),
 

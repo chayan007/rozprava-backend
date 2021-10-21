@@ -103,6 +103,11 @@ class DebateHandler:
         debate.is_deleted = True
         debate.save()
 
+        rebuttals = Debate.records.filter(pointer=debate)
+        for rebuttal in rebuttals:
+            rebuttal.is_deleted = True
+            rebuttal.save()
+
     def vote_to_shift_to_opposite_indicator(self, debate_uuid: str):
         debate = Debate.records.get(uuid=debate_uuid)
         if debate.inclination:
