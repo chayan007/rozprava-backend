@@ -408,3 +408,21 @@ class ProfileFollowView(GenericAPIView):
             status=status.HTTP_200_OK,
             data=response
         )
+
+
+class FollowerListView(ListAPIView):
+    """Get list of follower / following."""
+
+    model = Profile
+    paginate_by = 50
+    serializer_class = ProfileSerializer
+
+    def get_queryset(self):
+        is_followers_required = self.kwargs.get('is_followers_required', 1)
+        follower_handler = FollowerHandler(self.request.user)
+        if is_followers_required:
+            queryset = follower_handler.get_followers()
+        else:
+            queryset = follower_handler.get_following()
+        return queryset.order_by('-created_at')
+
