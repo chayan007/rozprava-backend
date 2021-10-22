@@ -9,7 +9,7 @@ from base.utils.string import get_string_matching_coefficient
 from case.models import Case
 
 from profiles.exceptions import UserValidationFailedException
-from profiles.models import User
+from profiles.models import User, Group
 
 from tracker.controllers.location_handler import LocationHandler
 
@@ -32,12 +32,14 @@ class CaseHandler:
         # return queryset
 
     @staticmethod
-    def filter(category: int = None, username: str = None, is_ordered: bool = False) -> [Case]:
+    def filter(category: int = None, username: str = None, is_ordered: bool = False, group_uuid: str = None) -> [Case]:
         cases = Case.records.all()
         if category:
             cases = cases.filter(category=category)
         if username:
             cases = cases.filter(profile__user__username=username)
+        if group_uuid:
+            cases = cases.filter(group__uuid=group_uuid)
         # return (
         #     cases.annotate(activity_hype=Count('activities')).order_by('-activity_hype')
         #     if not is_ordered
@@ -48,7 +50,7 @@ class CaseHandler:
     @staticmethod
     def create(user: User, ip_address: str, **kwargs) -> Case:
         question = kwargs.get('question')
-        case = Case.objects.create(**{
+        case_dict = {
             'profile': user.profile,
             'question': question,
             'description': kwargs.get('description'),
@@ -58,7 +60,12 @@ class CaseHandler:
             'for_label': kwargs.get('for_label'),
             'against_label': kwargs.get('against_label'),
             'is_anonymous': bool(kwargs.get('is_anonymous', 0))
-        })
+        }
+        if kwargs.get('group_uuid'):
+            group = Group.records.get(uuid=kwargs.get('group_uuid'))
+            case_dict.update({'group': group})
+
+        case = Case.objects.create(**case_dict)
         return case
 
     @staticmethod

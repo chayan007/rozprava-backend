@@ -24,10 +24,11 @@ class CaseListView(ListAPIView):
     pagination_class = LimitOffsetPagination
 
     def get_queryset(self):
-        category = self.kwargs.get('category')
-        username = self.kwargs.get('username')
-        is_ordered = bool(self.kwargs.get('is_ordered', 0))
-        return CaseHandler().filter(category, username, is_ordered)
+        category = self.request.query_params('category')
+        username = self.request.query_params('username')
+        group_uuid = self.request.query_params('group_uuid')
+        is_ordered = bool(self.request.query_params('is_ordered', 0))
+        return CaseHandler().filter(category, username, is_ordered, group_uuid)
 
 
 class CaseSearchView(GenericAPIView):
