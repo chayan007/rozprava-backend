@@ -245,10 +245,15 @@ class JoinGroupView(GenericAPIView):
 class LeaveGroupView(GenericAPIView):
 
     def post(self, request, group_uuid: str):
-        """Leave a group."""
-        group_profile_handler = GroupProfileHandler(group_uuid)
-        has_left = group_profile_handler.leave(request.user.profile)
+        """
+        Leave a group or Remove profile from group.
 
+        If admin is removing any profile, send `username`
+        in the JSON data of the exiting profile.
+        """
+        group_profile_handler = GroupProfileHandler(group_uuid)
+        exiting_username = request.data.get('username', request.user.username)
+        has_left = group_profile_handler.leave(exiting_username, request.user.profile)
         if has_left:
             return Response(
                 data={'message': 'Successfully left the group.'},

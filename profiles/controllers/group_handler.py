@@ -104,10 +104,15 @@ class GroupProfileHandler:
             capture_exception()
             return False
 
-    def leave(self, profile: Profile) -> bool:
+    def leave(self, username: str, auth_profile: Profile) -> bool:
         """Remove profile from a group."""
         try:
+            profile = Profile.objects.get(user__username=username)
+            if profile != auth_profile and auth_profile not in self.group.admins:
+                return False
             self.group.profiles.remove(profile)
+            if profile in self.group.admins:
+                self.group.admins.remove(profile)
             self.group.save()
             return True
         except (AttributeError, IntegrityError, ValueError):
