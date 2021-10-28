@@ -108,11 +108,17 @@ class GroupProfileHandler:
         """Remove profile from a group."""
         try:
             profile = Profile.objects.get(user__username=username)
-            if profile != auth_profile and auth_profile not in self.group.admins:
+            if profile != auth_profile and auth_profile not in self.group.admins.all():
                 return False
             self.group.profiles.remove(profile)
-            if profile in self.group.admins:
+            
+            # If exiting member is admin, remove from admin also.
+            if profile in self.group.admins.all():
                 self.group.admins.remove(profile)
+                if not self.group.admins.all():
+                    # If there is no admin present, make the first member as admin
+                    self.group.admins.add(self.group.profiles[0])
+            
             self.group.save()
             return True
         except (AttributeError, IntegrityError, ValueError):
