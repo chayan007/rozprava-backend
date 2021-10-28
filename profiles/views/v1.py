@@ -423,7 +423,7 @@ class FollowerListView(ListAPIView):
     serializer_class = ProfileSerializer
 
     def get_queryset(self):
-        is_followers_required = self.kwargs.get('is_followers_required', 1)
+        is_followers_required = self.query_params.get('is_followers_required', 1)
         follower_handler = FollowerHandler(self.request.user)
         if is_followers_required:
             queryset = follower_handler.get_followers()
@@ -431,3 +431,19 @@ class FollowerListView(ListAPIView):
             queryset = follower_handler.get_following()
         return queryset.order_by('-created_at')
 
+
+
+class GroupListView(ListAPIView):
+    """Get list of groups."""
+
+    model = Group
+    paginate_by = 10
+    serializer_class = GroupSerializer
+    pagination_class = LimitOffsetPagination
+
+    def get_queryset(self):
+        is_my_groups = self.query_params.get('is_my_groups', 0)
+        groups = self.model.objects.all()
+        if is_my_groups:
+            groups.filter(profiles__in=[self.request.user.profile])
+        return groups
