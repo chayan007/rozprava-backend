@@ -36,14 +36,13 @@ class ProfileView(GenericAPIView):
             data=serialized_profile.data
         )
 
-    def put(self, request, username: str):
+    def put(self, request, user_string: str):
         """Update profile details."""
         profile = ProfileHandler(
             request.user.profile.uuid
         ).update_details(request.data)
-        if profile:
-            if profile.user.username != username:
-                raise UserValidationFailedException(COMMON_ERROR_MESSAGE)
+        if profile and profile.user.username != user_string:
+            raise UserValidationFailedException(COMMON_ERROR_MESSAGE)
 
             serialized_profile = self.serializer_class(profile, context={'request': request})
             message = {
