@@ -14,7 +14,7 @@ from profiles.controllers.group_handler import GroupObjectHandler, GroupProfileH
 from profiles.controllers.profile_handler import ProfileHandler
 from profiles.controllers.profile_interest_handler import ProfileInterestHandler
 from profiles.exceptions import UserValidationFailedException
-from profiles.models import Profile
+from profiles.models import Profile, Group
 from profiles.serializers import ProfileSerializer, GroupSerializer
 
 
