@@ -395,7 +395,7 @@ class RecommendProfileView(ListAPIView):
         # TODO: Implement better logic for profile recommendations after beta is released.
         queryset = self.model.objects.all()
         queryset.annotate(follower_count=Count('follower')).order_by('-follower_count')
-        return queryset.order_by('-created_at')
+        return queryset.order_by('-created_at')[:self.paginate_by]
 
 
 class ProfileFollowView(GenericAPIView):
