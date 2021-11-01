@@ -37,7 +37,7 @@ class CaseHandler:
         if category:
             cases = cases.filter(category=category)
         if username:
-            cases = cases.filter(profile__user__username=username)
+            cases = cases.filter(profile__user__username=username, is_anonymous=False)
         if group_uuid:
             cases = cases.filter(group__uuid=group_uuid)
         # return (
