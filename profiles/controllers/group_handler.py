@@ -117,7 +117,7 @@ class GroupProfileHandler:
                 self.group.admins.remove(profile)
                 if not self.group.admins.all():
                     # If there is no admin present, make the first member as admin
-                    self.group.admins.add(self.group.profiles[0])
+                    self.group.admins.add(self.group.profiles.all()[0])
             
             self.group.save()
             return True
