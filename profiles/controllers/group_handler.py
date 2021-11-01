@@ -53,7 +53,7 @@ class GroupObjectHandler:
         try:
             group = Group.objects.get(uuid=group_uuid)
 
-            if profile not in group.admins:
+            if profile not in group.admins.all():
                 raise AssertionError('This user does not have rights to retire a group.')
 
             group.is_deleted = True
