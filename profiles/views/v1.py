@@ -432,7 +432,6 @@ class FollowerListView(ListAPIView):
         return queryset.order_by('-created_at')
 
 
-
 class GroupListView(ListAPIView):
     """Get list of groups."""
 
