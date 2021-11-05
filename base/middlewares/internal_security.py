@@ -15,6 +15,7 @@ class InternalSecurityMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
+        print('Request :: ', getattr(request, 'data', 'No data found in request.'))
         current_timestamp = datetime.datetime.now().strftime(self.DATETIME_FORMAT)
 
         if not os.getenv('DJANGO_SETTINGS_MODULE') == 'settings.local':
@@ -48,4 +49,5 @@ class InternalSecurityMiddleware:
                 status=response.status_code
             )
 
+        print('Response :: ', getattr(response, 'data', 'No data found in response.'))
         return response
