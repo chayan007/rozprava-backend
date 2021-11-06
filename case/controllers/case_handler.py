@@ -32,7 +32,13 @@ class CaseHandler:
         # return queryset
 
     @staticmethod
-    def filter(category: int = None, username: str = None, is_ordered: bool = False, group_uuid: str = None) -> [Case]:
+    def filter(
+        category: int = None,
+        username: str = None,
+        is_ordered: bool = False,
+        group_uuid: str = None,
+        show_anonymous: bool = True
+    ) -> [Case]:
         cases = Case.records.all()
         if category:
             cases = cases.filter(category=category)
@@ -40,6 +46,8 @@ class CaseHandler:
             cases = cases.filter(profile__user__username=username, is_anonymous=False)
         if group_uuid:
             cases = cases.filter(group__uuid=group_uuid)
+        if show_anonymous and isinstance(show_anonymous, bool):
+            cases = cases.filter(is_anonymous=show_anonymous)
         # return (
         #     cases.annotate(activity_hype=Count('activities')).order_by('-activity_hype')
         #     if not is_ordered

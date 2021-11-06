@@ -28,7 +28,12 @@ class CaseListView(ListAPIView):
         username = self.request.query_params.get('username')
         group_uuid = self.request.query_params.get('group_uuid')
         is_ordered = bool(self.request.query_params.get('is_ordered', 0))
-        return CaseHandler().filter(category, username, is_ordered, group_uuid)
+        show_anonymous = self.request.query_params.get('show_anonymous')
+        return CaseHandler().filter(
+            category, username,
+            is_ordered, group_uuid,
+            show_anonymous if not show_anonymous else bool(show_anonymous)
+        )
 
 
 class CaseSearchView(GenericAPIView):
