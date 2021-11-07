@@ -155,5 +155,5 @@ class RecommendCaseView(ListAPIView):
     def get_queryset(self):
         # TODO: Implement better logic for cases recommendations after beta is released.
         queryset = self.model.objects.all()
-        queryset.annotate(activity_hype=Count('acitvity')).order_by('-activity_hype')
+        queryset.annotate(activity_hype=Count('activity')).order_by('-activity_hype')
         return queryset.order_by('-created_at')

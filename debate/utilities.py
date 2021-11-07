@@ -7,11 +7,10 @@ def get_debate_metrics(debate: Debate):
     """Get debate activity metrics."""
     try:
         return [
-            Activity.objects.filter(content_object=debate, activity_type=Activity.ActivityChoices.REPORT),
-            Activity.objects.filter(content_object=debate, activity_type=Activity.ActivityChoices.UPVOTE),
-            Activity.objects.filter(content_object=debate, activity_type=Activity.ActivityChoices.DOWNVOTE),
-            Activity.objects.filter(content_object=debate, activity_type=Activity.ActivityChoices.VIEW)
+            Activity.objects.filter(content_type__model='debate', activity_type=Activity.ActivityChoices.REPORT, object_id=debate.uuid),
+            Activity.objects.filter(content_type__model='debate', activity_type=Activity.ActivityChoices.UPVOTE, object_id=debate.uuid),
+            Activity.objects.filter(content_type__model='debate', activity_type=Activity.ActivityChoices.DOWNVOTE, object_id=debate.uuid),
+            Activity.objects.filter(content_type__model='debate', activity_type=Activity.ActivityChoices.VIEW, object_id=debate.uuid)
         ]
     except Exception:
-        # TODO: Solve this query.
         return [0, 0, 0, 0]
