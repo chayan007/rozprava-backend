@@ -6,6 +6,7 @@ from rest_framework.response import Response
 
 
 class InternalSecurityMiddleware:
+
     DATETIME_FORMAT = 'DDMMYYhh'
     API_ROUTE_PATH = '/v1/'
     PROFILE_API_PREFIX = '/profile/'
@@ -15,7 +16,7 @@ class InternalSecurityMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
-        print('Request :: ', getattr(request, 'data', 'No data found in request.'))
+        print(f'Request :: [{request.path}]', getattr(request, 'data', {}))
         current_timestamp = datetime.datetime.now().strftime(self.DATETIME_FORMAT)
 
         if not os.getenv('DJANGO_SETTINGS_MODULE') == 'settings.local':
@@ -41,13 +42,13 @@ class InternalSecurityMiddleware:
                         status=status.HTTP_401_UNAUTHORIZED
                     )
 
-        response = self.get_response(request)
-
-        if response.status_code in [status.HTTP_502_BAD_GATEWAY, status.HTTP_500_INTERNAL_SERVER_ERROR]:
+        try:
+            response = self.get_response(request)
+        except BaseException:
             response = Response(
                 data={'error': 'Something happened at our end. Please try again later.'},
-                status=response.status_code
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 
-        print('Response :: ', getattr(response, 'data', 'No data found in response.'))
+        print('Response :: ', getattr(response, 'data', 'No data found in response.'), '\n\n')
         return response
