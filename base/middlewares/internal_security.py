@@ -1,5 +1,6 @@
 import datetime
 import os
+import traceback
 
 from rest_framework import status
 from rest_framework.response import Response
@@ -45,6 +46,7 @@ class InternalSecurityMiddleware:
         try:
             response = self.get_response(request)
         except BaseException:
+            print(traceback.format_exc())
             response = Response(
                 data={'error': 'Something happened at our end. Please try again later.'},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
