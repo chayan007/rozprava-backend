@@ -11,13 +11,17 @@ from proof.serializers import ProofSerializer
 
 class DebateSerializer(serializers.ModelSerializer):
 
-    profile = ProfileSerializer()
+    profile = serializers.SerializerMethodField()
     proofs = ProofSerializer(many=True)
     activities = serializers.SerializerMethodField()
     impact = serializers.SerializerMethodField()
 
     def get_activities(self, obj):
         return get_debate_metrics(obj)
+
+    def get_profile(self, obj):
+        if not obj.is_posted_anonymously:
+            return ProfileSerializer(obj.profile).data
 
     def get_impact(self, obj):
         return DebateImpactHandler(obj.uuid).get_aggregate_impact()
