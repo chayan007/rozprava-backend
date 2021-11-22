@@ -433,7 +433,8 @@ class FollowerListView(ListAPIView):
             queryset = follower_handler.get_followers()
         else:
             queryset = follower_handler.get_following()
-        return queryset.order_by('-created_at')
+        # TODO: Convert from list to queryset
+        return queryset
 
 
 class GroupListView(ListAPIView):
