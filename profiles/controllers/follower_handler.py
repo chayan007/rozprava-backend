@@ -32,7 +32,9 @@ class FollowerHandler:
         return {'message': f'{is_already_following.following.user.username} has been followed!'}
 
     def get_followers(self):
-        return FollowerMap.records.filter(following=self.profile)
+        followings = FollowerMap.records.filter(following=self.profile)
+        return [following.follower for following in followings]
 
     def get_following(self):
-        return FollowerMap.records.filter(follower=self.profile)
+        followers = FollowerMap.records.filter(follower=self.profile)
+        return [follower.following for follower in followers]
