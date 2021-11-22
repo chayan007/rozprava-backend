@@ -14,7 +14,7 @@ from profiles.controllers.group_handler import GroupObjectHandler, GroupProfileH
 from profiles.controllers.profile_handler import ProfileHandler
 from profiles.controllers.profile_interest_handler import ProfileInterestHandler
 from profiles.exceptions import UserValidationFailedException
-from profiles.models import Profile, Group
+from profiles.models import Profile, Group, User
 from profiles.serializers import ProfileSerializer, GroupSerializer
 
 
@@ -424,7 +424,11 @@ class FollowerListView(ListAPIView):
 
     def get_queryset(self):
         is_followers_required = self.request.query_params.get('is_followers_required', 1)
-        follower_handler = FollowerHandler(self.request.user)
+        try:
+            user = User.objects.get(username=self.kwargs.get('username', self.request.user.username))
+        except User.DoesNotExist:
+            return Response(data={'error': 'User does not exist', 'status': status.HTTP_404_NOT_FOUND})
+        follower_handler = FollowerHandler(user)
         if is_followers_required:
             queryset = follower_handler.get_followers()
         else:

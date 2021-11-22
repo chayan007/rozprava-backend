@@ -43,6 +43,7 @@ urlpatterns = [
     path('interests/', ProfileInterestView.as_view(), name='profile-interest'),
     path('recommend/', RecommendProfileView.as_view(), name='profile-recommendation'),
     path('follow/<following_username>', ProfileFollowView.as_view(), name='profile-follow'),
+    path('follower/<username>', FollowerListView.as_view(), name='follower-list'),
 
     path('groups/', GroupListView.as_view(), name='group-list'),
     path('group/', GroupCreateView.as_view(), name='group-create'),
