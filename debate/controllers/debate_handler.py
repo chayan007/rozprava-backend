@@ -55,7 +55,7 @@ class DebateHandler:
             'case': self.case,
             'comment': kwargs['comment'],
             'inclination': kwargs.get('inclination'),
-            # 'location': LocationHandler().get_location(ip_address)
+            'location': LocationHandler().get_location(ip_address)
         })
         return debate
 
@@ -70,7 +70,7 @@ class DebateHandler:
                 'comment': kwargs['comment'],
                 'inclination': kwargs.get('inclination', not original_debate.inclination),
                 'pointer': original_debate,
-                # 'location': LocationHandler().get_location(ip_address)
+                'location': LocationHandler().get_location(ip_address)
             })
             return debate
         raise RebuttalFailedException('Failed to upload rebuttal to the specific debate.')

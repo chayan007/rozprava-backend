@@ -10,9 +10,9 @@ class Location(BaseModel):
 
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
     ip_address = models.GenericIPAddressField()
-    country = models.JSONField()
-    city = models.JSONField()
-    coordinates = models.JSONField()
+    country = models.CharField(max_length=150, null=True, blank=True)
+    city = models.CharField(max_length=200, null=True, blank=True)
+    coordinates = models.CharField(max_length=200, null=True, blank=True)
 
     def __str__(self):
         return f'{self.profile.user.username}: {self.ip_address}'
