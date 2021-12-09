@@ -64,7 +64,7 @@ class CaseHandler:
             'description': kwargs.get('description'),
             'category': int(kwargs.get('category')),
             'slug': slugify(f"{question[:20]}-{datetime.datetime.now().strftime(UNIQUE_DATETIME_FORMAT)}-{user.username}"),
-            'location': LocationHandler().get_location(ip_address),
+            'location': LocationHandler(user.profile.uuid).get_location(ip_address),
             'for_label': kwargs.get('for_label'),
             'against_label': kwargs.get('against_label'),
             'is_anonymous': bool(kwargs.get('is_anonymous', 0))
