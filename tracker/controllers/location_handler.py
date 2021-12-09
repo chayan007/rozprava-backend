@@ -1,6 +1,5 @@
 import requests
 
-from django.contrib.gis.geoip2 import GeoIP2
 from sentry_sdk import capture_exception
 
 from profiles.models import Profile
