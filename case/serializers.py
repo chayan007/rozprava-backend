@@ -52,7 +52,8 @@ class CaseSerializer(serializers.ModelSerializer):
             'against_label',
             'metrics',
             'created_at',
-            'proofs'
+            'proofs',
+            'activity'
         )
 
 
