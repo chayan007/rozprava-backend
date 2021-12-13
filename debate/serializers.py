@@ -18,9 +18,9 @@ class DebateSerializer(serializers.ModelSerializer):
     proofs = ProofSerializer(many=True)
     activities = serializers.SerializerMethodField()
     impact = serializers.SerializerMethodField()
-    activity = serializers.SerializerMethodField()
+    user_activity = serializers.SerializerMethodField()
 
-    def get_activity(self, obj):
+    def get_user_activity(self, obj):
         request = self.context.get('request')
         if not check_if_request_authenticated(request):
             return {}
@@ -53,5 +53,6 @@ class DebateSerializer(serializers.ModelSerializer):
             'inclination',
             'proofs',
             'activities',
-            'impact'
+            'impact',
+            'user_activity'
         )
